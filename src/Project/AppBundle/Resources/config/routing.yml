@@ -1,3 +1,3 @@
-project_app_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: ProjectAppBundle:Default:index }
+project_app_user_index:
+    path:     /index
+    defaults: { _controller: ProjectAppBundle:User:index }

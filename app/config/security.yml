@@ -23,22 +23,20 @@ security:
             security: false
 
         main:
-            pattern:    ^/
-            anonymous:  true
-            provider:   main
+            pattern:   ^/
+            anonymous: true
+            provider:  main
             form_login:
-                login_path: login
-                check_path: login_check
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                always_use_default_target_path: false
+                default_target_path:            /index
             logout:
-                path:   logout
-                target: /index
+                path:   fos_user_security_logout
+                target: /
             remember_me:
                 key: %secret% 
 
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
-
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
