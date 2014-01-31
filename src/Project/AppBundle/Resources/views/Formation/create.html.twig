@@ -1,6 +1,6 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block body %}
+{% block main %}
 	<form action="{{ path('project_app_user_index') }}" method="POST" {{ form_enctype(formFormation) }} >
 		{{ form_errors(formFormation) }}
 		{{ form_widget(formFormation) }}

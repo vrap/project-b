@@ -66,27 +66,4 @@ class Module
     {
         return $this->name;
     }
-
-    /**
-     * Set formation
-     *
-     * @param \Project\AppBundle\Entity\Formation $formation
-     * @return Module
-     */
-    public function setFormation(\Project\AppBundle\Entity\Formation $formation = null)
-    {
-        $this->formation = $formation;
-
-        return $this;
-    }
-
-    /**
-     * Get formation
-     *
-     * @return \Project\AppBundle\Entity\Formation 
-     */
-    public function getFormation()
-    {
-        return $this->formation;
-    }
 }

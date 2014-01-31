@@ -1,3 +1,13 @@
 project_app_user_index:
     path:     /index
     defaults: { _controller: ProjectAppBundle:User:index }
+
+# Manager
+
+project_app_manager_module_create:
+    path:     /module
+    defaults: { _controller: ProjectAppBundle:Module:create }
+
+# Lecturers
+
+# Students

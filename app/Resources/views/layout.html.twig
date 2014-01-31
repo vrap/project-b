@@ -3,10 +3,21 @@
 <head>
 	<meta charset="UTF-8" />
 
-	<title></title>
+	<title>{% block title %}Connexion{% endblock %}</title>
+
+	{% block stylesheets %}
+	{% endblock %}
 </head>
 <body>
-	{% block body %}
-	{% endblock %}
+	<header>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			<a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+        {% endif %}
+  	</header>
+
+	<div id="main">
+  		{% block main %}
+  		{% endblock %}
+  	</div>
 </body>
 </html>
