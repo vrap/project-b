@@ -15,12 +15,18 @@ class ModuleController extends Controller
     public function indexAction()
     {
         $em                  = $this->getDoctrine()->getManager();
+        $repositoryManager   = $em->getRepository('ProjectAppBundle:Manager');
         $repositoryModule    = $em->getRepository('ProjectAppBundle:Module');
         $repositoryFormation = $em->getRepository('ProjectAppBundle:Formation');
-        $modulesList         = $repositoryModule->findAll();
-        
+        $user                = $this->getUser();
+        $modulesList         = $repositoryModule->findBy(array(
+            'formation' => $user->getId(),
+        ));
+        $numberModules       = count($modulesList); 
+
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
-            'modulesList' => $modulesList,
+            'modulesList'   => $modulesList,
+            'numberModules' => $numberModules,
         ));
     }
 

@@ -21,6 +21,17 @@ class Manager
      */
     private $id;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     */
+    private $formation;
+
 
     /**
      * Get id
@@ -30,5 +41,51 @@ class Manager
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set formation
+     *
+     * @param \Project\AppBundle\Entity\Formation $formation
+     * @return Manager
+     */
+    public function setFormation(\Project\AppBundle\Entity\Formation $formation = null)
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Get formation
+     *
+     * @return \Project\AppBundle\Entity\Formation 
+     */
+    public function getFormation()
+    {
+        return $this->formation;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Project\AppBundle\Entity\User $user
+     * @return Manager
+     */
+    public function setUser(\Project\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Project\AppBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

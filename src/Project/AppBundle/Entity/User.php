@@ -25,13 +25,6 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="surname", type="string", length=50, nullable=true)
-     */
-    private $surname;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="phone", type="string", length=20, nullable=true)
      */
     private $phone;
@@ -52,29 +45,6 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set surname
-     *
-     * @param string $surname
-     * @return User
-     */
-    public function setSurname($surname)
-    {
-        $this->surname = $surname;
-
-        return $this;
-    }
-
-    /**
-     * Get surname
-     *
-     * @return string 
-     */
-    public function getSurname()
-    {
-        return $this->surname;
     }
 
     /**
