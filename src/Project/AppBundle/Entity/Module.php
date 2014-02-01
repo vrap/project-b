@@ -33,6 +33,11 @@ class Module
      */
     private $formation;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", cascade={"persist"})
+     */
+    private $speaker;
+
 
     /**
      * Get id
@@ -88,5 +93,28 @@ class Module
     public function getFormation()
     {
         return $this->formation;
+    }
+
+    /**
+     * Set speaker
+     *
+     * @param \Project\AppBundle\Entity\Speaker $speaker
+     * @return Module
+     */
+    public function setSpeaker(\Project\AppBundle\Entity\Speaker $speaker = null)
+    {
+        $this->speaker = $speaker;
+
+        return $this;
+    }
+
+    /**
+     * Get speaker
+     *
+     * @return \Project\AppBundle\Entity\Speaker 
+     */
+    public function getSpeaker()
+    {
+        return $this->speaker;
     }
 }

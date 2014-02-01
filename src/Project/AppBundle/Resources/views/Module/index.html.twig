@@ -2,6 +2,6 @@
 
 <ul>
 	{% for module in modulesList %}
-		<li>{{ module.name }}</li>
+		<li>{{ module.name }} - Intervenant : {{ module.speaker.user.username }}</li>
 	{% endfor %}
 </ul>

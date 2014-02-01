@@ -23,7 +23,7 @@ class ModuleController extends Controller
             'formation' => $user->getId(),
         ));
         $numberModules       = count($modulesList); 
-
+        
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
             'modulesList'   => $modulesList,
             'numberModules' => $numberModules,

@@ -16,6 +16,6 @@ project_app_manager_module_create:
     path:     /module_create
     defaults: { _controller: ProjectAppBundle:Module:create }
 
-# Lecturers
+# Speaker
 
-# Students
+# Student
