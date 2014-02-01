@@ -14,6 +14,9 @@ class FormationController extends Controller
 
     }
 
+    /**
+     * Formation creation for Manager
+     */
     public function createAction()
     {
     	$em                  = $this->getDoctrine()->getManager();

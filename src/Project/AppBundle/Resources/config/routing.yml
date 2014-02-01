@@ -8,8 +8,12 @@ project_app_manager_formation_create:
     path:     /formation
     defaults: { _controller: ProjectAppBundle:Formation:create }
 
-project_app_manager_module_create:
+project_app_manager_module_index:
     path:     /module
+    defaults: { _controller: ProjectAppBundle:Module:index }
+
+project_app_manager_module_create:
+    path:     /module_create
     defaults: { _controller: ProjectAppBundle:Module:create }
 
 # Lecturers
