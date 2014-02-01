@@ -1,8 +1,12 @@
-project_app_user_index:
+project_app_index:
     path:     /index
     defaults: { _controller: ProjectAppBundle:User:index }
 
 # Manager
+
+project_app_manager_formation_create:
+    path:     /formation
+    defaults: { _controller: ProjectAppBundle:Formation:create }
 
 project_app_manager_module_create:
     path:     /module

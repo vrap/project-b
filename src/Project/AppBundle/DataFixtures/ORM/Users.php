@@ -10,14 +10,23 @@ class Users implements FixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $users   = array();
-        $users []= array(
-            'name'     => 'Pierre',
-            'surname'  => 'Flauder',
-            'email'    => 'pflauder@gmail.com',
-            'phone'    => '',
-            'login'    => 'pierre',
-            'password' => 'pierre',
+        $users = array(
+            array(
+                'name'     => 'Laurent',
+                'surname'  => 'Ricard',
+                'email'    => 'roundandsoft@gmail.com',
+                'phone'    => '',
+                'login'    => 'laurent',
+                'password' => 'laurent',
+            ),
+            array(
+                'name'     => 'Emmanuelle',
+                'surname'  => 'Roux',
+                'email'    => 'emmanuelle.roux@gmail.com',
+                'phone'    => '',
+                'login'    => 'emmanuelle',
+                'password' => 'emmanuelle',
+            ),
         );
 
         foreach ($users as $user) {
