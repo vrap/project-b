@@ -8,7 +8,15 @@ project_app_manager_formation_create:
     path:     /formation_create
     defaults: { _controller: ProjectAppBundle:Formation:create }
 
-project_app_manager_module_index:
+project_app_manager_promotion:
+    path:     /promotion
+    defaults: { _controller: ProjectAppBundle:Promotion:index }
+
+project_app_manager_promotion_create:
+    path:     /promotion_create
+    defaults: { _controller: ProjectAppBundle:Promotion:create }
+
+project_app_manager_module:
     path:     /module
     defaults: { _controller: ProjectAppBundle:Module:index }
 

@@ -1,0 +1,5 @@
+<ul>
+	{% for promotion in promotionsList %}
+		<li>Promotion du {{ promotion.startDate|date("d/m/Y") }} au {{ promotion.endDate|date("d/m/Y") }}</li>
+	{% endfor %}
+</ul>

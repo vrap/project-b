@@ -35,6 +35,11 @@ class Promotion
      */
     private $endDate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     */
+    private $formation;
+
 
     /**
      * Get id
@@ -90,5 +95,28 @@ class Promotion
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * Set formation
+     *
+     * @param \Project\AppBundle\Entity\Formation $formation
+     * @return Promotion
+     */
+    public function setFormation(\Project\AppBundle\Entity\Formation $formation = null)
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Get formation
+     *
+     * @return \Project\AppBundle\Entity\Formation 
+     */
+    public function getFormation()
+    {
+        return $this->formation;
     }
 }
