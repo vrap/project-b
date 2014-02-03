@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 -- Database: `project-b`
 --
 
+CREATE DATABASE IF NOT EXISTS `project-b`;
+use `project-b`;
+
 -- --------------------------------------------------------
 
 --
