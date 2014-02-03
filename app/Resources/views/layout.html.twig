@@ -15,6 +15,12 @@
         {% endif %}
   	</header>
 
+  	<aside>
+  		{% if is_granted('ROLE_MANAGER') %}
+			<a href="{{ path('project_app_manager_module') }}">Module</a>
+		{% endif %}
+  	</aside>
+
 	<div id="main">
   		{% block main %}
   		{% endblock %}

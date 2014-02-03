@@ -9,6 +9,6 @@ class UserController extends Controller
 {
     public function indexAction()
     {
-    	return 'hello';
+    	return $this->render('ProjectAppBundle:User:index.html.twig', array());
     }
 }

@@ -51,29 +51,6 @@ class Manager
     }
 
     /**
-     * Set isAdministrator
-     *
-     * @param boolean $isAdministrator
-     * @return Manager
-     */
-    public function setIsAdministrator($isAdministrator)
-    {
-        $this->isAdministrator = $isAdministrator;
-
-        return $this;
-    }
-
-    /**
-     * Get isAdministrator
-     *
-     * @return boolean 
-     */
-    public function getIsAdministrator()
-    {
-        return $this->isAdministrator;
-    }
-
-    /**
      * Set formation
      *
      * @param \Project\AppBundle\Entity\Formation $formation
