@@ -1,0 +1,7 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+	{% for student in studentsList %}
+		<li>Student : {{ student}}</li>
+	{% endfor %}
+{% endblock %}
