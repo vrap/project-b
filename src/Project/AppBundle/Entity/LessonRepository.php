@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class LessonRepository extends EntityRepository
 {
+    public function findTodayLessonId()
+    {
+        $em = $this->getEntityManager();
+
+        return $em->createQuery(
+                '
+                SELECT l.id
+                FROM ProjectAppBundle:Lesson l
+                WHERE CURRENT_DATE()  BETWEEN l.startDate AND l.endDate
+                '
+            )
+            ->getResult();
+    }
 }

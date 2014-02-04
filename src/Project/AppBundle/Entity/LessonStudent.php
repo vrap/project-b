@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Lesson_has_Student
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="Project\AppBundle\Entity\Lesson_has_StudentRepository")
+ * @ORM\Entity(repositoryClass="Project\AppBundle\Entity\LessonStudentRepository")
  */
-class Lesson_has_Student
+class LessonStudent
 {
     /**
      * @var integer
