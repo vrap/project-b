@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function findUserById($id)
+    {
+        $em = $this->getEntityManager();
+        return $em->createQuery(
+                    '
+                    SELECT u
+                    FROM ProjectAppBundle:User u
+                    WHERE u.id = :id
+                    '
+                )
+                ->setParameter('id', $id)
+                ->getSingleResult();
+    }
 }
