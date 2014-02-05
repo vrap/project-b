@@ -30,6 +30,13 @@ class SpeakerController extends Controller
     public function missingsAction()
     {
         $user = $this->getUser();
+
+        if(null === $user) {
+            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                    'msg' => 'Vous devez être connecté au préalable.'
+            ));
+        }
+
         $em = $this->getDoctrine()
                 ->getManager();
         $repositorySpeaker = $em->getRepository('ProjectAppBundle:Speaker');
