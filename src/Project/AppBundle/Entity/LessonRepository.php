@@ -20,7 +20,7 @@ class LessonRepository extends EntityRepository
                 '
                 SELECT l.id
                 FROM ProjectAppBundle:Lesson l
-                WHERE CURRENT_DATE()  BETWEEN l.startDate AND l.endDate
+                WHERE CURRENT_TIMESTAMP()  BETWEEN l.startDate AND l.endDate
                 '
             )
             ->getResult();
