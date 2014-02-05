@@ -12,6 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class LessonRepository extends EntityRepository
 {
+    /**
+     * Find the today lesson
+     *
+     * @return array
+     */
     public function findTodayLessonId()
     {
         $em = $this->getEntityManager();

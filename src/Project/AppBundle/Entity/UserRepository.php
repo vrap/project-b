@@ -12,6 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    /**
+     * Find user by its id
+     *
+     * @param $id
+     * @return User
+     */
     public function findUserById($id)
     {
         $em = $this->getEntityManager();

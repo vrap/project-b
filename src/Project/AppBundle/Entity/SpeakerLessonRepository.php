@@ -12,6 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class SpeakerLessonRepository extends EntityRepository
 {
+    /**
+     * Find all lessons of a speaker
+     *
+     * @param $speaker_id
+     * @return array
+     */
     public function findLessonsBySpeaker($speaker_id)
     {
         $em = $this->getEntityManager();

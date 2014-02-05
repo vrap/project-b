@@ -12,6 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class LessonStudentRepository extends EntityRepository
 {
+    /**
+     * Find all students registered for a lesson
+     *
+     * @param $lesson_id
+     * @return array
+     */
     public function findStudentsByLesson($lesson_id)
     {
         $em = $this->getEntityManager();

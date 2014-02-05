@@ -14,11 +14,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class SpeakerController extends Controller
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
         return $this->render('ProjectAppBundle:Speaker:index.html.twig');
     }
 
+    /**
+     * Display students list and save absents
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function missingsAction()
     {
         $user = $this->getUser();
