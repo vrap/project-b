@@ -28,21 +28,38 @@ class SpeakerController extends Controller
         $repositorySpeakerLesson = $em->getRepository('ProjectAppBundle:SpeakerLesson');
         $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
         $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
+        $repositoryUser = $em->getRepository('ProjectAppBundle:User');
 
         // Speaker's lessons
-        $lessons = $repositorySpeakerLesson->findLessonsBySpeaker($user->getId());
-        // Lesson of th day
+        $lessons = array();
+        $lessonsTemp = $repositorySpeakerLesson->findLessonsBySpeaker($user->getId());
+        foreach ($lessonsTemp as $value) {
+            $lessons[] = $value['lessonId'];
+        }
+
+        // Lesson of the day
         $todayLesson = $repositoryLesson->findTodayLessonId();
-        if(in_array($todayLesson, $lessons)){
+        $lessonId = $todayLesson[0]['id'];
+
+        if(in_array($lessonId, $lessons)){
             // The speaker assumes the lesson of the day
             // Get the students
-            $students = $repositoryLessonStudent->findStudentsByLesson($todayLesson);
+            $students = array();
+            $dataStudents = $repositoryLessonStudent->findStudentsByLesson($todayLesson);
+            foreach($dataStudents as $val) {
+                $students[] = $repositoryUser->findUserById($val['studentUserId']);
+            }
 
+            // Display all students in speaker's lesson
             return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
                     'studentsList' => $students
             ));
         }
-        // Display all students in speaker's lesson
+
+        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
+        ));
+
         // If method post, save missings
     }
 } 
