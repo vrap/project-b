@@ -1,0 +1,12 @@
+{% if evaluationsList is empty %}
+    <p> No fucking eval to show</p>
+{% else %}
+    <p> Show fucking list of eval</p>
+    <ul>
+        {% for evaluation in evaluationsList %}
+            <li>{{ evaluation.description }} </li>
+            <li>{{ evaluation.readed }} </li>
+            <li>{{ evaluation.max }} </li>
+        {% endfor %}
+    </ul>
+{% endif %}
