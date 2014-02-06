@@ -35,3 +35,14 @@ project_app_speaker_missings:
     defaults: { _controller: ProjectAppBundle:Speaker:missings }
 
 # Student
+
+
+# Evaluation
+
+project_app_evaluation_show:
+    path:     /evaluation/index
+    defaults: { _controller: ProjectAppBundle:Evaluation:index }
+
+project_app_evaluation_create:
+    path:     /evaluation/create
+    defaults: { _controller: ProjectAppBundle:Evaluation:create }
