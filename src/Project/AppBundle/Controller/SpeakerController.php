@@ -25,9 +25,10 @@ class SpeakerController extends Controller
     /**
      * Display students list and save absents
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function missingsAction()
+    public function missingsAction(Request $request)
     {
         $user = $this->getUser();
 
@@ -39,7 +40,6 @@ class SpeakerController extends Controller
 
         $em = $this->getDoctrine()
                 ->getManager();
-        $repositorySpeaker = $em->getRepository('ProjectAppBundle:Speaker');
         $repositorySpeakerLesson = $em->getRepository('ProjectAppBundle:SpeakerLesson');
         $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
         $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
@@ -55,6 +55,33 @@ class SpeakerController extends Controller
         // Lesson of the day
         $todayLesson = $repositoryLesson->findTodayLessonId();
         $lessonId = $todayLesson[0]['id'];
+
+        // If method post, save missings
+        if('POST' === $request->getMethod())
+        {
+            $studentsMissing = $request->request->get('missings');
+
+            if(null !== $studentsMissing)
+            {
+                foreach ($studentsMissing as $absentId) {
+                    $res = $repositoryLessonStudent->setAbsent($absentId, $lessonId);
+                    if(false === $res)
+                    {
+                        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                                'msg' => 'Une erreur est survenue.'
+                        ));
+                    }
+                }
+
+                return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                        'msg' => 'L\'appel est enregistré. Les absences seront transmises au(x) responsable(s) de la formation.'
+                ));
+            }
+
+            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                    'msg' => 'L\'appel est enregistré. Aucun absent.'
+            ));
+        }
 
         if(in_array($lessonId, $lessons)){
             // The speaker assumes the lesson of the day
@@ -74,7 +101,5 @@ class SpeakerController extends Controller
         return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
                 'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
         ));
-
-        // If method post, save missings
     }
 } 
