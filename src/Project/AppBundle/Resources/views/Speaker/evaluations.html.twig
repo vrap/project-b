@@ -1,0 +1,8 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+	<h1>Vos évaluations</h1>
+	{{ include('ProjectAppBundle:Evaluation:index.html.twig',
+		{ 'evaluationsList' : evaluationsList }
+	) }}
+{% endblock %}
