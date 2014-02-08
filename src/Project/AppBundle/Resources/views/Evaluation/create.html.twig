@@ -1,9 +1,0 @@
-{% extends "ProjectAppBundle::layout.html.twig" %}
-
-{% block main %}
-	<form action="{{ path('project_app_evaluation_create') }}" method="POST" {{ form_enctype(form) }} >
-		{{ form_errors(form) }}
-		{{ form_widget(form) }}
-		<input type="submit" value="Ajouter" />
-	</form>
-{% endblock %}

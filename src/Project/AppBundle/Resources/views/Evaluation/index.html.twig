@@ -1,12 +1,13 @@
 {% if evaluationsList is empty %}
-    <p> No fucking eval to show</p>
+    <p>Aucune évaluation est disponible pour le moment.</p>
 {% else %}
-    <p> Show fucking list of eval</p>
-    <ul>
-        {% for evaluation in evaluationsList %}
-            <li>{{ evaluation.description }} </li>
-            <li>{{ evaluation.readed }} </li>
-            <li>{{ evaluation.max }} </li>
-        {% endfor %}
-    </ul>
+		<h1>Liste des évaluations</h1>
+
+		{% for evaluation in evaluationsList %}
+			<ul>
+				<li>Sujet : {{ evaluation.description }} </li>
+				<li>Note maximale : {{ evaluation.max }} </li>
+			</ul>
+		{% endfor %}
+
 {% endif %}

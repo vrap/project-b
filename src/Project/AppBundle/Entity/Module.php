@@ -29,14 +29,10 @@ class Module
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Promotion", cascade={"persist"})
      */
-    private $formation;
+    private $promotion;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", cascade={"persist"})
-     */
-    private $speaker;
 
 
     /**
@@ -73,48 +69,25 @@ class Module
     }
 
     /**
-     * Set formation
+     * Set promotion
      *
-     * @param \Project\AppBundle\Entity\Formation $formation
-     * @return Module
+     * @param \Project\AppBundle\Entity\Promotion $promotion
+     * @return Promotion
      */
-    public function setFormation(\Project\AppBundle\Entity\Formation $formation = null)
+    public function setPromotion(\Project\AppBundle\Entity\Promotion $promotion = null)
     {
-        $this->formation = $formation;
+        $this->promotion = $promotion;
 
         return $this;
     }
 
     /**
-     * Get formation
+     * Get promotion
      *
-     * @return \Project\AppBundle\Entity\Formation 
+     * @return \Project\AppBundle\Entity\Promotion
      */
-    public function getFormation()
+    public function getPromotion()
     {
-        return $this->formation;
-    }
-
-    /**
-     * Set speaker
-     *
-     * @param \Project\AppBundle\Entity\Speaker $speaker
-     * @return Module
-     */
-    public function setSpeaker(\Project\AppBundle\Entity\Speaker $speaker = null)
-    {
-        $this->speaker = $speaker;
-
-        return $this;
-    }
-
-    /**
-     * Get speaker
-     *
-     * @return \Project\AppBundle\Entity\Speaker 
-     */
-    public function getSpeaker()
-    {
-        return $this->speaker;
+        return $this->promotion;
     }
 }
