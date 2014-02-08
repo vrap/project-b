@@ -1,0 +1,131 @@
+/**
+* Colors
+**********/
+/**
+* Fonts
+**********/
+/* Family */
+/* Weight */
+/**
+* Icons
+**********/
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon_WebFont/flaticon.eot");
+  src: url("../fonts/Flaticon_WebFont/flaticon.eot#iefix") format("embedded-opentype"), url("../fonts/Flaticon_WebFont/flaticon.woff") format("woff"), url("../fonts/Flaticon_WebFont/flaticon.ttf") format("truetype"), url("../fonts/Flaticon_WebFont/flaticon.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="flaticon-"]:before,
+[class*=" flaticon-"]:before,
+[class^="flaticon-"]:after,
+[class*=" flaticon-"]:after {
+  font-family: 'Flaticon';
+  font-size: 20px;
+  font-style: normal;
+}
+.flaticon-left {
+  margin-right: 10px;
+}
+.flaticon-right {
+  margin-left: 10px;
+}
+.flaticon-home:before {
+  content: "\e000";
+}
+/**
+* Mixins
+**********/
+/**
+* Helper
+**********/
+/* Liste */
+ul.list-inline > li {
+  display: inline-block;
+}
+ul.list-no-style > li {
+  list-style: none;
+}
+/* Button */
+.btn {
+  padding: 10px 15px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.btn-primary {
+  background-color: #e97b7d;
+}
+.btn-primary:hover {
+  background-color: #e87274;
+}
+/**
+* Reset
+*********/
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+/**
+* styles
+**********/
+body {
+  height: 100%;
+  background-color: #ecf0f1;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+.wrapper {
+  width: 100%;
+  height: 100%;
+}
+.wrapper nav {
+  background-color: #3d4c67;
+  color: #ecf0f1;
+  float: left;
+  width: 200px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+.wrapper nav ul > li {
+  list-style: none;
+}
+.wrapper nav ul > li:first-child a {
+  background-color: #e97b7d;
+}
+.wrapper nav ul > li:first-child a:hover {
+  background-color: #e87274;
+}
+.wrapper nav a {
+  background-color: #3d4c67;
+  color: #ecf0f1;
+  padding: 20px 20px 20px 40px;
+  display: block;
+}
+.wrapper nav a:hover {
+  background-color: #394761;
+}
+.wrapper nav a.active {
+  background-color: #ecf0f1;
+  color: #3d4c67;
+}
+.wrapper .main {
+  margin-left: 200px;
+}
+.wrapper .main .sidebar {
+  padding: 20px;
+  background-color: #3d4c67;
+  color: #ecf0f1;
+  text-align: right;
+}
+.wrapper .main .sidebar a {
+  color: #ecf0f1;
+}
+.wrapper .main .content {
+  padding: 20px;
+}
