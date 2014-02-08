@@ -1,0 +1,9 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+    <h2>Créer</h2>
+
+    {{ form(form) }}
+
+    <a href="{{ path('promotion') }}">Retour à la liste</a>
+{% endblock %}

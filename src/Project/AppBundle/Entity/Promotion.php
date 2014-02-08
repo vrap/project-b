@@ -3,6 +3,7 @@
 namespace Project\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Promotion
@@ -22,23 +23,32 @@ class Promotion
     private $id;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="startDate", type="datetime")
+     * @ORM\Column(name="startDate", type="date")
+     * @Assert\NotBlank()
+     * @Assert\Date()
      */
     private $startDate;
 
     /**
-     * @var \DateTime
+     * @var \Date
      *
-     * @ORM\Column(name="endDate", type="datetime")
+     * @ORM\Column(name="endDate", type="date")
+     * @Assert\Date()
      */
     private $endDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $formation;
+
+    public function __construct() {
+        $this->startDate = new \Datetime();
+        $this->endDate   = new \Datetime();
+    }
 
 
     /**
