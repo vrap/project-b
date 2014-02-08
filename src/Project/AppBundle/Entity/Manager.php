@@ -24,18 +24,19 @@ class Manager
     /**
      * @var boolean
      *
-     * @ORM\Column(name="isAdministrator", type="boolean")
+     * @ORM\Column(name="is_administrator", type="boolean")
      */
-    private $isAdministrator;
+    private $is_administrator;
 
     /**
      * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Formation", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $formation;
 
@@ -51,49 +52,26 @@ class Manager
     }
 
     /**
-     * Set isAdministrator
+     * Set is_administrator
      *
      * @param boolean $isAdministrator
      * @return Manager
      */
     public function setIsAdministrator($isAdministrator)
     {
-        $this->isAdministrator = $isAdministrator;
+        $this->is_administrator = $isAdministrator;
 
         return $this;
     }
 
     /**
-     * Get isAdministrator
+     * Get is_administrator
      *
      * @return boolean 
      */
     public function getIsAdministrator()
     {
-        return $this->isAdministrator;
-    }
-
-    /**
-     * Set formation
-     *
-     * @param \Project\AppBundle\Entity\Formation $formation
-     * @return Manager
-     */
-    public function setFormation(\Project\AppBundle\Entity\Formation $formation = null)
-    {
-        $this->formation = $formation;
-
-        return $this;
-    }
-
-    /**
-     * Get formation
-     *
-     * @return \Project\AppBundle\Entity\Formation 
-     */
-    public function getFormation()
-    {
-        return $this->formation;
+        return $this->is_administrator;
     }
 
     /**
@@ -102,7 +80,7 @@ class Manager
      * @param \Project\AppBundle\Entity\User $user
      * @return Manager
      */
-    public function setUser(\Project\AppBundle\Entity\User $user = null)
+    public function setUser(\Project\AppBundle\Entity\User $user)
     {
         $this->user = $user;
 
@@ -117,5 +95,28 @@ class Manager
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set formation
+     *
+     * @param \Project\AppBundle\Entity\Formation $formation
+     * @return Manager
+     */
+    public function setFormation(\Project\AppBundle\Entity\Formation $formation)
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Get formation
+     *
+     * @return \Project\AppBundle\Entity\Formation 
+     */
+    public function getFormation()
+    {
+        return $this->formation;
     }
 }

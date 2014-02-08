@@ -1,0 +1,11 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+    <h2>Formation edit</h2>
+
+    {{ form(edit_form) }}
+
+    <a href="{{ path('formation') }}">Retour à la liste</a>
+
+    {{ form(delete_form) }}
+{% endblock %}

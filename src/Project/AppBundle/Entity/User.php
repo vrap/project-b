@@ -32,13 +32,6 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="login", type="string", length=50, nullable=true)
-     */
-    private $login;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="surname", type="string", length=50, nullable=false)
      */
     private $surname;
@@ -74,29 +67,6 @@ class User extends BaseUser
     public function getPhone()
     {
         return $this->phone;
-    }
-
-    /**
-     * Set login
-     *
-     * @param string $login
-     * @return User
-     */
-    public function setLogin($login)
-    {
-        $this->login = $login;
-
-        return $this;
-    }
-
-    /**
-     * Get login
-     *
-     * @return string 
-     */
-    public function getLogin()
-    {
-        return $this->login;
     }
 
     /**

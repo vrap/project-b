@@ -12,7 +12,7 @@ security:
 
     providers:
         main:
-            id: fos_user.user_provider.username
+            id: fos_user.user_provider.username_email
 
     firewalls:
         dev:
@@ -36,4 +36,3 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/manager, roles: ROLE_MANAGER }
