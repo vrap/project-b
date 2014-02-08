@@ -54,6 +54,7 @@ ul.list-no-style > li {
 }
 .btn-primary {
   background-color: #e97b7d;
+  color: #ecf0f1;
 }
 .btn-primary:hover {
   background-color: #e87274;
@@ -69,9 +70,38 @@ li {
 a {
   text-decoration: none;
 }
+textarea:focus,
+input:focus {
+  outline: none;
+}
+:focus {
+  outline: none;
+}
+::-moz-focus-inner {
+  border: 0;
+}
+/**
+* Formulaire
+**********/
+input {
+  border: 0;
+  padding: 10px;
+  font-size: 1.3em;
+  font-family: Arial, sans-serif;
+  color: #aaa;
+  border: solid 1px #ccc;
+  margin: 0 0 20px;
+}
+.form-item {
+  margin-bottom: 10px;
+}
+.form-item:last-child {
+  margin-bottom: 0;
+}
 /**
 * styles
 **********/
+/* Communs */
 body {
   height: 100%;
   background-color: #ecf0f1;
@@ -128,4 +158,25 @@ body {
 }
 .wrapper .main .content {
   padding: 20px;
+}
+/* Login */
+.wrapper-login {
+  background-color: #3d4c67;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  padding-top: 100px;
+}
+.wrapper-login .login {
+  width: 300px;
+  padding: 30px;
+  background-color: #ecf0f1;
+  margin: 0 auto;
+}
+.wrapper-login .form-item {
+  width: 100%;
+}
+.wrapper-login .form-item Input[type="text"],
+.wrapper-login .form-item Input[type="password"] {
+  width: 93%;
 }

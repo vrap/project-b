@@ -1,14 +1,31 @@
-<form action="{{ path("fos_user_security_check") }}" method="POST">
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+{% include 'ProjectAppBundle::header.html.twig' %}
 
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+<div class="wrapper-login">
+	
+	<div class="login">
+		<form action="{{ path("fos_user_security_check") }}" method="POST">
 
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" />
+		    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
 
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+		    <div class="form-item">
+		    	<input type="text" placeholder="Nom d'utilisateur" id="username" name="_username" value="{{ last_username }}" required="required" />
+		    </div>
 
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-</form>
+		    <div class="form-item">
+		    	<input type="password" placeholder="Mot de passe" id="password" name="_password" required="required" />
+			</div>
+
+			<div class="form-item">
+		    	<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+		    	<label for="remember_me">{{ 'Ce souvenir de moi'|trans }}</label>
+			</div>
+			<div class="form-item">
+		    	<input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'Se connecter'|trans }}" />
+		    </div>
+
+		</form>
+	</div>
+
+</div>
+
+{% include 'ProjectAppBundle::footer.html.twig' %}
