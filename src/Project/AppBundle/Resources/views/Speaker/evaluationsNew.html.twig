@@ -1,0 +1,6 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+	<h1>Nouvelle évaluation</h1>
+	{{ render(controller('ProjectAppBundle:Evaluation:create')) }}
+{% endblock %}

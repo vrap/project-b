@@ -14,8 +14,9 @@ class EvaluationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('description', 'text');
-              //  ->add('module_id', 'integer');
+        $builder->add('description', 'text')
+            ->add('max', 'text')
+            ->add('module_id', 'integer');
     }
 
     /**

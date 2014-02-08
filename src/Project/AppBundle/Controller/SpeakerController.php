@@ -147,4 +147,20 @@ class SpeakerController extends Controller
             'evaluationsList' => $evaluations
         ));
     }
+
+    /**
+     * Create a new evaluation
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/evaluations/new", name="speaker_evaluations_new")
+     * @Method("GET")
+     * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newEvaluationAction()
+    {
+
+        return $this->render('ProjectAppBundle:Speaker:evaluationsNew.html.twig');
+    }
 } 
