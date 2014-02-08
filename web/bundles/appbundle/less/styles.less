@@ -1,0 +1,195 @@
+
+/**
+* Colors
+**********/
+@color-dark : #3D4C67;
+@color-light : #ecf0f1;
+@color-primary : #E97B7D;
+@color-second : #34a9a5;
+
+
+/**
+* Fonts
+**********/
+
+/* Family */
+@font-second : 'Montserrat', sans-serif;
+@font-primary : 'Open Sans', sans-serif;
+
+/* Weight */
+@font-light : 300;
+
+
+/**
+* Icons
+**********/
+@font-face {
+	font-family: "Flaticon";
+	src: url("../fonts/Flaticon_WebFont/flaticon.eot");
+	src: url("../fonts/Flaticon_WebFont/flaticon.eot#iefix") format("embedded-opentype"),
+	url("../fonts/Flaticon_WebFont/flaticon.woff") format("woff"),
+	url("../fonts/Flaticon_WebFont/flaticon.ttf") format("truetype"),
+	url("../fonts/Flaticon_WebFont/flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: 'Flaticon';
+	font-size: 20px;
+	font-style: normal;
+}
+
+.flaticon-left{
+	margin-right: 10px;
+}
+.flaticon-right{
+	margin-left: 10px;
+}
+
+
+.flaticon-home:before {
+	content: "\e000";
+}
+
+
+
+/**
+* Mixins
+**********/
+.border-radius(@radius) {
+	-webkit-border-radius: @radius;
+	border-radius: @radius;
+}
+
+/**
+* Helper
+**********/
+
+/* Liste */
+ul.list-inline > li{
+	display: inline-block;
+}
+ul.list-no-style > li{
+	list-style: none;
+}
+
+/* Button */
+.btn{
+	padding: 10px 15px;
+	.border-radius(4px);
+}
+.btn-primary{
+	background-color: @color-primary;
+	&:hover{
+		background-color: darken(@color-primary, 2%);
+	}
+}
+
+/**
+* Reset
+*********/
+ul, li{
+	margin: 0;
+	padding: 0;
+}
+a{
+	text-decoration: none;
+}
+
+
+/**
+* styles
+**********/
+body{
+	height: 100%;
+	background-color: @color-light;
+	font-family: @font-primary;
+	font-weight: @font-light;
+}
+
+
+.wrapper{
+	width: 100%;
+	height: 100%;
+
+	nav{
+	
+		background-color: @color-dark;
+		color: @color-light;
+		float: left;
+		width: 200px;
+		height: 100%;
+		position: fixed;
+	    top: 0;
+	    bottom: 0;
+
+		ul > li{
+			list-style: none;
+			&:first-child{
+				a{
+					background-color: @color-primary;
+					&:hover{
+						background-color: darken(@color-primary, 2%);
+					}
+				}
+			}
+
+		}
+		a{	
+
+			background-color: @color-dark;
+			color: @color-light;
+			padding: 20px 20px 20px 40px;
+			display: block;
+			&:hover{
+				background-color: darken(@color-dark, 2%);
+			}
+			&.active{
+				background-color: @color-light;
+				color: @color-dark;
+			}
+
+		}
+		
+	}
+
+	.main{
+
+		margin-left: 200px;
+
+		.sidebar{
+			padding: 20px;
+			background-color: @color-dark;
+			color: @color-light;
+			text-align: right;
+	
+			a{ color: @color-light; }
+
+		}
+
+		.content{
+			padding: 20px;
+		}
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
