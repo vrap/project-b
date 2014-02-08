@@ -79,7 +79,6 @@ class SpeakerController extends Controller
             ));
         }
         $lessonId = $todayLesson[0]['id'];
-
         // If method post, save missings
         if('POST' === $request->getMethod())
         {
@@ -121,5 +120,9 @@ class SpeakerController extends Controller
                     'studentsList' => $students
             ));
         }
+
+        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
+        ));
     }
 } 
