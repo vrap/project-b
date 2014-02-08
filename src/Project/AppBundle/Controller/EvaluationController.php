@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Project\AppBundle\Entity\Evaluation;
 use Symfony\Component\HttpFoundation\Request;
 use Project\AppBundle\Form\EvaluationType;
+use Project\AppBundle\Entity\Speaker;
+use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 class EvaluationController extends Controller
 {
@@ -34,6 +36,13 @@ class EvaluationController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $speaker = $em->getRepository('ProjectAppBundle:Speaker')->find($this->getUser()->getId());
+
+            if(null === $speaker) {
+                throw new InvalidArgumentException('Speaker is not defined');
+            }
+
+            $entity->setSpeaker($speaker);
             $em->persist($entity);
             $em->flush();
 
