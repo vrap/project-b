@@ -2,6 +2,10 @@ project_app:
     resource: "@ProjectAppBundle/Resources/config/routing.yml"
     prefix:   /
 
+ProjectAppBundle:
+    resource: "@ProjectAppBundle/Controller"
+    type: annotation
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

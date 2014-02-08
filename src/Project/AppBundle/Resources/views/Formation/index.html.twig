@@ -1,0 +1,15 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+    <h2>Formations</h2>
+
+    <ul>
+        {% for entity in entities %}
+            <li>
+                <a href="{{ path('formation_edit', { 'id': entity.id }) }}">{{ entity.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('formation_new') }}">Créer</a>
+{% endblock %}
