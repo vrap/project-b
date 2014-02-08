@@ -143,7 +143,6 @@ class SpeakerController extends Controller
 
         $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')
                 ->findAllBySpeaker($this->getUser()->getId());
-var_dump($evaluations);
         return $this->render('ProjectAppBundle:Speaker:evaluations.html.twig', array(
             'evaluationsList' => $evaluations
         ));

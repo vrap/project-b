@@ -30,7 +30,6 @@ class EvaluationController extends Controller
     {
         $entity = new Evaluation();
         $form   = $this->createCreateForm($entity);
-        var_dump($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
