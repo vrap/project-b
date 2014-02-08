@@ -1,5 +1,18 @@
-<ul>
-	{% for promotion in promotionsList %}
-		<li>Promotion du {{ promotion.startDate|date("d/m/Y") }} au {{ promotion.endDate|date("d/m/Y") }}</li>
-	{% endfor %}
-</ul>
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block main %}
+    <h2>Promotions</h2>
+
+    <ul>
+        {% for entity in entities %}
+            <li>
+                {{ entity.startDate|date('d-m-Y') }}
+                {% if entity.endDate %}{{ entity.endDate|date('d-m-Y') }}{% endif %}
+
+                <a href="{{ path('promotion_edit', { 'id': entity.id }) }}">edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ path('promotion_new') }}">Créer</a>
+{% endblock %}

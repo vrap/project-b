@@ -69,14 +69,14 @@ class FormationController extends Controller
     }
 
     /**
-    * Creates a form to create a Formation entity.
-    *
-    * @Secure(roles="ROLE_ADMIN")
-    *
-    * @param Formation $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Formation entity.
+     *
+     * @Secure(roles="ROLE_ADMIN")
+     *
+     * @param Formation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Formation $entity)
     {
         $form = $this->createForm(new FormationType(), $entity, array(
@@ -150,14 +150,14 @@ class FormationController extends Controller
     }
 
     /**
-    * Creates a form to edit a Formation entity.
-    *
-    * @Secure(roles="ROLE_ADMIN")
-    *
-    * @param Formation $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Formation entity.
+     *
+     * @Secure(roles="ROLE_ADMIN")
+     *
+     * @param Formation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Formation $entity)
     {
         $form = $this->createForm(new FormationType(), $entity, array(

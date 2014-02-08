@@ -8,15 +8,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class PromotionType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startDate', 'date')
-            ->add('endDate', 'date');
+            ->add('startDate', 'date', array(
+                'label' => 'Date de début',
+            ))
+            ->add('endDate', 'date', array(
+                'label' => 'Date de fin',
+            ));
     }
     
     /**
