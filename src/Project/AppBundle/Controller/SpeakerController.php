@@ -7,14 +7,27 @@
 
 namespace Project\AppBundle\Controller;
 
-
-use Project\AppBundle\Entity\SpeakerLessonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Project\AppBundle\Entity\SpeakerLesson;
+use Project\AppBundle\Entity\Lesson;
+use Project\AppBundle\Entity\LessonStudent;
+use Project\AppBundle\Entity\User;
+use Project\AppBundle\Form\EvaluationType;
+
 
 class SpeakerController extends Controller
 {
     /**
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/", name="speaker")
+     * @Method("GET")
+     * @Template()
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -24,6 +37,11 @@ class SpeakerController extends Controller
 
     /**
      * Display students list and save absents
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/", name="speaker_missings")
+     * @Method("POST")
+     * @Template()
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -54,6 +72,12 @@ class SpeakerController extends Controller
 
         // Lesson of the day
         $todayLesson = $repositoryLesson->findTodayLessonId();
+        if(empty($todayLesson)) {
+
+            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
+                    'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
+            ));
+        }
         $lessonId = $todayLesson[0]['id'];
 
         // If method post, save missings
@@ -97,9 +121,5 @@ class SpeakerController extends Controller
                     'studentsList' => $students
             ));
         }
-
-        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
-        ));
     }
 } 
