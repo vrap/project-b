@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class EvaluationRepository extends EntityRepository
 {
+    public function findAllBySpeaker($speakerId)
+    {
+        return $this->getEntityManager()
+                ->createQuery(
+                        'SELECT e
+                        FROM ProjectAppBundle:Evaluation e
+                        WHERE e.speaker_id = :speaker'
+                )
+                ->setParameter('speaker', $speakerId)
+                ->getResult();
+    }
 }
