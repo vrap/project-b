@@ -39,8 +39,8 @@ class SpeakerController extends Controller
      * Display students list and save absents
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/", name="speaker_missings")
-     * @Method("POST")
+     * @Route("/missings", name="speaker_missings")
+     * @Method({"GET", "POST"})
      * @Template()
      *
      * @param Request $request
@@ -123,6 +123,28 @@ class SpeakerController extends Controller
 
         return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
                 'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
+        ));
+    }
+
+    /**
+     * Display speaker's evaluations
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/evaluations", name="speaker_evaluations")
+     * @Method("GET")
+     * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function evaluationsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')
+                ->findAllBySpeaker($this->getUser()->getId());
+
+        return $this->render('ProjectAppBundle:Speaker:evaluations.html.twig', array(
+            'evaluationsList' => $evaluations
         ));
     }
 } 
