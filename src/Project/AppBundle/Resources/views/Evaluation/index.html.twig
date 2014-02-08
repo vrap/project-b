@@ -2,11 +2,12 @@
     <p>Aucune évaluation est disponible pour le moment.</p>
 {% else %}
 		<h1>Liste des évaluations</h1>
-    <ul>
-        {% for evaluation in evaluationsList %}
-            <li>{{ evaluation.description }} </li>
-            <li>{{ evaluation.readed }} </li>
-            <li>{{ evaluation.max }} </li>
-        {% endfor %}
-    </ul>
+
+		{% for evaluation in evaluationsList %}
+			<ul>
+				<li>Sujet : {{ evaluation.description }} </li>
+				<li>Note maximale : {{ evaluation.max }} </li>
+			</ul>
+		{% endfor %}
+
 {% endif %}

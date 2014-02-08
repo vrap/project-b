@@ -5,55 +5,60 @@ namespace Project\AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Project\AppBundle\Entity\Evaluation;
+use Symfony\Component\HttpFoundation\Request;
 use Project\AppBundle\Form\EvaluationType;
 
 class EvaluationController extends Controller
 {
 
-    /**
-     * Display all Evaluation
-     */
     public function indexAction()
     {
-        $em                  = $this->getDoctrine()->getManager();
-        $repositoryManager   = $em->getRepository('ProjectAppBundle:Evaluation');
-        $evaluationsList         = $repositoryManager->findAll();
-
-        return $this->render('ProjectAppBundle:Evaluation:index.html.twig', array(
-            'evaluationsList'   => $evaluationsList,
-        ));
     }
 
-
     /**
-     * Create a new eval when method post
-     * Display form when method get
+     * Creates a new Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/", name="evaluation_create")
+     * @Method("POST")
+     * @Template("ProjectAppBundle:Evaluation:new.html.twig")
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        $request = $this->get('request');
-        $em  = $this->getDoctrine()->getManager();
-        $evaluation = new Evaluation();
-        $form = $this->createForm(new EvaluationType, $evaluation);
+        $entity = new Evaluation();
+        $form   = $this->createCreateForm($entity);
+        var_dump($entity);
+        $form->handleRequest($request);
 
-        if($request->isMethod('POST')) {
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
 
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $em->persist($evaluation);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('project_app_user_index'));
-            }
-        } else {
-
-            return $this->render('ProjectAppBundle:Evaluation:create.html.twig', array(
-                'form' => $form->createView()
-            ));
+            return $this->redirect($this->generateUrl('speaker_evaluations'));
         }
 
 
+        return array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+        );
+    }
+
+    private function createCreateForm(Evaluation $entity)
+    {
+        $form = $this->createForm(new EvaluationType(), $entity, array(
+                'action' => $this->generateUrl('project_app_evaluation_create'),
+                'method' => 'POST'
+        ));
+
+        $form->add('submit', 'submit', array(
+                'label' => 'Create'
+        ));
+
+        return $form;
     }
 }

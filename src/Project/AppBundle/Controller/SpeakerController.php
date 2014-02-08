@@ -7,6 +7,7 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\Evaluation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -142,25 +143,9 @@ class SpeakerController extends Controller
 
         $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')
                 ->findAllBySpeaker($this->getUser()->getId());
-
+var_dump($evaluations);
         return $this->render('ProjectAppBundle:Speaker:evaluations.html.twig', array(
             'evaluationsList' => $evaluations
         ));
     }
-
-    /**
-     * Create a new evaluation
-     *
-     * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/evaluations/new", name="speaker_evaluations_new")
-     * @Method("GET")
-     * @Template()
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function newEvaluationAction()
-    {
-
-        return $this->render('ProjectAppBundle:Speaker:evaluationsNew.html.twig');
-    }
-} 
+}
