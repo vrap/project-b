@@ -1,7 +1,7 @@
 {% if evaluationsList is empty %}
-    <p> No fucking eval to show</p>
+    <p>Aucune évaluation est disponible pour le moment.</p>
 {% else %}
-    <p> Show fucking list of eval</p>
+		<h1>Liste des évaluations</h1>
     <ul>
         {% for evaluation in evaluationsList %}
             <li>{{ evaluation.description }} </li>
