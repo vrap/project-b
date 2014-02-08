@@ -50,16 +50,14 @@ class Evaluation
     private $max;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Module")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Module", cascade={"persist"})
      */
-    private $module_id;
+    private $module;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Speaker")
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", cascade={"persist"})
      */
-    private $speaker_id;
+    private $speaker;
 
     /**
      * Get id
@@ -170,9 +168,9 @@ class Evaluation
      * @param \Project\AppBundle\Entity\Module $moduleId
      * @return Evaluation
      */
-    public function setModuleId(\Project\AppBundle\Entity\Module $moduleId = null)
+    public function setModule(\Project\AppBundle\Entity\Module $moduleId = null)
     {
-        $this->module_id = $moduleId;
+        $this->module = $moduleId;
 
         return $this;
     }
@@ -182,31 +180,31 @@ class Evaluation
      *
      * @return \Project\AppBundle\Entity\Module 
      */
-    public function getModuleId()
+    public function getModule()
     {
-        return $this->module_id;
+        return $this->module;
     }
 
     /**
-     * Set speaker_id
+     * Set speaker
      *
      * @param \Project\AppBundle\Entity\Speaker $speakerId
      * @return Evaluation
      */
-    public function setSpeakerId(\Project\AppBundle\Entity\Speaker $speakerId = null)
+    public function setSpeaker(\Project\AppBundle\Entity\Speaker $speakerId = null)
     {
-        $this->speaker_id = $speakerId;
+        $this->speaker = $speakerId;
 
         return $this;
     }
 
     /**
-     * Get speaker_id
+     * Get speaker
      *
      * @return \Project\AppBundle\Entity\Speaker 
      */
-    public function getSpeakerId()
+    public function getSpeaker()
     {
-        return $this->speaker_id;
+        return $this->speaker;
     }
 }

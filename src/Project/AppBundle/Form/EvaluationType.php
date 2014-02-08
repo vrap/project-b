@@ -20,7 +20,7 @@ class EvaluationType extends AbstractType
             ->add('max', 'integer', array(
                   'label'=> 'Note maximale : '
                 ))
-            ->add('module_id', 'entity', array(
+            ->add('module', 'entity', array(
                   'label'=> 'Module : ',
                   'class' => 'ProjectAppBundle:Module',
                   'property' => 'name'

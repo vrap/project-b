@@ -18,7 +18,7 @@ class EvaluationRepository extends EntityRepository
                 ->createQuery(
                         'SELECT e
                         FROM ProjectAppBundle:Evaluation e
-                        WHERE e.speaker_id = :speaker'
+                        WHERE e.speaker = :speaker'
                 )
                 ->setParameter('speaker', $speakerId)
                 ->getResult();
