@@ -4,23 +4,7 @@
 {% block main %}
 {% endblock %}
 #}
-<!DOCTYPE html>
-<html>
-    {% block head %}
-        <!-- <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" /> -->
-
-        {% stylesheets 'bundles/appbundle/css/styles.css' filter='cssrewrite' %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-         {% stylesheets 'bundles/appbundle/css/normalize.css' filter='cssrewrite' %}
-            <link rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-
-        <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300' rel='stylesheet' type='text/css'>
-
-    {% endblock %}
-    <body>
+{% include 'ProjectAppBundle::header.html.twig' %}
 
         <div class="wrapper">
             <nav>
@@ -74,6 +58,7 @@
             {% endfor %}
         {% endfor %}
 
-    </body>
-</html>
+{% include 'ProjectAppBundle::footer.html.twig' %}
+
+
 
