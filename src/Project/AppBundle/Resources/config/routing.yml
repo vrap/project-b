@@ -34,13 +34,6 @@ project_app_manager_module_create:
 
 # Speaker
 
-project_app_speaker:
-    path:     /speaker
-    defaults: { _controller: ProjectAppBundle:Speaker:index }
-
-project_app_speaker_missings:
-    path:     /speaker/missings
-    defaults: { _controller: ProjectAppBundle:Speaker:missings }
 
 # Student
 
