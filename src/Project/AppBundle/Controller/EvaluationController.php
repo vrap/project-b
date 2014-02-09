@@ -46,6 +46,11 @@ class EvaluationController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            if($form->get('saveAndAdd')->isSubmitted())
+            {
+                return $this->redirect($this->generateUrl('criterion_new'));
+            }
+
             return $this->redirect($this->generateUrl('speaker_evaluations'));
         }
 
