@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CriterionType extends AbstractType
 {
-        /**
+     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -19,7 +19,8 @@ class CriterionType extends AbstractType
                     'label' => 'Libellé : '
                 ))
             ->add('max', 'integer', array(
-                    'label' => 'Note : '
+                    'label' => 'Note : ',
+                    'attr' => array('min' => 1, 'max' => 20)
                 ))
             ->add('evaluation', 'entity', array(
                     'label'=> 'Evaluation : ',
@@ -35,7 +36,8 @@ class CriterionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Project\AppBundle\Entity\Criterion'
+            'data_class' => 'Project\AppBundle\Entity\Criterion',
+            ''
         ));
     }
 

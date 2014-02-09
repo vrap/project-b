@@ -18,13 +18,21 @@ class EvaluationType extends AbstractType
                   'label'=> 'Sujet : '
                 ))
             ->add('max', 'integer', array(
-                  'label'=> 'Note maximale : '
+                  'label'=> 'Note maximale : ',
+                  'attr' => array('min' => 1, 'max' => 20)
                 ))
             ->add('module', 'entity', array(
                   'label'=> 'Module : ',
                   'class' => 'ProjectAppBundle:Module',
                   'property' => 'name'
-                ));
+                ))
+            ->add('saveAndAdd', 'submit', array(
+                  'label'=> 'Ajouter un barème'
+                ))
+            ->add('submit', 'submit', array(
+                  'label'=> 'Terminer'
+                ))
+        ;
     }
 
     /**
