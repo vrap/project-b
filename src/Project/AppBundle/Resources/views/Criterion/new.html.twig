@@ -1,0 +1,15 @@
+{% extends 'ProjectAppBundle::layout.html.twig' %}
+
+{% block main -%}
+    <h1>Criterion creation</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('criterion') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

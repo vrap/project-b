@@ -1,0 +1,41 @@
+{% extends 'ProjectAppBundle::layout.html.twig' %}
+
+{% block main -%}
+    <h1>Criterion list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Max</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('criterion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.max }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('criterion_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('criterion_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('criterion_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}
