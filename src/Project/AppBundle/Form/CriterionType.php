@@ -15,9 +15,17 @@ class CriterionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('max')
-            ->add('description')
-            ->add('evaluation')
+            ->add('description', 'text', array(
+                    'label' => 'Libellé : '
+                ))
+            ->add('max', 'integer', array(
+                    'label' => 'Note : '
+                ))
+            ->add('evaluation', 'entity', array(
+                    'label'=> 'Evaluation : ',
+                    'class' => 'ProjectAppBundle:Evaluation',
+                    'property' => 'description'
+                ))
         ;
     }
     
