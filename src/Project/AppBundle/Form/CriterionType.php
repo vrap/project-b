@@ -16,6 +16,7 @@ class CriterionType extends AbstractType
     {
         $builder
             ->add('max')
+            ->add('description')
             ->add('evaluation')
         ;
     }
