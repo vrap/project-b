@@ -4,6 +4,8 @@ namespace Project\AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CriterionType extends AbstractType
@@ -22,10 +24,11 @@ class CriterionType extends AbstractType
                     'label' => 'Note : ',
                     'attr' => array('min' => 1, 'max' => 20)
                 ))
-            ->add('evaluation', 'entity', array(
-                    'label'=> 'Evaluation : ',
-                    'class' => 'ProjectAppBundle:Evaluation',
-                    'property' => 'description'
+            ->add('crit_new', 'submit', array(
+                    'label' => 'Ajouter un critère'
+                ))
+            ->add('submit', 'submit', array(
+                    'label' => 'Terminer'
                 ))
         ;
     }
@@ -37,7 +40,7 @@ class CriterionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Project\AppBundle\Entity\Criterion',
-            ''
+            'cascade_validation' => true,
         ));
     }
 

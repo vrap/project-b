@@ -8,13 +8,15 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Project\AppBundle\Entity\Evaluation;
 use Project\AppBundle\Entity\Criterion;
 use Project\AppBundle\Form\CriterionType;
+use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * Criterion controller.
  *
- * @Route("/criterion")
+ * @Route()
  */
 class CriterionController extends Controller
 {
@@ -23,7 +25,7 @@ class CriterionController extends Controller
      * Lists all Criterion entities.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/", name="criterion")
+     * @Route("/criterion/", name="criterion")
      * @Method("GET")
      * @Template("ProjectAppBundle:Criterion:index.html.twig")
      */
@@ -41,22 +43,37 @@ class CriterionController extends Controller
      * Creates a new Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/", name="criterion_create")
+     * @Route("/evaluation/{id_eval}/criterion/", name="criterion_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:Criterion:new.html.twig")
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, $id_eval)
     {
         $entity = new Criterion();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity, $id_eval);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $eval = $em->getRepository('ProjectAppBundle:Evaluation')->find($id_eval);
+            if(!$eval) {
+                throw new InvalidArgumentException('This evaluation doesn\'t exist');
+            }
+            $entity->setEvaluation($eval);
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('criterion_show', array('id' => $entity->getId())));
+            if('submit' == $form->getClickedButton()->getName()) {
+
+                return $this->redirect($this->generateUrl('speaker_evaluations'));
+            } else if('crit_new' == $form->getClickedButton()->getName()) {
+
+                return $this->redirect($this->generateUrl('criterion_new', array(
+                        'id_eval' => $id_eval
+                )));
+            }
+
+            return $this->redirect($this->generateUrl('speaker_evaluations'));
         }
 
         return array(
@@ -72,14 +89,12 @@ class CriterionController extends Controller
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Criterion $entity)
+    private function createCreateForm(Criterion $entity, $id_eval)
     {
         $form = $this->createForm(new CriterionType(), $entity, array(
-            'action' => $this->generateUrl('criterion_create'),
+            'action' => $this->generateUrl('criterion_create', array('id_eval' => $id_eval)),
             'method' => 'POST',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -88,14 +103,14 @@ class CriterionController extends Controller
      * Displays a form to create a new Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/new", name="criterion_new")
+     * @Route("/evaluation/{id_eval}/criterion/new", name="criterion_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($id_eval)
     {
         $entity = new Criterion();
-        $form   = $this->createCreateForm($entity);
+        $form   = $this->createCreateForm($entity, $id_eval);
 
         return array(
             'entity' => $entity,
@@ -107,7 +122,7 @@ class CriterionController extends Controller
      * Finds and displays a Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/{id}", name="criterion_show")
+     * @Route("/criterion/{id}", name="criterion_show")
      * @Method("GET")
      * @Template("ProjectAppBundle:Criterion:show.html.twig")
      */
@@ -133,7 +148,7 @@ class CriterionController extends Controller
      * Displays a form to edit an existing Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/{id}/edit", name="criterion_edit")
+     * @Route("/criterion/{id}/edit", name="criterion_edit")
      * @Method("GET")
      * @Template()
      */
@@ -179,7 +194,7 @@ class CriterionController extends Controller
      * Edits an existing Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/{id}", name="criterion_update")
+     * @Route("/criterion/{id}", name="criterion_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:Criterion:edit.html.twig")
      */
@@ -213,7 +228,7 @@ class CriterionController extends Controller
      * Deletes a Criterion entity.
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/{id}", name="criterion_delete")
+     * @Route("/criterion/{id}", name="criterion_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

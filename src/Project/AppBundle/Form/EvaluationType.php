@@ -26,11 +26,11 @@ class EvaluationType extends AbstractType
                   'class' => 'ProjectAppBundle:Module',
                   'property' => 'name'
                 ))
-            ->add('saveAndAdd', 'submit', array(
-                  'label'=> 'Ajouter un barème'
+            ->add('criterions_add', 'submit', array(
+                    'label' => 'Ajouter un barème'
                 ))
             ->add('submit', 'submit', array(
-                  'label'=> 'Terminer'
+                    'label' => 'Terminer'
                 ))
         ;
     }
@@ -41,7 +41,8 @@ class EvaluationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Project\AppBundle\Entity\Evaluation'
+            'data_class' => 'Project\AppBundle\Entity\Evaluation',
+            'cascade_validation' => true,
         ));
     }
 
