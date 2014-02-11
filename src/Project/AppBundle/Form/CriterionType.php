@@ -24,9 +24,6 @@ class CriterionType extends AbstractType
                     'label' => 'Note : ',
                     'attr' => array('min' => 1, 'max' => 20)
                 ))
-            ->add('crit_new', 'submit', array(
-                    'label' => 'Ajouter un critère'
-                ))
             ->add('submit', 'submit', array(
                     'label' => 'Terminer'
                 ))

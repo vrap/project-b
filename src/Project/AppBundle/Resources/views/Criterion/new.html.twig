@@ -1,15 +1,19 @@
 {% extends 'ProjectAppBundle::layout.html.twig' %}
 
 {% block main -%}
-    <h1>Criterion creation</h1>
+    <h1>Ajouter un critère au barème</h1>
 
-    {{ form(form) }}
+    {{ form_start(form) }}
+        {# Errors #}
+        {{ form_errors(form)}}
+        {# Inputs #}
+        {{ form_row(form.description) }}
+        {{ form_row(form.max) }}
+        {# Buttons #}
+        {{ form_row(form.crit_new) }}
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('criterion') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    <a href="{{ path('speaker_evaluations') }}">Annuler (retour à la liste des évaluations)</a>
+
 {% endblock %}

@@ -95,6 +95,9 @@ class CriterionController extends Controller
             'action' => $this->generateUrl('criterion_create', array('id_eval' => $id_eval)),
             'method' => 'POST',
         ));
+        $form->add('crit_new', 'submit', array(
+                'label' => 'Ajouter un critère'
+        ));
 
         return $form;
     }
@@ -186,7 +189,7 @@ class CriterionController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Enregistrer les modifications'));
 
         return $form;
     }
@@ -263,7 +266,7 @@ class CriterionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('criterion_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Supprimer'))
             ->getForm()
         ;
     }
