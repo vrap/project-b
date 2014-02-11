@@ -223,7 +223,18 @@ class EvaluationController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
+            //return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
+            if('submit' == $editForm->getClickedButton()->getName()) {
+
+                return $this->redirect($this->generateUrl('evaluation_edit', array(
+                    'id' => $entity->getId()
+                )));
+            } else if('criterions_add' == $editForm->getClickedButton()->getName()) {
+
+                return $this->redirect($this->generateUrl('criterion_new', array(
+                        'id_eval' => $entity->getId()
+                )));
+            }
         }
 
         return array(
