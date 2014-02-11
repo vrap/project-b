@@ -8,16 +8,36 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Project\AppBundle\Entity\Evaluation;
+use Project\AppBundle\Entity\Criterion;
 use Symfony\Component\HttpFoundation\Request;
 use Project\AppBundle\Form\EvaluationType;
 use Project\AppBundle\Entity\Speaker;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
-
+/**
+ * Criterion controller.
+ *
+ * @Route("/evaluation")
+ */
 class EvaluationController extends Controller
 {
 
+    /**
+     * Lists all Evaluation entities.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/", name="evaluation")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:Evaluation:index.html.twig")
+     */
     public function indexAction()
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
+
+        return array(
+                'evaluationsList' => $entities,
+        );
     }
 
     /**
@@ -64,6 +84,13 @@ class EvaluationController extends Controller
         );
     }
 
+    /**
+     * Creates a form to create a Evaluation entity.
+     *
+     * @param Evaluation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Evaluation $entity)
     {
         $form = $this->createForm(new EvaluationType(), $entity, array(
@@ -72,9 +99,180 @@ class EvaluationController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-                'label' => 'Create'
+                'label' => 'Enregistrer'
         ));
 
         return $form;
+    }
+
+    /**
+     * Displays a form to create a new Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/new", name="evaluation_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $entity = new Evaluation();
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+        );
+    }
+
+    /**
+     * Finds and displays a Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/{id}", name="evaluation_show")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:Evaluation:show.html.twig")
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ProjectAppBundle:Evaluation')->find($id);
+        $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findAllByEvaluation($entity);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Evaluation entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+                'entity'      => $entity,
+                'criterions'  => $criterions,
+                'delete_form' => $deleteForm->createView(),
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/{id}/edit", name="evaluation_edit")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ProjectAppBundle:Evaluation')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Evaluation entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return array(
+                'entity'      => $entity,
+                'edit_form'   => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+        );
+    }
+
+    /**
+     * Creates a form to edit a Evaluation entity.
+     *
+     * @param Evaluation $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Evaluation $entity)
+    {
+        $form = $this->createForm(new EvaluationType(), $entity, array(
+                'action' => $this->generateUrl('evaluation_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Enregistrer les modifications'));
+
+        return $form;
+    }
+    /**
+     * Edits an existing Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/{id}", name="evaluation_update")
+     * @Method("PUT")
+     * @Template("ProjectAppBundle:Evaluation:edit.html.twig")
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ProjectAppBundle:Evaluation')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Evaluation entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
+        }
+
+        return array(
+                'entity'      => $entity,
+                'edit_form'   => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+        );
+    }
+    /**
+     * Deletes a Evaluation entity.
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/{id}", name="evaluation_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('ProjectAppBundle:Evaluation')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Evaluation entity.');
+            }
+
+            $em->remove($entity);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('speaker_evaluations'));
+    }
+
+    /**
+     * Creates a form to delete a Evaluation entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+                ->setAction($this->generateUrl('evaluation_delete', array('id' => $id)))
+                ->setMethod('DELETE')
+                ->add('submit', 'submit', array('label' => 'Supprimer'))
+                ->getForm()
+                ;
     }
 }

@@ -1,0 +1,29 @@
+{% extends 'ProjectAppBundle::layout.html.twig' %}
+
+{% block main -%}
+    <h1>Evaluation {{ entity.description }}</h1>
+
+    <ul>
+        <li>
+            Sujet : {{ entity.description }}
+        </li>
+        <li>Note maximale : {{ entity.max }} </li>
+        <li>
+            Barème :
+            {% if criterions is empty %}
+                Aucun barème ajouté.
+            {% else %}
+                <ul>
+                    {% for criterion in criterions %}
+                        <li>{{ criterion.description }} sur {{ criterion.max }} point{% if criterion.max > 1 %}s{% endif %}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    </ul>
+    <a href="{{ path('evaluation_edit', { 'id': entity.id }) }}">
+        Modifier
+    </a>
+    {{ form(delete_form) }}
+
+{% endblock %}
