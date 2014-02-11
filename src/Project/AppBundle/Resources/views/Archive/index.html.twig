@@ -2,10 +2,4 @@
 
 {% block main -%}
     <h1>Welcome to the Archive:index page</h1>
-    <form action="{{ path('project_app_manager_module_create') }}" method="POST" {{ form_enctype(formModule) }} >
-        {{ form_errors(formModule) }}
-        {{ form_widget(formModule) }}
-
-        <input type="submit" value="Ajouter" />
-    </form>
 {% endblock %}

@@ -2,4 +2,10 @@
 
 {% block main -%}
 <h1>Welcome to the Archive:new page</h1>
+    <form action="{{ path('archive_new') }}" method="POST" {{ form_enctype(form) }} >
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Ajouter" />
+    </form>
 {% endblock %}
