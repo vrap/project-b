@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class CriterionRepository extends EntityRepository
 {
+    /**
+     * Find each criterion of an evaluation given
+     *
+     * @param $eval
+     * @return array
+     */
+    public function findAllByEvaluation(Evaluation $eval)
+    {
+        return $this->getEntityManager()
+                ->createQuery(
+                        'SELECT c
+                        FROM ProjectAppBundle:Criterion c
+                        WHERE c.evaluation = :eval'
+                )
+                ->setParameter('eval', $eval)
+                ->getResult();
+    }
 }

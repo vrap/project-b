@@ -3,6 +3,15 @@
 {% block main -%}
     <h1>Ajouter un critère au barème</h1>
 
+    {% if old_criterions is not empty %}
+        <h2>Critères précédents</h2>
+        <ul>
+            {% for criterion in old_criterions %}
+                <li>{{ criterion.description }} sur {{ criterion.max }} point{% if criterion.max > 1 %}s{% endif %}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {{ form_start(form) }}
         {# Errors #}
         {{ form_errors(form)}}

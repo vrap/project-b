@@ -115,8 +115,13 @@ class CriterionController extends Controller
         $entity = new Criterion();
         $form   = $this->createCreateForm($entity, $id_eval);
 
+        $em = $this->getDoctrine()->getManager();
+        $eval = $em->getRepository('ProjectAppBundle:Evaluation')->find($id_eval);
+        $old_criterions = $em->getRepository('ProjectAppBundle:Criterion')->findAllByEvaluation($eval);
+
         return array(
             'entity' => $entity,
+            'old_criterions' => $old_criterions,
             'form'   => $form->createView(),
         );
     }
