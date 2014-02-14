@@ -1,7 +1,12 @@
-parameters:
-#    project_app.example.class: Project\AppBundle\Example
-
+# https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.md
+# Services FosUser for override
 services:
-#    project_app.example:
-#        class: %project_app.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    project_app_bundle_user.registration.form.type:
+        class: Project\AppBundle\Form\Type\RegistrationFormType
+        arguments: [%fos_user.model.user.class%]
+        # l'argument ne change pas si le constructeur n'a pas été redéfinit
+        tags:
+            - { name: form.type, alias: override_fosuser_registration }
+            # l' alias fait référence aà la méthode getName() de
+            # FosUser\UserBundle\Form\Type\RegistrationFormType (ils doivent
+            # donc être identique)
