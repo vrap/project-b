@@ -22,6 +22,7 @@ class RegistrationFormType extends BaseType
                 'second_options' => array('label' => 'Password confirmation'),
                 'invalid_message' => 'fos_user.password.mismatch',
             ))
+            ->add('surname', null)
         ;
     }
 
