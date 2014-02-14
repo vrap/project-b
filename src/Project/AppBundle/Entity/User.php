@@ -39,7 +39,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -62,7 +62,7 @@ class User extends BaseUser
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -77,7 +77,7 @@ class User extends BaseUser
      */
     public function setSurname($surname)
     {
-        $this->phone = $surname;
+        $this->surname = $surname;
 
         return $this;
     }
