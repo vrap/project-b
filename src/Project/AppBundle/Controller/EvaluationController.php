@@ -2,6 +2,7 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\StudentEvaluation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -64,6 +65,23 @@ class EvaluationController extends Controller
 
             $entity->setSpeaker($speaker);
             $em->persist($entity);
+
+            $module = $entity->getModule();
+            $promotion = $module->getPromotion();
+            $students = $em->getRepository('ProjectAppBundle:Student')
+                    ->findByPromotionId($promotion->getId());
+
+            // Insertion in table student_evaluation
+            foreach($students as $student) {
+                $studentEval = new StudentEvaluation();
+                $studentEval->setEvaluation($entity);
+                $studentEval->setScore(0);
+                $studentEval->setComment('Non évalué pour le moment.');
+                $studentEval->setStudent($student);
+
+                $em->persist($studentEval);
+            }
+
             $em->flush();
 
             if('submit' == $form->getClickedButton()->getName()) {
