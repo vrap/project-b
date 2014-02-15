@@ -41,4 +41,20 @@ class StudentEvaluationRepository extends EntityRepository
 
         return $students;
     }
+
+    public function findOneByEvalStudent(Evaluation $eval, Student $student) {
+        $em = $this->getEntityManager();
+
+        return $em->createQuery('
+                SELECT se
+                FROM ProjectAppBundle:StudentEvaluation se
+                WHERE se.evaluation = :eval
+                AND se.student = :student
+            ')
+            ->setParameters(array(
+                    'eval' => $eval,
+                    'student' => $student
+                ))
+            ->getOneOrNullResult();
+    }
 }

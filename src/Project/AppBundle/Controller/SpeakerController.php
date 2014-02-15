@@ -160,21 +160,37 @@ class SpeakerController extends Controller
      * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function evaluateAction($eval_id) {
+    public function evaluateAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
 
-        $evaluation = $em->getRepository('ProjectAppBundle:Evaluation')
-                ->find($eval_id);
+        $repo_eval = $em->getRepository('ProjectAppBundle:Evaluation');
+        $repo_crit = $em->getRepository('ProjectAppBundle:Criterion');
+        $repo_student_eval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
+
+        $evaluation = $repo_eval->find($eval_id);
 
         if(null === $evaluation) {
             throw new \InvalidArgumentException('Unable to find evaluation ' . $eval_id);
         }
 
-        $criterions = $em->getRepository('ProjectAppBundle:Criterion')
-                ->findAllByEvaluation($evaluation);
+        $criterions = $repo_crit->findAllByEvaluation($evaluation);
+        $students = $repo_student_eval->findStudentsByEvaluation($evaluation);
 
-        $students = $em->getRepository('ProjectAppBundle:StudentEvaluation')
-                ->findStudentsByEvaluation($evaluation);
+        if('POST' === $request->getMethod())
+        {
+            $score_eval = $request->request->get('evaluation_score');
+            $comment_eval = $request->request->get('evaluation_comment');
+
+            $current_student = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneByUserId($students[0]->getId());
+            $current_student_eval = $repo_student_eval->findOneByEvalStudent($evaluation, $current_student);
+
+            $current_student_eval->setScore($score_eval);
+            $current_student_eval->setComment($comment_eval);
+
+            $em->persist($current_student_eval);
+            $em->flush();
+        }
 
         return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
             'evaluation' => $evaluation,
