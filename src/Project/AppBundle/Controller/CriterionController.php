@@ -2,6 +2,7 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\StudentEvaluationCriterion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -61,6 +62,19 @@ class CriterionController extends Controller
             }
             $entity->setEvaluation($eval);
             $em->persist($entity);
+
+            $studentsEval = $em->getRepository('ProjectAppBundle:StudentEvaluation')
+                    ->findByEvaluation($eval);
+
+            // Add this crit for every students who had participated at the evaluation
+            foreach ($studentsEval as $studentEval) {
+                $studentEvalCrit = new StudentEvaluationCriterion();
+                $studentEvalCrit->setCriterion($entity);
+                $studentEvalCrit->setScore(0);
+                $studentEvalCrit->setStudentEvaluation($studentEval);
+                $em->persist($studentEvalCrit);
+            }
+
             $em->flush();
 
             if('submit' == $form->getClickedButton()->getName()) {
