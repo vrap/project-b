@@ -24,20 +24,31 @@ class EvaluationController extends Controller
     /**
      * Lists all Evaluation entities.
      *
-     * @Secure(roles="ROLE_MANAGER")
      * @Route("/", name="evaluation")
      * @Method("GET")
      * @Template("ProjectAppBundle:Evaluation:index.html.twig")
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        // Récupération de l'utilisateur connecté
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
 
-        $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
+        // Préparation de la base
+        $em = $this->getDoctrine()->getManager();
+        
+        // Si l'utilisateur est MANAGER ou SPEAKER
+        if(in_array('ROLE_MANAGER', $userRoles)){
+            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
+        }else{
+            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findBySpeaker($user->getId());
+        }
 
         return array(
                 'evaluationsList' => $entities,
         );
+
+
     }
 
     /**

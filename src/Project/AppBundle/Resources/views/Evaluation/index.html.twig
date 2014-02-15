@@ -1,15 +1,37 @@
-{% if evaluationsList is empty %}
-    <p>Aucune évaluation est disponible pour le moment.</p>
-{% else %}
-		<h1>Liste des évaluations</h1>
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
+{% block content %}
+	
+	{% if is_granted('ROLE_SPEAKER') %}
+		<div class="bloc-top">
+	        <a class='btn btn-second' href="{{ path('evaluation_new') }}">Nouvelle évaluation</a>
+	    </div>
+    {% endif %}
+
+	<div class="panel-group">
+        <div class="panel-item">
+            {% if evaluationsList is empty %}
+            	<div class="panel-content">
+			    	Aucune évaluation est disponible pour le moment.
+			    </div>
+			{% else %}
+        </div>
+		
 		{% for evaluation in evaluationsList %}
-			<ul>
-				<li>Sujet : {{ evaluation.description }} |
-                    <a href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier</a>
-                </li>
-				<li>Note maximale : {{ evaluation.max }} </li>
-			</ul>
-		{% endfor %}
+			<div class="panel-item">
+	            <div class="panel-header">
+	                <h2 class="pull-left">{{ evaluation.description }}</h2>
+	                <a class="pull-right btn btn-default btn-small" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier</a>
+	            </div>
+	            <div class="panel-content">
+	            	Note maximale : {{ evaluation.max }} 
+	            	
+				</div>
+	        </div>
+        {% endfor %}
 
-{% endif %}
+    </div>	
+
+	{% endif %}
+
+{% endblock %}

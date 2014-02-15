@@ -1,9 +1,18 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main %}
-    <h2>Créer</h2>
+{% block content %}
 
-    {{ form(form) }}
+	<div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+            	<h1>Créer une évaluation</h1>
+            </div>
+            <div class="panel-content">
+            	{{ form(form) }}
+            </div>
+        </div>
+    </div>
+    
+    <a href="{{ path('evaluation') }}" class="btn btn-default">Annuler</a>
 
-    <a href="{{ path('speaker_evaluations') }}">Retour à la liste</a>
 {% endblock %}
