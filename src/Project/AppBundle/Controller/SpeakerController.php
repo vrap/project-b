@@ -147,4 +147,39 @@ class SpeakerController extends Controller
             'evaluationsList' => $evaluations
         ));
     }
+
+    /**
+     * Marks students for an evaluation
+     *
+     * @Secure(roles="ROLE_SPEAKER")
+     * @Route("/evaluate/{eval_id}", name="speaker_evaluate")
+     * @Method({"GET", "POST"})
+     * @Template()
+     *
+     * @param $eval_id
+     * @throws \InvalidArgumentException
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function evaluateAction($eval_id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $evaluation = $em->getRepository('ProjectAppBundle:Evaluation')
+                ->find($eval_id);
+
+        if(null === $evaluation) {
+            throw new \InvalidArgumentException('Unable to find evaluation ' . $eval_id);
+        }
+
+        $criterions = $em->getRepository('ProjectAppBundle:Criterion')
+                ->findAllByEvaluation($evaluation);
+
+        $students = $em->getRepository('ProjectAppBundle:StudentEvaluation')
+                ->findStudentsByEvaluation($evaluation);
+
+        return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+            'evaluation' => $evaluation,
+            'criterions' => $criterions,
+            'students' => $students
+        ));
+    }
 }

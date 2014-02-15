@@ -6,6 +6,7 @@
 		{% for evaluation in evaluationsList %}
 			<ul>
 				<li>Sujet : {{ evaluation.description }} |
+                    <a href="{{ path('speaker_evaluate', { 'eval_id': evaluation.id }) }}">Noter </a>
                     <a href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier</a>
                 </li>
 				<li>Note maximale : {{ evaluation.max }} </li>
