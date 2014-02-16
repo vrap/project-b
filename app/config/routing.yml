@@ -32,7 +32,7 @@ fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
     
 speaker_add_lesson:
-    pattern: /speaker/add/{name}/{startDate}/{endDate}
+    pattern: /speaker/add/{data}
     defaults: { _controller: ProjectAppBundle:Speaker:add }
     options:
         expose: true
