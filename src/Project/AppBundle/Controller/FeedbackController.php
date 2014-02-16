@@ -58,8 +58,8 @@ class FeedbackController extends Controller
             'entities' => $entities,
         ));
 
-        
     }
+
     /**
      * Creates a new Feedback entity.
      * @Secure(roles="ROLE_STUDENT")

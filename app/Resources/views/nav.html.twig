@@ -31,6 +31,7 @@ set	nav_manager = {
 	'presence' : 'Présences',
 	'evaluation' : 'Évaluations',
 	'promotion' : 'Promotions',
+	'module' : 'Module',
 	'utilisateur' : 'Utilisateurs',
 	'feedback': 'Feedbacks',
 	'archive': 'Archives'
@@ -52,7 +53,7 @@ set	nav_manager = {
 		{% for key,value in nav %}
 			<li><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
 		{% endfor %}
-		
+
 	</ul>
 </nav>
 

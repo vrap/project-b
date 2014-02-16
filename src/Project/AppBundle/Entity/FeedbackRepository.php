@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class FeedbackRepository extends EntityRepository
 {
+
+	public function findAll()
+    {
+        return $this->findBy(array(), array('created' => 'DESC'));
+    }
+
 }

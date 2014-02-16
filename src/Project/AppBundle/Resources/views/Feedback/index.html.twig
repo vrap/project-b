@@ -13,8 +13,12 @@
             {% for entity in entities %}
                 <div class="panel-item">
                     <div class="panel-header">
-                        {{ entity.module.getName }}
-                        {{ entity.created|date('Y-m-d H:i:s') }}
+                        <div class="pull-left">
+                            {{ entity.module.getName }}
+                        </div>
+                        <div class="pull-right">
+                            {{ entity.created|date('Y-m-d H:i:s') }}
+                        </div>
                     </div>
                     <div class="panel-content">
                         {{ entity.comment }}

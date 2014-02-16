@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FeedbackType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
@@ -26,7 +26,7 @@ class FeedbackType extends AbstractType
             
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
