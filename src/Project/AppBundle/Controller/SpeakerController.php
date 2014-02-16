@@ -21,7 +21,9 @@ use Project\AppBundle\Entity\User;
 use Project\AppBundle\Form\EvaluationType;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-
+/**
+ * @Route("/speaker")
+ */
 class SpeakerController extends Controller
 {
     /**
@@ -147,7 +149,7 @@ class SpeakerController extends Controller
      * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function evaluateAction($eval_id, Request $request) {
+    public function evaluationsAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
 
@@ -286,5 +288,31 @@ class SpeakerController extends Controller
             'criterions' => $criterions,
             'student' => $students[$cpt_student],
         ));
+    }
+    
+    
+    /**
+     * @Route("/add", name="speaker_add_lesson")
+     * @Template()
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addAction($name, $startDate, $endDate)
+    {
+        $startDate = new \DateTime($startDate);
+        $endDate = new \DateTime($endDate);
+
+        $entity = new Lesson();
+        $em = $this->getDoctrine()->getManager();
+
+        $entity->setName($name);
+        $entity->setStartDate($startDate);
+        $entity->setEndDate($endDate);
+        $entity->setTimecard(1);
+
+        $em->persist($entity);
+        $em->flush();
+        
+        return \Symfony\Component\HttpFoundation\Response::HTTP_ACCEPTED;
     }
 }

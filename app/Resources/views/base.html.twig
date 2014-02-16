@@ -1,48 +1,44 @@
 <!DOCTYPE html>
 <html>
     {% block head %}
-
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{% block title %}Projet B{% endblock %}</title>
-		
-		{% block stylesheets %}
-	        <link rel="stylesheet" href="{{ asset('bundles/appbundle/css/normalize.css') }}" />
-	        <link rel="stylesheet" href="{{ asset('bundles/appbundle/css/styles.css') }}" />
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/appbundle/css/normalize.css') }}" />
+            <link rel="stylesheet" href="{{ asset('bundles/appbundle/css/styles.css') }}" />
 
-	        <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-	        <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300' rel='stylesheet' type='text/css'>
-		{% endblock %}
-        <script type="text/javascript" src="{{ asset('bundles/appbundle/js/jquery-2.1.0.min.js') }}"></script>
-
+            <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+            <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400,300' rel='stylesheet' type='text/css'>
+        {% endblock %}
     {% endblock %}
     <body>
-    	<div class="wrapper">
-			
-			{% include '::nav.html.twig'%}
-	    	
-			<div class="main">
-			
-	    		<div class="sidebar">
-			        <ul class="list-inline">
-			            <li>Profile | </li>
-			            <li>
-			                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-			                    {{ 'Bonjour %username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-			                    <a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">
-			                        {{ 'Déconnexion'|trans({}, 'FOSUserBundle') }}
-			                    </a>
-			                {% else %}
-			                    <a href="{{ path('fos_user_security_login') }}">{{ 'Déconnection'|trans({}, 'FOSUserBundle') }}</a>
-			                {% endif %}
-			        	</li>
-			    	</ul>
-				</div>
-				
-		  		{% block body %}
-		  		{% endblock %}
+        <div class="wrapper">
+            {% include '::nav.html.twig'%}
+            <div class="main">
+                <div class="sidebar">
+                    <ul class="list-inline">
+                        <li>Profile | </li>
+                        <li>
+                            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                                {{ 'Bonjour %username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                                <a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">
+                                    {{ 'Déconnexion'|trans({}, 'FOSUserBundle') }}
+                                </a>
+                            {% else %}
+                                <a href="{{ path('fos_user_security_login') }}">{{ 'Déconnection'|trans({}, 'FOSUserBundle') }}</a>
+                            {% endif %}
+                            </li>
+                    </ul>
+                    </div>
 
-		  	</div>
-		</div>
+                    {% block body %}
+                    {% endblock %}
+
+            </div>
+        </div>
+        {% block javascripts %}
+            <script type="text/javascript" src="{{ asset('bundles/appbundle/js/jquery-2.1.0.min.js') }}"></script>
+        {% endblock %}
 	</body>
 </html>
 

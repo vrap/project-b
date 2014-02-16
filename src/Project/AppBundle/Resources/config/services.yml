@@ -10,3 +10,9 @@ services:
             # l' alias fait référence aà la méthode getName() de
             # FosUser\UserBundle\Form\Type\RegistrationFormType (ils doivent
             # donc être identique)
+
+    project.appbundle.calendar_listener:
+       class: Project\AppBundle\EventListener\CalendarEventListener
+       arguments: [@doctrine.orm.entity_manager]
+       tags:
+           - { name: kernel.event_listener, event: calendar.load_events, method: loadEvents }

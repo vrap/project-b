@@ -1,5 +1,19 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/adesignscalendar/css/fullcalendar/fullcalendar.css') }}" />
+{% endblock %}
+
 {% block content %}
-	SALUT
+    {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script>
+    <!--<script type="text/javascript" src=" asset('bundles/adesignscalendar/js/calendar-settings.js') "></script>-->
+    <script type="text/javascript" src="{{ asset('bundles/appbundle/js/calendar-settings.js') }}"></script>
 {% endblock %}
