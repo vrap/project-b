@@ -6,11 +6,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Project\AppBundle\Entity\Module;
 use Project\AppBundle\Form\ModuleType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Process\Exception\InvalidArgumentException;
 
+/**
+ * Module controller.
+ *
+ * @Route("/module")
+ */
 class ModuleController extends Controller
 {
     /**
      * Display all modules for Manager
+     *
+     * @Route("/", name="module")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:Module:index.html.twig")
      */
     public function indexAction()
     {
@@ -20,7 +34,7 @@ class ModuleController extends Controller
         $repositoryFormation = $em->getRepository('ProjectAppBundle:Formation');
         $user                = $this->getUser();
         $modulesList         = $repositoryModule->findBy(array(
-            'formation' => $user->getId(),
+            'promotion' => $user->getId(),
         ));
         $numberModules       = count($modulesList); 
         
@@ -30,8 +44,13 @@ class ModuleController extends Controller
         ));
     }
 
-    /**
-     * Module creation for Module
+     /**
+     * Creates a new module entity.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/", name="module_create")
+     * @Method("POST")
+     * @Template("ProjectAppBundle:module:new.html.twig")
      */
     public function createAction()
     {

@@ -1,7 +1,23 @@
-<span>{{ numberModules }} modules</span>
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-<ul>
-	{% for module in modulesList %}
-		<li>{{ module.name }} - Intervenant : {{ module.speaker.user.username }}</li>
-	{% endfor %}
-</ul>
+{% block content %}
+	<div class="bloc-top">
+        {{ numberModules }} modules
+    </div>
+
+    <div class="panel-group">
+        {% if modulesList %}
+            {% for module in modulesList %}
+                <div class="panel-item">
+                    <div class="panel-header">
+                        {{ module.name }}
+                    </div>
+                    <div class="panel-content">
+                        Intervenant : {{ module.speaker.user.username }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+{% endblock %}
