@@ -79,7 +79,7 @@ class CriterionController extends Controller
 
             if('submit' == $form->getClickedButton()->getName()) {
 
-                return $this->redirect($this->generateUrl('speaker_evaluations'));
+                return $this->redirect($this->generateUrl('evaluation'));
             } else if('crit_new' == $form->getClickedButton()->getName()) {
 
                 return $this->redirect($this->generateUrl('criterion_new', array(
@@ -87,7 +87,7 @@ class CriterionController extends Controller
                 )));
             }
 
-            return $this->redirect($this->generateUrl('speaker_evaluations'));
+            return $this->redirect($this->generateUrl('evaluation'));
         }
 
         return array(

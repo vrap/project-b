@@ -81,7 +81,7 @@ class EvaluationController extends Controller
             $module = $entity->getModule();
             $promotion = $module->getPromotion();
             $students = $em->getRepository('ProjectAppBundle:Student')
-                    ->findByPromotionId($promotion->getId());
+                    ->findByPromotion($promotion);
 
             // Insertion in table student_evaluation
             foreach($students as $student) {
