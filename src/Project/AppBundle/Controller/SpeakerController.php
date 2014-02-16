@@ -18,7 +18,9 @@ use Project\AppBundle\Entity\SpeakerLesson;
 use Project\AppBundle\Entity\Lesson;
 use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
+use Project\AppBundle\Entity\Speaker;
 use Project\AppBundle\Form\EvaluationType;
+use Project\AppBundle\Form\SpeakerType;
 
 
 class SpeakerController extends Controller
@@ -147,4 +149,72 @@ class SpeakerController extends Controller
             'evaluationsList' => $evaluations
         ));
     }
+
+    /**
+     * Creates a new Speaker entity.
+     *
+     * @Route("/", name="speaker_create")
+     * @Method("POST")
+     * @Template("ProjectAppBundle:Speaker:new.html.twig")
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new Speaker();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('user'));
+        }
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+
+    }
+
+    /**
+    * Creates a form to create a Speaker entity.
+    *
+    * @param Student $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createCreateForm(Speaker $entity)
+    {
+        $form = $this->createForm(new SpeakerType(), $entity, array(
+            'action' => $this->generateUrl('speaker_create'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-second')));
+
+        return $form;
+    }
+
+    /**
+     * Displays a form to create a new Speaker entity.
+     *
+     * @Route("/new", name="user_speaker_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $entity = new Speaker();
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+    }
+
+
+
 }

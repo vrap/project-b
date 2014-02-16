@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SpeakerType extends AbstractType
+class UserType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -14,9 +14,13 @@ class SpeakerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
-            ->add('user', new UserType())
-        ;
+            ->add('username')
+            ->add('surname')
+            ->add('phone')
+            ->add('email')
+            ->add('plainPassword', 'password');
     }
     
     /**
@@ -25,7 +29,7 @@ class SpeakerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Project\AppBundle\Entity\Speaker'
+            'data_class' => 'Project\AppBundle\Entity\User'
         ));
     }
 
@@ -34,6 +38,6 @@ class SpeakerType extends AbstractType
      */
     public function getName()
     {
-        return 'project_appbundle_speaker';
+        return 'project_appbundle_user';
     }
 }

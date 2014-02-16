@@ -95,6 +95,10 @@ ul.list-no-style > li {
   border-radius: 3px;
   display: inline-block;
 }
+.btn.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 .btn-small {
   padding: 8px 13px;
   font-size: 0.9em;

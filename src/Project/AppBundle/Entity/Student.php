@@ -33,7 +33,7 @@ class Student
     private $corporation;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Promotion", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Promotion", cascade={"persist"})
      */
     private $promotion;
 

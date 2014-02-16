@@ -1,0 +1,21 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+		
+	<div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+            	<select name="role" id="role">
+					<option value="student">Étudiant</option>
+					<option value="speaker">Intervenant</option>
+					<option value="manager">Responsable</option>
+				</select>
+            </div>
+            <div class="panel-content">
+            	
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('user') }}" class="btn btn-default">Annuler</a>
+
+{% endblock %}

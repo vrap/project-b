@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\User;
-use Project\AppBundle\Form\UserType;
+use Project\AppBundle\Entity\Corporation;
+use Project\AppBundle\Form\CorporationType;
 
 /**
- * User controller.
+ * Corporation controller.
  *
- * @Route("/user")
+ * @Route("/corporation")
  */
-class UserController extends Controller
+class CorporationController extends Controller
 {
 
     /**
-     * Lists all User entities.
+     * Lists all Corporation entities.
      *
-     * @Route("/", name="user")
+     * @Route("/", name="corporation")
      * @Method("GET")
      * @Template()
      */
@@ -29,51 +29,50 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('ProjectAppBundle:User')->findAll();
+        $entities = $em->getRepository('ProjectAppBundle:Corporation')->findAll();
 
         return array(
-            'users' => $users,
+            'entities' => $entities,
         );
     }
     /**
-     * Creates a new User entity.
+     * Creates a new Corporation entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="corporation_create")
      * @Method("POST")
-     * @Template("ProjectAppBundle:User:new.html.twig")
+     * @Template("ProjectAppBundle:Corporation:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createCreateForm($user);
+        $entity = new Corporation();
+        $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
+            $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('corporation_show', array('id' => $entity->getId())));
         }
 
         return array(
-            'user' => $user,
+            'entity' => $entity,
             'form'   => $form->createView(),
         );
     }
 
     /**
-    * Creates a form to create a User entity.
+    * Creates a form to create a Corporation entity.
     *
-    * @param User $entity The entity
+    * @param Corporation $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(Corporation $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
+        $form = $this->createForm(new CorporationType(), $entity, array(
+            'action' => $this->generateUrl('corporation_create'),
             'method' => 'POST',
         ));
 
@@ -83,28 +82,27 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to create a new User entity.
+     * Displays a form to create a new Corporation entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="corporation_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new User();
+        $entity = new Corporation();
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );
-        
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Corporation entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="corporation_show")
      * @Method("GET")
      * @Template()
      */
@@ -112,10 +110,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Corporation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Corporation entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -127,9 +125,9 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing User entity.
+     * Displays a form to edit an existing Corporation entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="corporation_edit")
      * @Method("GET")
      * @Template()
      */
@@ -137,10 +135,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Corporation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Corporation entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -154,16 +152,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to edit a User entity.
+    * Creates a form to edit a Corporation entity.
     *
-    * @param User $entity The entity
+    * @param Corporation $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createEditForm(Corporation $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CorporationType(), $entity, array(
+            'action' => $this->generateUrl('corporation_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -172,20 +170,20 @@ class UserController extends Controller
         return $form;
     }
     /**
-     * Edits an existing User entity.
+     * Edits an existing Corporation entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="corporation_update")
      * @Method("PUT")
-     * @Template("ProjectAppBundle:User:edit.html.twig")
+     * @Template("ProjectAppBundle:Corporation:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Corporation')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Corporation entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -195,7 +193,7 @@ class UserController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('corporation_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,9 +203,9 @@ class UserController extends Controller
         );
     }
     /**
-     * Deletes a User entity.
+     * Deletes a Corporation entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="corporation_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -217,21 +215,21 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+            $entity = $em->getRepository('ProjectAppBundle:Corporation')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Corporation entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('corporation'));
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a Corporation entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -240,7 +238,7 @@ class UserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('corporation_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User extends BaseUser
 {
+
     /**
      * @var integer
      *
@@ -91,4 +92,5 @@ class User extends BaseUser
     {
         return $this->surname;
     }
+
 }
