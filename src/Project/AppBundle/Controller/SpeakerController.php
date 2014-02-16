@@ -19,6 +19,7 @@ use Project\AppBundle\Entity\Lesson;
 use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
 use Project\AppBundle\Form\EvaluationType;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class SpeakerController extends Controller
@@ -162,10 +163,19 @@ class SpeakerController extends Controller
      */
     public function evaluateAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
+
+        if(false === $session->has('cpt_student')) {
+            $session->set('cpt_student', 0);
+            $cpt_student = $session->get('cpt_student');
+        } else {
+            $cpt_student = $session->get('cpt_student');
+        }
 
         $repo_eval = $em->getRepository('ProjectAppBundle:Evaluation');
         $repo_crit = $em->getRepository('ProjectAppBundle:Criterion');
         $repo_student_eval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
+        $repo_student_eval_crit = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion');
 
         $evaluation = $repo_eval->find($eval_id);
 
@@ -176,26 +186,57 @@ class SpeakerController extends Controller
         $criterions = $repo_crit->findAllByEvaluation($evaluation);
         $students = $repo_student_eval->findStudentsByEvaluation($evaluation);
 
+        if(empty($students)) {
+            throw new \Exception('Array $students can not be empty');
+        }
+
         if('POST' === $request->getMethod())
         {
+            // Values given by the speaker
             $score_eval = $request->request->get('evaluation_score');
             $comment_eval = $request->request->get('evaluation_comment');
 
             $current_student = $em->getRepository('ProjectAppBundle:Student')
-                    ->findOneByUserId($students[0]->getId());
-            $current_student_eval = $repo_student_eval->findOneByEvalStudent($evaluation, $current_student);
+                    ->findOneByUserId($students[$cpt_student]->getId());
 
+            // Hydrate StudentEvaluation table
+            $current_student_eval = $repo_student_eval->findOneByEvalStudent($evaluation, $current_student);
             $current_student_eval->setScore($score_eval);
             $current_student_eval->setComment($comment_eval);
-
             $em->persist($current_student_eval);
+
+            // Hydrate StudentEvaluationCriterion table if criterions are present
+            $scores_crit = $request->request->get('criterion_score');
+            if(null !== $scores_crit) {
+                $cpt = 0;
+                foreach($scores_crit as $score) {
+                    $current_student_eval_crit = $repo_student_eval_crit->findOneByCritEval($criterions[$cpt], $current_student_eval);
+                    $current_student_eval_crit->setScore($score);
+                    $em->persist($current_student_eval_crit);
+                    $cpt++;
+                }
+            }
+
             $em->flush();
+
+            $cpt_student++;
+            if($cpt_student >= count($students)) {
+                $session->remove('cpt_student');
+                return $this->redirect($this->generateUrl('speaker_evaluations'));
+            }
+            $session->set('cpt_student',$cpt_student);
+
+            return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                    'evaluation' => $evaluation,
+                    'criterions' => $criterions,
+                    'student' => $students[$cpt_student],
+            ));
         }
 
         return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
             'evaluation' => $evaluation,
             'criterions' => $criterions,
-            'students' => $students
+            'student' => $students[$cpt_student],
         ));
     }
 }

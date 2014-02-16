@@ -3,34 +3,30 @@
 {% block main %}
     <h1>{{ evaluation.description }}</h1>
     <h2>Noter vos élèves</h2>
-    {% if students is not empty %}
-        {% for student in students %}
-            <form method="POST">
-                <p>
-                    {{ student.username }} {{ student.surname }}
-                </p>
-                <ul>
-                    {% if criterions is not empty %}
-                        {% for criterion in criterions %}
-                            <li>
-                                {{ criterion.description }} :
-                                <input type="text" name="criterion_score[]" size="2" maxlength="2"> / {{ criterion.max }}
-                            </li>
-                        {% endfor %}
-                    {% endif %}
-                    <li>
-                        Note totale : <input type="text" name="evaluation_score" size="2" maxlength="2"> / {{ evaluation.max }}
-                    </li>
-                </ul>
-                Commentaire : <br/>
-                <textarea placeholder="Votre commentaire" name="evaluation_comment"></textarea>
-                <br/>
-                <button type="submit">Enregistrer</button>
-            </form>
-        {% endfor %}
+    {% if student is not empty %}
+        <form method="POST">
+            <p>
+                {{ student.username }} {{ student.surname }}
+            </p>
+            <ul>
+                {% if criterions is not empty %}
+                    {% for criterion in criterions %}
+                        <li>
+                            {{ criterion.description }} :
+                            <input type="text" name="criterion_score[]" size="2" maxlength="2"> / {{ criterion.max }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+                <li>
+                    Note totale : <input type="text" name="evaluation_score" size="2" maxlength="2"> / {{ evaluation.max }}
+                </li>
+            </ul>
+            Commentaire : <br/>
+            <textarea placeholder="Votre commentaire" name="evaluation_comment"></textarea>
+            <br/>
+            <button type="submit">Enregistrer et passer à l'élève suivant</button>
+        </form>
     {% else %}
         <p>Aucun élève a participé à cette évaluation.</p>
     {% endif %}
-
-
 {% endblock %}
