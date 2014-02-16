@@ -96,9 +96,11 @@ class EvaluationController extends Controller
 
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
+
             if('submit' == $form->getClickedButton()->getName()) {
 
-                return $this->redirect($this->generateUrl('speaker_evaluations'));
+                return $this->redirect($this->generateUrl('evaluation'));
             } else if('criterions_add' == $form->getClickedButton()->getName()) {
 
                 return $this->redirect($this->generateUrl('criterion_new', array(
@@ -252,6 +254,7 @@ class EvaluationController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
 
             //return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
             if('submit' == $editForm->getClickedButton()->getName()) {
@@ -295,9 +298,11 @@ class EvaluationController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation supprimée.');
+
         }
 
-        return $this->redirect($this->generateUrl('speaker_evaluations'));
+        return $this->redirect($this->generateUrl('evaluation'));
     }
 
     /**
