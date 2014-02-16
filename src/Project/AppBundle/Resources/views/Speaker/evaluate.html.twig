@@ -13,12 +13,12 @@
                     {% for criterion in criterions %}
                         <li>
                             {{ criterion.description }} :
-                            <input class="criterion" type="text" name="criterion_score[]" size="2" maxlength="2"> / {{ criterion.max }}
+                            <input class="criterion" type="text" name="criterion_score[]" size="2" maxlength="2" required> / {{ criterion.max }}
                         </li>
                     {% endfor %}
                 {% endif %}
                 <li>
-                    Note totale : <input type="text" name="evaluation_score" id="total_score" size="2" maxlength="2"> / {{ evaluation.max }}
+                    Note totale : <input type="text" name="evaluation_score" id="total_score" size="2" maxlength="2" required> / {{ evaluation.max }}
                 </li>
             </ul>
             Commentaire : <br/>
@@ -37,11 +37,10 @@
             for( var i = 0; i < criterions.length; i++) {
                 if(criterions[i].value != "") {
                     somme += parseFloat(criterions[i].value);
-
                 }
             }
             $( "#total_score").val(somme);
-        })
+        });
 
-;    </script>
+    </script>
 {% endblock %}
