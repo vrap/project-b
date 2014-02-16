@@ -15,35 +15,25 @@ $(function () {
             right: 'month,basicWeek,basicDay,'
         },
         select: function(startDate, endDate, allDay) {
-            var name = prompt('Lesson name:');
-            var startTime = prompt('Start Time (eg: 9:00):');
-            var endTime = prompt('End  Time (eg: 16:00):');
-            startDate = startDate.getUTCFullYear() + "-" + (1 + startDate.getUTCMonth()) + "-" +  (1 + startDate.getUTCDate()) + " " + startTime;
-            endDate = endDate.getUTCFullYear() + "-" + (1 + endDate.getUTCMonth()) + "-" +  (1 + endDate.getUTCDate()) + " " + endTime;
-            var json = { name: name, startDate: startDate, endDate: endDate};
-            
-            if (name) {
-                calendar.fullCalendar('renderEvent', {
-                    name: name,
-                    startDate: startDate,
-                    endDate: endDate
-                },
-                true // make the event "stick"
-                );
-                /**
-                 * ajax call to store event in DB
-                 */
-                jQuery.post(
-                    Routing.generate('speaker_add_lesson', { data: JSON.stringify(json) } ), 
-                    {
-                        name: name,
-                        startDate: startDate,
-                        endDate: endDate,
+            $( "#dialog" ).dialog({
+                buttons: {
+                    Create: function() {
+                        startDate = startDate.getUTCFullYear() + "-" + (1 + startDate.getUTCMonth()) + "-" +  (1 + startDate.getUTCDate()) + " " + $("#start_time").val();
+                        endDate = endDate.getUTCFullYear() + "-" + (1 + endDate.getUTCMonth()) + "-" +  (1 + endDate.getUTCDate()) + " " + $("#end_time").val();
+                        var json = { name: $("#lesson_name").val(), startDate: startDate, endDate: endDate};
+                        $.ajax({
+                            url     : Routing.generate('speaker_add_lesson', { data: JSON.stringify(json) } ), 
+                            type    : 'POST',
+                            success : function(response){
+                                if(response == true) {
+                                    window.location.reload();
+                                }
+                            }
+                         });
                     }
-                );
-            }
-            window.location.reload();
-            calendar.fullCalendar('unselect');
+                }
+            });
+            return;
         },
         timeFormat: {
             // for agendaWeek and agendaDay

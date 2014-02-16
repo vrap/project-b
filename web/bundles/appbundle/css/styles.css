@@ -238,3 +238,9 @@ body {
 .wrapper-login .form-item Input[type="password"] {
   width: 93%;
 }
+
+
+/* */
+#dialog {
+    display:none;
+}

@@ -20,6 +20,7 @@ use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
 use Project\AppBundle\Form\EvaluationType;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/speaker")
@@ -149,7 +150,7 @@ class SpeakerController extends Controller
      * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function evaluateAction($eval_id, Request $request) {
+    public function evaluationsAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
 
@@ -299,6 +300,10 @@ class SpeakerController extends Controller
      */
     public function addAction($data)
     {
+        
+        $response = new Response(json_encode(true));
+        $response->headers->set('Content-Type', 'application/json');
+        
         $data = json_decode($data);
         $startDate = new \DateTime($data->startDate);
         $endDate = new \DateTime($data->endDate);
@@ -314,6 +319,6 @@ class SpeakerController extends Controller
         $em->persist($entity);
         $em->flush();
         
-        return \Symfony\Component\HttpFoundation\Response::HTTP_ACCEPTED;
+        return $response;
     }
 }

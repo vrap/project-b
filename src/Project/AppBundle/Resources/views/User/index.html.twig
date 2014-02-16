@@ -3,14 +3,25 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/adesignscalendar/css/fullcalendar/fullcalendar.css') }}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
 {% endblock %}
 
 {% block content %}
     {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
+     
+<div id="dialog" title="Créer une nouvelle entrée">
+    <label>Nom :</label>
+    <input type="text" name="lesson_name" id="lesson_name"/>
+    <label>Heure de début:</label>
+    <input type="time" name="start_time" id="start_time" value="09:00"/>
+    <label>Heure de fin:</label>
+    <input type="time" name="end_time" id="end_time" value="16:30"/>
+</div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/adesignscalendar/js/fullcalendar/jquery.fullcalendar.min.js') }}"></script>
