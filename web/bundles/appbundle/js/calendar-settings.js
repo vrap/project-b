@@ -46,7 +46,7 @@ $(function () {
                         endDate: endDate,
                     }
                 );
-            }
+            }return;
             window.location.reload();
             calendar.fullCalendar('unselect');
         },

@@ -24,3 +24,15 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+adesigns_calendar:
+    resource: "@ADesignsCalendarBundle/Resources/config/routing.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    
+speaker_add_lesson:
+    pattern: /speaker/add/{name}/{startDate}/{endDate}
+    defaults: { _controller: ProjectAppBundle:Speaker:add }
+    options:
+        expose: true
