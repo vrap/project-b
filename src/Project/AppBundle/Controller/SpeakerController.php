@@ -200,9 +200,12 @@ class SpeakerController extends Controller
 
             $em->flush();
 
+            $session->getFlashBag()->add('info', 'Notes enregistrées.');
+
             $cpt_student++;
             if($cpt_student >= count($students)) {
                 $session->remove('cpt_student');
+                $session->getFlashBag()->add('info', 'L\'évaluation a bien été notée.');
                 return $this->redirect($this->generateUrl('evaluation'));
             }
             $session->set('cpt_student',$cpt_student);
