@@ -235,15 +235,16 @@ class SpeakerController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addAction($name, $startDate, $endDate)
+    public function addAction($data)
     {
-        $startDate = new \DateTime($startDate);
-        $endDate = new \DateTime($endDate);
+        $data = json_decode($data);
+        $startDate = new \DateTime($data->startDate);
+        $endDate = new \DateTime($data->endDate);
 
         $entity = new Lesson();
         $em = $this->getDoctrine()->getManager();
 
-        $entity->setName($name);
+        $entity->setName($data->name);
         $entity->setStartDate($startDate);
         $entity->setEndDate($endDate);
         $entity->setTimecard(1);
