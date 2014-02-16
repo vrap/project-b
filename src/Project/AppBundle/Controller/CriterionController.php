@@ -76,6 +76,7 @@ class CriterionController extends Controller
             }
 
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère enregistré');
 
             if('submit' == $form->getClickedButton()->getName()) {
 
@@ -236,6 +237,7 @@ class CriterionController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère enregistré');
 
             return $this->redirect($this->generateUrl('criterion_edit', array('id' => $id)));
         }
@@ -268,6 +270,7 @@ class CriterionController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère supprimé');
         }
 
         return $this->redirect($this->generateUrl('criterion'));
