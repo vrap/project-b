@@ -1,0 +1,23 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+    
+    {% block mainLevel2 %}{% endblock %}
+
+    <div class="panel-group">
+        {% if entities %}
+            {% for entity in entities %}
+                <div class="panel-item">
+                    <div class="panel-header">
+                        {{ entity.module.getName }}
+                        {{ entity.created|date('Y-m-d H:i:s') }}
+                    </div>
+                    <div class="panel-content">
+                        {{ entity.comment }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+{% endblock %}
