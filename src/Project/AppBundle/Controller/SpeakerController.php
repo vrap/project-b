@@ -149,7 +149,7 @@ class SpeakerController extends Controller
      * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function evaluationsAction($eval_id, Request $request) {
+    public function evaluateAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $session = new Session();
 
