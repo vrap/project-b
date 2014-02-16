@@ -23,12 +23,12 @@
 			
 	    		<div class="sidebar">
 			        <ul class="list-inline">
-			            <li>Profile</li>
+			            <li>Profile | </li>
 			            <li>
 			                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-			                    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+			                    {{ 'Bonjour %username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
 			                    <a class="btn btn-primary" href="{{ path('fos_user_security_logout') }}">
-			                        {{ 'Déconnection'|trans({}, 'FOSUserBundle') }}
+			                        {{ 'Déconnexion'|trans({}, 'FOSUserBundle') }}
 			                    </a>
 			                {% else %}
 			                    <a href="{{ path('fos_user_security_login') }}">{{ 'Déconnection'|trans({}, 'FOSUserBundle') }}</a>
