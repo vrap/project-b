@@ -1,0 +1,60 @@
+
+{# Récuparation de la route pour l'attribution de la classe active #}
+{% macro is_current_route(route) %}
+	{% set current_route = app.request.attributes.get('_route')|split('_') %}
+    {%- if current_route[0] == route -%} 
+    	{{- 'class="active"' -}}
+    {%- endif -%} 
+{% endmacro %}
+{% import _self as croute %}  
+
+
+{# Tableau du menu : route => label #}
+{%
+set nav_speaker = {
+	'presence' : 'Présences',
+	'agenda': 'Agenda',
+	'evaluation': 'Évaluations',
+	}
+%}
+{%
+set	nav_student = {
+	'agenda' : 'Agenda',
+	'module': 'Modules',
+	'evaluation': 'Évaluations',
+	'feedback': 'Feedbacks'
+	}
+%}
+{%
+set	nav_manager = {
+	'agenda' : 'Agenda',
+	'presence' : 'Présences',
+	'evaluation' : 'Évaluations',
+	'promotion' : 'Promotions',
+	'module' : 'Module',
+	'utilisateur' : 'Utilisateurs',
+	'feedback': 'Feedbacks',
+	'archive': 'Archives'
+	}
+%}
+
+<nav>
+	<ul>
+		<li><a href="#"><i class="flaticon-home flaticon-left"></i> Home</a></li>
+		
+		{% if is_granted('ROLE_MANAGER') %}
+		   {% set nav = nav_manager %}
+		{% elseif is_granted('ROLE_STUDENT') %}
+		   {% set nav = nav_student %}
+		{% else %}
+			{% set nav = nav_speaker %}
+		{% endif %}
+
+		{% for key,value in nav %}
+			<li><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
+		{% endfor %}
+
+	</ul>
+</nav>
+
+

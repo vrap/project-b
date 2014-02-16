@@ -1,11 +1,49 @@
+/**
+* Reset
+*********/
+ul, li{
+	margin: 0;
+	padding: 0;
+}
+a{
+	text-decoration: none;
+}
+textarea:focus, input:focus{
+	outline:none
+}
+h1,h2,h3,h4,h5,h6{
+	margin: 0;
+	padding: 0;
+	font-weight: @font-light;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+
+button{
+	border: none;
+}
 
 /**
 * Colors
 **********/
 @color-dark : #3D4C67;
-@color-light : #ecf0f1;
+@color-small-dark : #2f6a87;
+@color-grey : #EBEBEB;
+
+@color-light : #E9EEF5;
+
 @color-primary : #E97B7D;
-@color-second : #34a9a5;
+@color-second : #00DCFF;
+
+
+
+// @color-dark : #4D5964;
+// @color-light : #E9EEF5;
+// @color-primary : #32C8B8;
+// @color-second : #A2B9BA;
+
+@color-white : #FFFFFF;
 
 
 /**
@@ -18,7 +56,7 @@
 
 /* Weight */
 @font-light : 300;
-
+@font-regular : 400;
 
 /**
 * Icons
@@ -75,35 +113,49 @@ ul.list-no-style > li{
 	list-style: none;
 }
 
-/* Button */
+.pull-right{
+	float: right;
+}
+.pull-left{
+	float: left;
+}
+
+/**
+* Button
+**********/
 .btn{
 	padding: 10px 15px;
-	.border-radius(4px);
+	.border-radius(3px);
+	display: inline-block;
+
+}
+.btn-small{
+	padding: 8px 13px;
+	font-size: .9em
+}
+
+.btn-default{
+	background-color: @color-grey;
+	color: darken(@color-grey, 30%);
+	&:hover{
+		background-color: darken(@color-grey, 3%);
+	}
 }
 .btn-primary{
 	background-color: @color-primary;
 	color: @color-light;
 	&:hover{
-		background-color: darken(@color-primary, 2%);
+		background-color: darken(@color-primary, 3%);
+	}
+}
+.btn-second{
+	background-color: @color-second;
+	color: darken(@color-second, 20%);
+	&:hover{
+		background-color: darken(@color-second, 3%);
 	}
 }
 
-/**
-* Reset
-*********/
-ul, li{
-	margin: 0;
-	padding: 0;
-}
-a{
-	text-decoration: none;
-}
-textarea:focus, input:focus{
-	outline:none
-}
-
-:focus {outline:none;}
-::-moz-focus-inner {border:0;}
 
 
 /**
@@ -112,8 +164,6 @@ textarea:focus, input:focus{
 input{
 	border:0; 
 	padding:10px; 
-	font-size:1.3em; 
-	font-family:Arial, sans-serif; 
 	color:#aaa; 
 	border:solid 1px #ccc; 
 	margin:0 0 20px;
@@ -128,6 +178,37 @@ input{
 
 
 /**
+* Bloc
+*********/
+.content{
+	padding: 25px;
+}
+
+.bloc-top{
+	margin-bottom: 25px;
+}
+
+.panel-group{
+	.panel-item{
+		background-color: @color-white;
+		margin-bottom: 15px;
+		
+		.panel-header{
+			overflow: auto;
+			padding:10px 18px;
+			border-bottom: 1px solid @color-light;
+			// background-color: @color-second;
+			color: @color-primary;
+		}
+		.panel-content{
+			padding:18px;
+		}
+
+	}
+
+}
+
+/**
 * styles
 **********/
 
@@ -135,6 +216,7 @@ input{
 body{
 	height: 100%;
 	background-color: @color-light;
+	color: @color-dark;
 	font-family: @font-primary;
 	font-weight: @font-light;
 }
@@ -189,17 +271,13 @@ body{
 		margin-left: 200px;
 
 		.sidebar{
-			padding: 20px;
+			padding: 10px;
 			background-color: @color-dark;
 			color: @color-light;
 			text-align: right;
 	
 			a{ color: @color-light; }
 
-		}
-
-		.content{
-			padding: 20px;
 		}
 
 	}

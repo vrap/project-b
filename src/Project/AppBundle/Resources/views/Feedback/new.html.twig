@@ -1,18 +1,18 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-
+	
 	<div class="panel-group">
         <div class="panel-item">
             <div class="panel-header">
-            	<h1>Créer une évaluation</h1>
+            	<h1>Commenter sur un cours</h1>
             </div>
             <div class="panel-content">
             	{{ form(form) }}
             </div>
         </div>
     </div>
-    
-    <a href="{{ path('evaluation') }}" class="btn btn-default">Annuler</a>
+    <a href="{{ path('feedback') }}" class="btn btn-default">Annuler</a>
 
 {% endblock %}
+

@@ -28,15 +28,9 @@ class StudentEvaluationRepository extends EntityRepository
                 ->getArrayResult();
 
         foreach($students_id as $id) {
-            $usersId[] = $em->getRepository('ProjectAppBundle:Student')
+            $students[] = $em->getRepository('ProjectAppBundle:Student')
                     ->findOneById($id)
-                    ->getUserId();
-        }
-        if(isset($usersId)){
-            foreach($usersId as $user) {
-                $students[] = $em->getRepository('ProjectAppBundle:User')
-                        ->findOneById($user);
-            }
+                    ->getUser();
         }
 
         return $students;

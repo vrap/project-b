@@ -129,27 +129,6 @@ class SpeakerController extends Controller
     }
 
     /**
-     * Display speaker's evaluations
-     *
-     * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/evaluations", name="speaker_evaluations")
-     * @Method("GET")
-     * @Template()
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function evaluationsAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')
-                ->findAllBySpeaker($this->getUser()->getId());
-        return $this->render('ProjectAppBundle:Speaker:evaluations.html.twig', array(
-            'evaluationsList' => $evaluations
-        ));
-    }
-
-    /**
      * Marks students for an evaluation
      *
      * @Secure(roles="ROLE_SPEAKER")
@@ -158,6 +137,8 @@ class SpeakerController extends Controller
      * @Template()
      *
      * @param $eval_id
+     * @param Request $request
+     * @throws \Exception
      * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -197,7 +178,7 @@ class SpeakerController extends Controller
             $comment_eval = $request->request->get('evaluation_comment');
 
             $current_student = $em->getRepository('ProjectAppBundle:Student')
-                    ->findOneByUserId($students[$cpt_student]->getId());
+                    ->findOneByUser($students[$cpt_student]);
 
             // Hydrate StudentEvaluation table
             $current_student_eval = $repo_student_eval->findOneByEvalStudent($evaluation, $current_student);
@@ -222,7 +203,7 @@ class SpeakerController extends Controller
             $cpt_student++;
             if($cpt_student >= count($students)) {
                 $session->remove('cpt_student');
-                return $this->redirect($this->generateUrl('speaker_evaluations'));
+                return $this->redirect($this->generateUrl('evaluation'));
             }
             $session->set('cpt_student',$cpt_student);
 

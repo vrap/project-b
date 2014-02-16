@@ -22,25 +22,20 @@ class Student
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer")
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User", cascade={"persist"})
      */
-    private $userId;
+    private $user;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="corporation_id", type="integer")
+     * @ORM\Column(nullable=true)
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Corporation", cascade={"persist"} )
      */
-    private $corporationId;
+    private $corporation;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="promotion_id", type="integer")
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Promotion", cascade={"persist"})
      */
-    private $promotionId;
+    private $promotion;
 
 
     /**
@@ -53,72 +48,74 @@ class Student
         return $this->id;
     }
 
+
+
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param \Project\AppBundle\Entity\User $user
      * @return Student
      */
-    public function setUserId($userId)
+    public function setUser(\Project\AppBundle\Entity\User $user = null)
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
-     * @return integer 
+     * @return \Project\AppBundle\Entity\User 
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
     /**
-     * Set corporationId
+     * Set corporation
      *
-     * @param integer $corporationId
+     * @param \Project\AppBundle\Entity\Corporation $corporation
      * @return Student
      */
-    public function setCorporationId($corporationId)
+    public function setCorporation(\Project\AppBundle\Entity\Corporation $corporation = null)
     {
-        $this->corporationId = $corporationId;
+        $this->corporation = $corporation;
 
         return $this;
     }
 
     /**
-     * Get corporationId
+     * Get corporation
      *
-     * @return integer 
+     * @return \Project\AppBundle\Entity\Corporation 
      */
-    public function getCorporationId()
+    public function getCorporation()
     {
-        return $this->corporationId;
+        return $this->corporation;
     }
 
     /**
-     * Set promotionId
+     * Set promotion
      *
-     * @param integer $promotionId
+     * @param \Project\AppBundle\Entity\Promotion $promotion
      * @return Student
      */
-    public function setPromotionId($promotionId)
+    public function setPromotion(\Project\AppBundle\Entity\Promotion $promotion = null)
     {
-        $this->promotionId = $promotionId;
+        $this->promotion = $promotion;
 
         return $this;
     }
 
     /**
-     * Get promotionId
+     * Get promotion
      *
-     * @return integer 
+     * @return \Project\AppBundle\Entity\Promotion 
      */
-    public function getPromotionId()
+    public function getPromotion()
     {
-        return $this->promotionId;
+        return $this->promotion;
     }
 }

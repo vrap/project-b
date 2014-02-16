@@ -1,7 +1,17 @@
-{% extends 'ProjectAppBundle::layout.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main -%}
-    <h1>Ajouter un critère au barème</h1>
+{% block content %}
+
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Ajouter un critère au barème</h1>
+            </div>
+            <div class="panel-content">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
 
     {% if old_criterions is not empty %}
         <h2>Critères précédents</h2>
@@ -23,6 +33,6 @@
         {{ form_row(form.submit) }}
     {{ form_end(form) }}
 
-    <a href="{{ path('speaker_evaluations') }}">Annuler (retour à la liste des évaluations)</a>
+    <a href="{{ path('speaker_evaluations') }}" class="btn btn-default">Annuler (retour à la liste des évaluations)</a>
 
 {% endblock %}
