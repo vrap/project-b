@@ -108,7 +108,7 @@ ul.list-no-style > li {
 }
 .btn-primary {
   background-color: #e97b7d;
-  color: #e9eef5;
+  color: #f2f2f2;
 }
 .btn-primary:hover {
   background-color: #e76e70;
@@ -119,6 +119,27 @@ ul.list-no-style > li {
 }
 .btn-second:hover {
   background-color: #00cff0;
+}
+/**
+* Table
+**********/
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+}
+table tr {
+  border-bottom: 1px solid #c5c5c5;
+}
+table tr:last-child {
+  border-bottom: none;
+}
+table tr th {
+  border-bottom: 2px solid #c5c5c5;
+  padding: 0px 8px 14px 8px;
+}
+table tr td {
+  padding: 6px;
 }
 /**
 * Formulaire
@@ -152,7 +173,7 @@ input {
 .panel-group .panel-item .panel-header {
   overflow: auto;
   padding: 10px 18px;
-  border-bottom: 1px solid #e9eef5;
+  border-bottom: 1px solid #f2f2f2;
   color: #e97b7d;
 }
 .panel-group .panel-item .panel-content {
@@ -164,7 +185,7 @@ input {
 /* Communs */
 body {
   height: 100%;
-  background-color: #e9eef5;
+  background-color: #f2f2f2;
   color: #3d4c67;
   font-family: 'Open Sans', sans-serif;
   font-weight: 300;
@@ -175,7 +196,7 @@ body {
 }
 .wrapper nav {
   background-color: #3d4c67;
-  color: #e9eef5;
+  color: #f2f2f2;
   float: left;
   width: 200px;
   height: 100%;
@@ -194,7 +215,7 @@ body {
 }
 .wrapper nav a {
   background-color: #3d4c67;
-  color: #e9eef5;
+  color: #f2f2f2;
   padding: 20px 20px 20px 40px;
   display: block;
 }
@@ -202,7 +223,7 @@ body {
   background-color: #394761;
 }
 .wrapper nav a.active {
-  background-color: #e9eef5;
+  background-color: #f2f2f2;
   color: #3d4c67;
 }
 .wrapper .main {
@@ -211,11 +232,11 @@ body {
 .wrapper .main .sidebar {
   padding: 10px;
   background-color: #3d4c67;
-  color: #e9eef5;
+  color: #f2f2f2;
   text-align: right;
 }
 .wrapper .main .sidebar a {
-  color: #e9eef5;
+  color: #f2f2f2;
 }
 /* Login */
 .wrapper-login {
@@ -228,7 +249,7 @@ body {
 .wrapper-login .login {
   width: 300px;
   padding: 30px;
-  background-color: #e9eef5;
+  background-color: #f2f2f2;
   margin: 0 auto;
 }
 .wrapper-login .form-item {
