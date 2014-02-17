@@ -40,7 +40,7 @@ set	nav_manager = {
 
 <nav>
 	<ul>
-		<li><a href="#"><i class="flaticon-home flaticon-left"></i> Home</a></li>
+		<li><a href="#"><i class="flaticon-home flaticon-left"></i><span> Home</span></a></li>
 		
 		{% if is_granted('ROLE_MANAGER') %}
 		   {% set nav = nav_manager %}
@@ -51,7 +51,11 @@ set	nav_manager = {
 		{% endif %}
 
 		{% for key,value in nav %}
-			<li><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
+			{% if value == 'Archives' or value == 'Promotions' or value == 'Utilisateurs'%}
+				<li class="optional"><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
+			{% else %}
+				<li><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
+			{% endif %}
 		{% endfor %}
 
 	</ul>
