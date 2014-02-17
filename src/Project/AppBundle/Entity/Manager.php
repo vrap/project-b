@@ -29,7 +29,7 @@ class Manager
     private $is_administrator;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User")
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
