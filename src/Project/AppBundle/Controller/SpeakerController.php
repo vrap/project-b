@@ -290,35 +290,4 @@ class SpeakerController extends Controller
             'student' => $students[$cpt_student],
         ));
     }
-    
-    
-    /**
-     * @Route("/add", name="speaker_add_lesson")
-     * @Template()
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addAction($data)
-    {
-        
-        $response = new Response(json_encode(true));
-        $response->headers->set('Content-Type', 'application/json');
-        
-        $data = json_decode($data);
-        $startDate = new \DateTime($data->startDate);
-        $endDate = new \DateTime($data->endDate);
-
-        $entity = new Lesson();
-        $em = $this->getDoctrine()->getManager();
-
-        $entity->setName($data->name);
-        $entity->setStartDate($startDate);
-        $entity->setEndDate($endDate);
-        $entity->setTimecard(1);
-
-        $em->persist($entity);
-        $em->flush();
-        
-        return $response;
-    }
 }
