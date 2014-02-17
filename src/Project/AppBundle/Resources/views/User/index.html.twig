@@ -8,15 +8,15 @@
 
 {% block content %}
     {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
-     
-<div id="dialog" title="Créer une nouvelle entrée">
-    <label>Nom :</label>
-    <input type="text" name="lesson_name" id="lesson_name"/>
-    <label>Heure de début:</label>
-    <input type="time" name="start_time" id="start_time" value="09:00"/>
-    <label>Heure de fin:</label>
-    <input type="time" name="end_time" id="end_time" value="16:30"/>
-</div>
+
+    <div id="dialog-create-events" title="Créer une nouvelle entrée">
+        <label>Nom :</label>
+        <input type="text" name="lesson_name" id="lesson_name"/>
+        <label>Heure de début:</label>
+        <input type="time" name="start_time" id="start_time" value="09:00"/>
+        <label>Heure de fin:</label>
+        <input type="time" name="end_time" id="end_time" value="16:30"/>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
