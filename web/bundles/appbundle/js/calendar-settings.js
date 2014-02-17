@@ -5,9 +5,14 @@ $(function () {
     var y = date.getFullYear();*/
 
     $('#calendar-holder').fullCalendar({
+        /** You can change value here (as event color, calendar column...) **/
         defaultView: 'month',
         selectable: true,
         lazyFetching: true,
+        eventColor: '#3d4c67',
+        eventTextColor: '#FFFFFF',
+        weekends: true,
+        /** You can change value here (as event color, calendar column...) **/
         header: {
             left: 'prev, next',
             center: 'title',
