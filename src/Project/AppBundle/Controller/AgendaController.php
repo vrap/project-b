@@ -17,6 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AgendaController extends Controller
 {
+    /**
+     * @Secure("ROLE_USER")
+     * @Route("/")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:Agenda:index.html.twig")
+     */
+    public function indexAction()
+    {
+        return array();
+    }
     
     /**
      * @Route("/add", name="agenda_add_lesson")
