@@ -50,6 +50,10 @@ class StudentController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $entity->getUser()->setEnabled(1);
+            $entity->getUser()->setRoles(array('ROLE_STUDENT'));
+
             $em->persist($entity);
             $em->flush();
 
