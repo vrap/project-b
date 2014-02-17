@@ -30,9 +30,16 @@ adesigns_calendar:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-    
-speaker_add_lesson:
-    pattern: /speaker/add/{data}
-    defaults: { _controller: ProjectAppBundle:Speaker:add }
+
+# Routes for calendar
+agenda_add_lesson:
+    pattern: /agenda/add/{data}
+    defaults: { _controller: ProjectAppBundle:Agenda:add }
+    options:
+        expose: true
+
+agenda_delete_lesson:
+    pattern: /agenda/delete/{id}
+    defaults: { _controller: ProjectAppBundle:Agenda:delete }
     options:
         expose: true

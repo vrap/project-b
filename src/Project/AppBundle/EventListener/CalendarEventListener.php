@@ -58,6 +58,8 @@ class CalendarEventListener
             $eventEntity->setUrl('http://www.google.com'); // url to send user to when event label is clicked
             $eventEntity->setCssClass('my-custom-class'); // a custom class you may want to apply to event labels*/
             $eventEntity = new EventEntity($event->getName(), $event->getStartDate(), $event->getEndDate());
+            $eventEntity->setId($event->getId());
+            
             //finally, add the event to the CalendarEvent for displaying on the calendar
             $calendarEvent->addEvent($eventEntity);
         }

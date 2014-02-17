@@ -301,3 +301,8 @@ body {
 .wrapper-login .form-item Input[type="password"] {
   width: 93%;
 }
+
+/* */
+#dialog-create-events {
+    display:none;
+}
