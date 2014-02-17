@@ -165,6 +165,10 @@ class SpeakerController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $entity->getUser()->setEnabled(1);
+            $entity->getUser()->setRoles(array('ROLE_SPEAKER'));
+
             $em->persist($entity);
             $em->flush();
 
