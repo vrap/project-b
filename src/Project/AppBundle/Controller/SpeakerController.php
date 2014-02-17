@@ -18,7 +18,9 @@ use Project\AppBundle\Entity\SpeakerLesson;
 use Project\AppBundle\Entity\Lesson;
 use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
+use Project\AppBundle\Entity\Speaker;
 use Project\AppBundle\Form\EvaluationType;
+use Project\AppBundle\Form\SpeakerType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -290,4 +292,78 @@ class SpeakerController extends Controller
             'student' => $students[$cpt_student],
         ));
     }
+
+    /**
+     * Creates a new Speaker entity.
+     *
+     * @Route("/", name="speaker_create")
+     * @Method("POST")
+     * @Template("ProjectAppBundle:User:new.html.twig")
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new Speaker();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $entity->getUser()->setEnabled(1);
+            $entity->getUser()->setRoles(array('ROLE_SPEAKER'));
+
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('user'));
+        }
+
+        return array(
+            'entity' => $entity,
+            'title'  => 'Créer un intervenant',
+            'form'   => $form->createView(),
+        );
+
+    }
+
+    /**
+    * Creates a form to create a Speaker entity.
+    *
+    * @param Student $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createCreateForm(Speaker $entity)
+    {
+        $form = $this->createForm(new SpeakerType(), $entity, array(
+            'action' => $this->generateUrl('speaker_create'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-second')));
+
+        return $form;
+    }
+
+    /**
+     * Displays a form to create a new Speaker entity.
+     *
+     * @Route("/new", name="user_speaker_new")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:User:new.html.twig")
+     */
+    public function newAction()
+    {
+        $entity = new Speaker();
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+            'entity' => $entity,
+            'title'  => 'Créer un intervenant',
+            'form'   => $form->createView(),
+        );
+    }
+
+
+
 }

@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\User;
-use Project\AppBundle\Form\UserType;
+use Project\AppBundle\Entity\Student;
+use Project\AppBundle\Form\StudentType;
 
 /**
- * User controller.
+ * Student controller.
  *
- * @Route("/user")
+ * @Route("/student")
  */
-class UserController extends Controller
+class StudentController extends Controller
 {
 
     /**
-     * Lists all User entities.
+     * Lists all Student entities.
      *
-     * @Route("/", name="user")
+     * @Route("/", name="student")
      * @Method("GET")
      * @Template()
      */
@@ -29,83 +29,87 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('ProjectAppBundle:User')->findAll();
+        $entities = $em->getRepository('ProjectAppBundle:Student')->findAll();
 
         return array(
-            'users' => $users,
+            'entities' => $entities,
         );
     }
     /**
-     * Creates a new User entity.
+     * Creates a new Student entity.
      *
-     * @Route("/", name="user_create")
+     * @Route("/", name="student_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createCreateForm($user);
+        $entity = new Student();
+        $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
 
-            $em->persist($user);
+            $entity->getUser()->setEnabled(1);
+            $entity->getUser()->setRoles(array('ROLE_STUDENT'));
+
+            $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_show', array('id' => $user->getId())));
+            return $this->redirect($this->generateUrl('user'));
         }
 
         return array(
-            'user' => $user,
+            'entity' => $entity,
+            'title'  => 'Créer un étudiant',
             'form'   => $form->createView(),
         );
+
     }
 
     /**
-    * Creates a form to create a User entity.
+    * Creates a form to create a Student entity.
     *
-    * @param User $entity The entity
+    * @param Student $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(User $entity)
+    private function createCreateForm(Student $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_create'),
+        $form = $this->createForm(new StudentType(), $entity, array(
+            'action' => $this->generateUrl('student_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Ajouter', 'attr' => array('class' => 'btn btn-second')));
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new User entity.
+     * Displays a form to create a new Student entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/new", name="user_student_new")
      * @Method("GET")
-     * @Template()
+     * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function newAction()
     {
-        $entity = new User();
+        $entity = new Student();
         $form   = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
+            'title'  => 'Créer un étudiant',
             'form'   => $form->createView(),
         );
-        
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Student entity.
      *
-     * @Route("/{id}", name="user_show")
+     * @Route("/{id}", name="student_show")
      * @Method("GET")
      * @Template()
      */
@@ -113,10 +117,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Student')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Student entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -128,9 +132,9 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing User entity.
+     * Displays a form to edit an existing Student entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", name="student_edit")
      * @Method("GET")
      * @Template()
      */
@@ -138,10 +142,10 @@ class UserController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Student')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Student entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -155,16 +159,16 @@ class UserController extends Controller
     }
 
     /**
-    * Creates a form to edit a User entity.
+    * Creates a form to edit a Student entity.
     *
-    * @param User $entity The entity
+    * @param Student $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(User $entity)
+    private function createEditForm(Student $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
-            'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new StudentType(), $entity, array(
+            'action' => $this->generateUrl('student_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -173,20 +177,20 @@ class UserController extends Controller
         return $form;
     }
     /**
-     * Edits an existing User entity.
+     * Edits an existing Student entity.
      *
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", name="student_update")
      * @Method("PUT")
-     * @Template("ProjectAppBundle:User:edit.html.twig")
+     * @Template("ProjectAppBundle:Student:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+        $entity = $em->getRepository('ProjectAppBundle:Student')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find User entity.');
+            throw $this->createNotFoundException('Unable to find Student entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -196,7 +200,7 @@ class UserController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('user_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('student_edit', array('id' => $id)));
         }
 
         return array(
@@ -205,10 +209,11 @@ class UserController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
-     * Deletes a User entity.
+     * Deletes a Student entity.
      *
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", name="student_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -218,21 +223,21 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('ProjectAppBundle:User')->find($id);
+            $entity = $em->getRepository('ProjectAppBundle:Student')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find User entity.');
+                throw $this->createNotFoundException('Unable to find Student entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('user'));
+        return $this->redirect($this->generateUrl('student'));
     }
 
     /**
-     * Creates a form to delete a User entity by id.
+     * Creates a form to delete a Student entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -241,7 +246,7 @@ class UserController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('user_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('student_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

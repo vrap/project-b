@@ -1,4 +1,51 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 {% block content %}
+    <div class="bloc-top">
+        <a class="btn btn-second" href="{{ path('user_student_new') }}">
+            Créer étudiant
+        </a>
+        <a class="btn btn-second" href="{{ path('user_speaker_new') }}">
+            Créer Intervenant
+        </a>
+        <a class="btn btn-second" href="{{ path('user_manager_new') }}">
+            Créer Résponsable
+        </a>
+    </div>
+    
+    {% if users %}
+        <div class="panel-group">
+            <div class="panel-item">
+                <div class="panel-content">
+                    <table>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prenom</th>
+                            <th>Mail</th>
+                            <th>Telephone</th>
+                            <!-- <th></th> -->
+                        </tr>
+                        {% for user in users %}
+                            
+                            <tr>
+                                <td>{{user.username}}</td>
+                                <td>{{user.surname}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.phone}}</td>
+                                <!-- <td>
+                                    <a class="pull-right btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
+                                        Modifier
+                                    </a>
+                                </td> -->
+                            </tr>
+
+                        {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <p>"ProjectAppBundle::index.html.twig"</p>
 {% endblock %}
+    
+

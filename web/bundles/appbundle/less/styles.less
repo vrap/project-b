@@ -31,7 +31,7 @@ button{
 @color-small-dark : #2f6a87;
 @color-grey : #EBEBEB;
 
-@color-light : #E9EEF5;
+@color-light : #f2f2f2;
 
 @color-primary : #E97B7D;
 @color-second : #00DCFF;
@@ -127,8 +127,12 @@ ul.list-no-style > li{
 	padding: 10px 15px;
 	.border-radius(3px);
 	display: inline-block;
-
 }
+.btn.disabled{
+	opacity: 0.5;
+	cursor: default;
+}
+
 .btn-small{
 	padding: 8px 13px;
 	font-size: .9em
@@ -155,6 +159,30 @@ ul.list-no-style > li{
 		background-color: darken(@color-second, 3%);
 	}
 }
+/**
+* Table
+**********/
+table{
+	border-collapse: collapse;
+	width: 100%;
+	text-align: left;
+
+	tr{
+		border-bottom: 1px solid darken(@color-grey, 15%) ;
+		&:last-child{
+			border-bottom: none;
+		}
+		th{
+			border-bottom: 2px solid darken(@color-grey, 15%) ;
+			padding: 0px 8px 14px 8px;
+		}
+		td{
+			padding: 6px;
+		}
+	}
+
+}
+
 
 
 
