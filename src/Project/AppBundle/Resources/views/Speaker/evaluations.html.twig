@@ -1,7 +1,0 @@
-{% extends "ProjectAppBundle::layout.html.twig" %}
-
-{% block content %}
-	<h1>Vos évaluations</h1>
-	{{ include('ProjectAppBundle:Evaluation:index.html.twig',{ 'evaluationsList' : evaluationsList }) }}
-	<a href="{{ path('project_app_evaluation_create') }}">Nouvelle évaluation</a>
-{% endblock %}

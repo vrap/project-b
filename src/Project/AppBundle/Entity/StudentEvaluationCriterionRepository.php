@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class StudentEvaluationCriterionRepository extends EntityRepository
 {
+    public function findOneByCritEval(Criterion $crit, StudentEvaluation $se) {
+        $em = $this->getEntityManager();
+
+        return $em->createQuery('
+                SELECT sec
+                FROM ProjectAppBundle:StudentEvaluationCriterion sec
+                WHERE sec.studentEvaluation = :se
+                AND sec.criterion = :criterion
+            ')
+                ->setParameters(array(
+                        'se' => $se,
+                        'criterion' => $crit
+                ))
+                ->getOneOrNullResult();
+    }
 }

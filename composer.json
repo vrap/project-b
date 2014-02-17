@@ -22,7 +22,9 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/data-fixtures": "@dev",
         "friendsofsymfony/user-bundle": "dev-master",
-        "jms/security-extra-bundle": "1.5.*@dev"
+        "jms/security-extra-bundle": "1.5.*@dev",
+	"friendsofsymfony/jsrouting-bundle": "@stable",
+	"adesigns/calendar-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

@@ -1,0 +1,46 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+    <h1>{{ evaluation.description }}</h1>
+    <h2>Noter vos élèves</h2>
+    {% if student is not empty %}
+        <form method="POST">
+            <p>
+                {{ student.username }} {{ student.surname }}
+            </p>
+            <ul>
+                {% if criterions is not empty %}
+                    {% for criterion in criterions %}
+                        <li>
+                            {{ criterion.description }} :
+                            <input class="criterion" type="text" name="criterion_score[]" size="2" maxlength="2" required> / {{ criterion.max }}
+                        </li>
+                    {% endfor %}
+                {% endif %}
+                <li>
+                    Note totale : <input type="text" name="evaluation_score" id="total_score" size="2" maxlength="2" required> / {{ evaluation.max }}
+                </li>
+            </ul>
+            Commentaire : <br/>
+            <textarea placeholder="Votre commentaire" name="evaluation_comment"></textarea>
+            <br/>
+            <button type="submit">Enregistrer et passer à l'élève suivant</button>
+        </form>
+    {% else %}
+        <p>Aucun élève a participé à cette évaluation.</p>
+    {% endif %}
+    <script>
+        var criterions = $('.criterion');
+
+        criterions.blur(function () {
+            var somme = 0;
+            for( var i = 0; i < criterions.length; i++) {
+                if(criterions[i].value != "") {
+                    somme += parseFloat(criterions[i].value);
+                }
+            }
+            $( "#total_score").val(somme);
+        });
+
+    </script>
+{% endblock %}

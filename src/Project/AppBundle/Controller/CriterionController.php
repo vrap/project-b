@@ -2,6 +2,7 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\StudentEvaluationCriterion;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -61,11 +62,25 @@ class CriterionController extends Controller
             }
             $entity->setEvaluation($eval);
             $em->persist($entity);
+
+            $studentsEval = $em->getRepository('ProjectAppBundle:StudentEvaluation')
+                    ->findByEvaluation($eval);
+
+            // Add this crit for every students who had participated at the evaluation
+            foreach ($studentsEval as $studentEval) {
+                $studentEvalCrit = new StudentEvaluationCriterion();
+                $studentEvalCrit->setCriterion($entity);
+                $studentEvalCrit->setScore(0);
+                $studentEvalCrit->setStudentEvaluation($studentEval);
+                $em->persist($studentEvalCrit);
+            }
+
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère enregistré');
 
             if('submit' == $form->getClickedButton()->getName()) {
 
-                return $this->redirect($this->generateUrl('speaker_evaluations'));
+                return $this->redirect($this->generateUrl('evaluation'));
             } else if('crit_new' == $form->getClickedButton()->getName()) {
 
                 return $this->redirect($this->generateUrl('criterion_new', array(
@@ -73,7 +88,7 @@ class CriterionController extends Controller
                 )));
             }
 
-            return $this->redirect($this->generateUrl('speaker_evaluations'));
+            return $this->redirect($this->generateUrl('evaluation'));
         }
 
         return array(
@@ -222,6 +237,7 @@ class CriterionController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère enregistré');
 
             return $this->redirect($this->generateUrl('criterion_edit', array('id' => $id)));
         }
@@ -254,6 +270,7 @@ class CriterionController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Critère supprimé');
         }
 
         return $this->redirect($this->generateUrl('criterion'));

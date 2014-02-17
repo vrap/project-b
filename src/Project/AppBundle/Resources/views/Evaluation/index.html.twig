@@ -22,6 +22,7 @@
 	            <div class="panel-header">
 	                <h2 class="pull-left">{{ evaluation.description }}</h2>
 	                {% if is_granted('ROLE_SPEAKER') %}
+                        <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': evaluation.id }) }}">Noter </a>
 						<a class="pull-right btn btn-default btn-small" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier
 						</a>
 				    {% endif %}

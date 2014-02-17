@@ -1,6 +1,8 @@
 /web/bundles/acmedemo
 /web/bundles/framework
 /web/bundles/sensiodistribution
+/web/bundles/fosjsrouting
+/web/bundles/adesignscalendar
 /app/bootstrap.php.cache
 /app/cache/*
 /app/config/parameters.yml

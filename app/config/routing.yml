@@ -24,3 +24,22 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
+adesigns_calendar:
+    resource: "@ADesignsCalendarBundle/Resources/config/routing.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+# Routes for calendar
+agenda_add_lesson:
+    pattern: /agenda/add/{data}
+    defaults: { _controller: ProjectAppBundle:Agenda:add }
+    options:
+        expose: true
+
+agenda_delete_lesson:
+    pattern: /agenda/delete/{id}
+    defaults: { _controller: ProjectAppBundle:Agenda:delete }
+    options:
+        expose: true

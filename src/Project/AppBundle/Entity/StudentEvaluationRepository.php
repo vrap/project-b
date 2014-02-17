@@ -12,4 +12,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class StudentEvaluationRepository extends EntityRepository
 {
+    public function findStudentsByEvaluation (Evaluation $eval ) {
+        $em = $this->getEntityManager();
+
+        $students = array();
+
+        $students_id = $em->createQuery(
+                        "
+                        SELECT IDENTITY (se.student)
+                        FROM ProjectAppBundle:StudentEvaluation se
+                        WHERE se.evaluation = :eval
+                        "
+                )
+                ->setParameter('eval', $eval)
+                ->getArrayResult();
+
+        foreach($students_id as $id) {
+            $students[] = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneById($id)
+                    ->getUser();
+        }
+
+        return $students;
+    }
+
+    public function findOneByEvalStudent(Evaluation $eval, Student $student) {
+        $em = $this->getEntityManager();
+
+        return $em->createQuery('
+                SELECT se
+                FROM ProjectAppBundle:StudentEvaluation se
+                WHERE se.evaluation = :eval
+                AND se.student = :student
+            ')
+            ->setParameters(array(
+                    'eval' => $eval,
+                    'student' => $student
+                ))
+            ->getOneOrNullResult();
+    }
 }

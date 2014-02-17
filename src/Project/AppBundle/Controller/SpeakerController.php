@@ -21,8 +21,12 @@ use Project\AppBundle\Entity\User;
 use Project\AppBundle\Entity\Speaker;
 use Project\AppBundle\Form\EvaluationType;
 use Project\AppBundle\Form\SpeakerType;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 
-
+/**
+ * @Route("/speaker")
+ */
 class SpeakerController extends Controller
 {
     /**
@@ -51,6 +55,7 @@ class SpeakerController extends Controller
      */
     public function missingsAction(Request $request)
     {
+        // Get logged in user
         $user = $this->getUser();
 
         if(null === $user) {
@@ -59,6 +64,7 @@ class SpeakerController extends Controller
             ));
         }
 
+        // Init repositories
         $em = $this->getDoctrine()
                 ->getManager();
         $repositorySpeakerLesson = $em->getRepository('ProjectAppBundle:SpeakerLesson');
@@ -82,11 +88,14 @@ class SpeakerController extends Controller
             ));
         }
         $lessonId = $todayLesson[0]['id'];
+
         // If method post, save missings
         if('POST' === $request->getMethod())
         {
+            // Get missings
             $studentsMissing = $request->request->get('missings');
 
+            // Save missings
             if(null !== $studentsMissing)
             {
                 foreach ($studentsMissing as $absentId) {
@@ -109,8 +118,8 @@ class SpeakerController extends Controller
             ));
         }
 
+        // The speaker assumes the lesson of the day
         if(in_array($lessonId, $lessons)){
-            // The speaker assumes the lesson of the day
             // Get the students
             $students = array();
             $dataStudents = $repositoryLessonStudent->findStudentsByLesson($todayLesson);
@@ -130,23 +139,157 @@ class SpeakerController extends Controller
     }
 
     /**
-     * Display speaker's evaluations
+     * Marks students for an evaluation
      *
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/evaluations", name="speaker_evaluations")
-     * @Method("GET")
+     * @Route("/evaluate/{eval_id}", name="speaker_evaluate")
+     * @Method({"GET", "POST"})
      * @Template()
      *
+     * @param $eval_id
+     * @param Request $request
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function evaluationsAction()
-    {
+    public function evaluationsAction($eval_id, Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $session = new Session();
 
-        $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')
-                ->findAllBySpeaker($this->getUser()->getId());
-        return $this->render('ProjectAppBundle:Speaker:evaluations.html.twig', array(
-            'evaluationsList' => $evaluations
+        // Set current student
+        if(false === $session->has('cpt_student')) {
+            $session->set('cpt_student', 0);
+            $cpt_student = $session->get('cpt_student');
+        } else {
+            $cpt_student = $session->get('cpt_student');
+        }
+
+        // Repositories
+        $repo_eval = $em->getRepository('ProjectAppBundle:Evaluation');
+        $repo_crit = $em->getRepository('ProjectAppBundle:Criterion');
+        $repo_student_eval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
+        $repo_student_eval_crit = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion');
+
+        // Find current evaluation
+        $evaluation = $repo_eval->find($eval_id);
+
+        if(null === $evaluation) {
+            throw new \InvalidArgumentException('Unable to find evaluation ' . $eval_id);
+        }
+
+        // Find corresponding criterions
+        $criterions = $repo_crit->findAllByEvaluation($evaluation);
+        // Find students who had participated
+        $students = $repo_student_eval->findStudentsByEvaluation($evaluation);
+
+        if(empty($students)) {
+            throw new \Exception('Array $students can not be empty');
+        }
+
+        // Actions when submiting
+        if('POST' === $request->getMethod())
+        {
+            // Values given by the speaker
+            $score_eval = $request->request->get('evaluation_score');
+
+            // Score verifications
+            if("" == $score_eval) {
+                $this->get('session')->getFlashBag()->add('error', 'Veuillez renseigner la note de l\'évaluation.');
+
+                return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                        'evaluation' => $evaluation,
+                        'criterions' => $criterions,
+                        'student' => $students[$cpt_student],
+                ));
+            }
+
+            if(is_nan($score_eval) || $score_eval > $evaluation->getMax()) {
+                $this->get('session')->getFlashBag()->add('error', 'La note de l\'évaluation n\'est pas valide.');
+
+                return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                        'evaluation' => $evaluation,
+                        'criterions' => $criterions,
+                        'student' => $students[$cpt_student],
+                ));
+            }
+
+            // Get the commentary.
+            // It's not required so there is no verifications
+            $comment_eval = $request->request->get('evaluation_comment');
+
+            // Find students marked
+            $current_student = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneByUser($students[$cpt_student]);
+
+            // Hydrate StudentEvaluation table
+            $current_student_eval = $repo_student_eval->findOneByEvalStudent($evaluation, $current_student);
+            $current_student_eval->setScore($score_eval);
+            $current_student_eval->setComment($comment_eval);
+            $em->persist($current_student_eval);
+
+            // Hydrate StudentEvaluationCriterion table if criterions are present
+            $scores_crit = $request->request->get('criterion_score');
+            if(null !== $scores_crit) {
+                $cpt = 0;
+                foreach($scores_crit as $score) {
+                    // Score verifications
+                    if("" == $score) {
+                        $this->get('session')->getFlashBag()->add('error', 'Veuillez renseigner le détail du barème.');
+
+                        return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                                'evaluation' => $evaluation,
+                                'criterions' => $criterions,
+                                'student' => $students[$cpt_student],
+                        ));
+                    }
+
+                    if($score > $criterions[$cpt]->getMax() || is_nan($score)) {
+                        $this->get('session')->getFlashBag()->add('error', 'Valeur invalide dans le détail du barème.');
+
+                        return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                                'evaluation' => $evaluation,
+                                'criterions' => $criterions,
+                                'student' => $students[$cpt_student],
+                        ));
+                    }
+
+                    // Save score
+                    $current_student_eval_crit = $repo_student_eval_crit->findOneByCritEval($criterions[$cpt], $current_student_eval);
+                    $current_student_eval_crit->setScore($score);
+                    $em->persist($current_student_eval_crit);
+                    $cpt++;
+                }
+            }
+
+            $em->flush();
+
+            $session->getFlashBag()->add('info', 'Notes enregistrées.');
+
+            // Icrement current student
+            $cpt_student++;
+            if($cpt_student >= count($students)) {
+                // Every students had been marked
+                $session->remove('cpt_student');
+                $session->getFlashBag()->add('info', 'L\'évaluation a bien été notée.
+                    Les notes seront transimises au(x) responsable(s) de la formation.');
+
+                return $this->redirect($this->generateUrl('evaluation'));
+            }
+
+            // Continue with the next student
+            $session->set('cpt_student',$cpt_student);
+
+            return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                    'evaluation' => $evaluation,
+                    'criterions' => $criterions,
+                    'student' => $students[$cpt_student],
+            ));
+        }
+
+        return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+            'evaluation' => $evaluation,
+            'criterions' => $criterions,
+            'student' => $students[$cpt_student],
         ));
     }
 

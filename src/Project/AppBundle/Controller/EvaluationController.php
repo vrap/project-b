@@ -2,6 +2,7 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\StudentEvaluation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -25,6 +26,7 @@ class EvaluationController extends Controller
      * Lists all Evaluation entities.
      *
      * @Route("/", name="evaluation")
+     * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER"})
      * @Method("GET")
      * @Template("ProjectAppBundle:Evaluation:index.html.twig")
      */
@@ -75,11 +77,30 @@ class EvaluationController extends Controller
 
             $entity->setSpeaker($speaker);
             $em->persist($entity);
+
+            $module = $entity->getModule();
+            $promotion = $module->getPromotion();
+            $students = $em->getRepository('ProjectAppBundle:Student')
+                    ->findByPromotion($promotion);
+
+            // Insertion in table student_evaluation
+            foreach($students as $student) {
+                $studentEval = new StudentEvaluation();
+                $studentEval->setEvaluation($entity);
+                $studentEval->setScore(0);
+                $studentEval->setComment('Non évalué pour le moment.');
+                $studentEval->setStudent($student);
+
+                $em->persist($studentEval);
+            }
+
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
 
             if('submit' == $form->getClickedButton()->getName()) {
 
-                return $this->redirect($this->generateUrl('speaker_evaluations'));
+                return $this->redirect($this->generateUrl('evaluation'));
             } else if('criterions_add' == $form->getClickedButton()->getName()) {
 
                 return $this->redirect($this->generateUrl('criterion_new', array(
@@ -233,6 +254,7 @@ class EvaluationController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
 
             //return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
             if('submit' == $editForm->getClickedButton()->getName()) {
@@ -276,9 +298,11 @@ class EvaluationController extends Controller
 
             $em->remove($entity);
             $em->flush();
+            $this->get('session')->getFlashBag()->add('info', 'Évaluation supprimée.');
+
         }
 
-        return $this->redirect($this->generateUrl('speaker_evaluations'));
+        return $this->redirect($this->generateUrl('evaluation'));
     }
 
     /**
