@@ -8,7 +8,7 @@
         <a class="btn btn-second" href="{{ path('user_speaker_new') }}">
             Créer Intervenant
         </a>
-        <a class="btn btn-second disabled">
+        <a class="btn btn-second" href="{{ path('user_manager_new') }}">
             Créer Résponsable
         </a>
     </div>
@@ -23,7 +23,7 @@
                             <th>Prenom</th>
                             <th>Mail</th>
                             <th>Telephone</th>
-                            <th></th>
+                            <!-- <th></th> -->
                         </tr>
                         {% for user in users %}
                             
@@ -32,11 +32,11 @@
                                 <td>{{user.surname}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <td>
+                                <!-- <td>
                                     <a class="pull-right btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
                                         Modifier
                                     </a>
-                                </td>
+                                </td> -->
                             </tr>
 
                         {% endfor %}

@@ -1,18 +1,14 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-		
-	<div class="panel-group">
+    
+    <div class="panel-group">
         <div class="panel-item">
             <div class="panel-header">
-            	<select name="role" id="role">
-					<option value="student">Étudiant</option>
-					<option value="speaker">Intervenant</option>
-					<option value="manager">Responsable</option>
-				</select>
+                <h1>{{title}}</h1>
             </div>
             <div class="panel-content">
-            	
+                {{ form(form) }}
             </div>
         </div>
     </div>
