@@ -40,7 +40,7 @@ class StudentController extends Controller
      *
      * @Route("/", name="student_create")
      * @Method("POST")
-     * @Template("ProjectAppBundle:Student:new.html.twig")
+     * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -62,6 +62,7 @@ class StudentController extends Controller
 
         return array(
             'entity' => $entity,
+            'title'  => 'Créer un étudiant',
             'form'   => $form->createView(),
         );
 
@@ -91,7 +92,7 @@ class StudentController extends Controller
      *
      * @Route("/new", name="user_student_new")
      * @Method("GET")
-     * @Template()
+     * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function newAction()
     {
@@ -100,6 +101,7 @@ class StudentController extends Controller
 
         return array(
             'entity' => $entity,
+            'title'  => 'Créer un étudiant',
             'form'   => $form->createView(),
         );
     }

@@ -155,7 +155,7 @@ class SpeakerController extends Controller
      *
      * @Route("/", name="speaker_create")
      * @Method("POST")
-     * @Template("ProjectAppBundle:Speaker:new.html.twig")
+     * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -177,6 +177,7 @@ class SpeakerController extends Controller
 
         return array(
             'entity' => $entity,
+            'title'  => 'Créer un intervenant',
             'form'   => $form->createView(),
         );
 
@@ -206,7 +207,7 @@ class SpeakerController extends Controller
      *
      * @Route("/new", name="user_speaker_new")
      * @Method("GET")
-     * @Template()
+     * @Template("ProjectAppBundle:User:new.html.twig")
      */
     public function newAction()
     {
@@ -215,6 +216,7 @@ class SpeakerController extends Controller
 
         return array(
             'entity' => $entity,
+            'title'  => 'Créer un intervenant',
             'form'   => $form->createView(),
         );
     }
