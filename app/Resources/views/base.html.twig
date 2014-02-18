@@ -39,6 +39,19 @@
         {% block javascripts %}
 		  <script src="{{ asset('bundles/appbundle/js/jquery-2.1.0.min.js') }}" type="text/javascript" ></script>
 		  <script src="{{ asset('bundles/appbundle/js/ajax.js') }}" type="text/javascript" /></script>
+
+          <script type="text/javascript">
+            // Script for opening and close of menu
+            $('#extand').click(function () {
+                if($('nav').hasClass('open')) {
+                    $('nav').removeClass('open');
+                    $('nav').addClass('close');
+                } else {
+                    $('nav').removeClass('close');
+                    $('nav').addClass('open');
+                }
+            })
+          </script>
         {% endblock %}
 	</body>
 </html>

@@ -38,10 +38,11 @@ set	nav_manager = {
 	}
 %}
 
-<nav>
+<nav class="close">
 	<ul>
-		<li><a href="#"><i class="flaticon-home flaticon-left"></i><span> Home</span></a></li>
-		
+		<li class="extand-item"><a id="extand" href="#"><i class="flaticon-reorder flaticon-right responsive-icone"></i></a></li>
+		<li><a href="#"><i class="flaticon-house3 flaticon-left"></i> Home</a></li>
+
 		{% if is_granted('ROLE_MANAGER') %}
 		   {% set nav = nav_manager %}
 		{% elseif is_granted('ROLE_STUDENT') %}
