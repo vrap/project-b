@@ -167,6 +167,11 @@ input {
 .content {
   padding: 25px;
 }
+@media only screen and (max-width: 1024px) {
+  .content {
+    padding-bottom: 70px;
+  }
+}
 .bloc-top {
   margin-bottom: 25px;
 }
@@ -208,11 +213,35 @@ body {
   top: 0;
   bottom: 0;
 }
+@media only screen and (max-width: 1024px) {
+  .wrapper nav {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+  }
+}
+@media only screen and (max-width: 660px) {
+  .wrapper nav {
+    height: 50px;
+  }
+}
+@media only screen and (min-width: 660px) and (max-width: 1024px) {
+  .wrapper nav {
+    height: 62px;
+  }
+}
 .wrapper nav ul > li {
   list-style: none;
 }
 .wrapper nav ul > li:first-child a {
   background-color: #e97b7d;
+}
+@media only screen and (max-width: 660px) {
+  .wrapper nav ul > li:first-child a {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 .wrapper nav ul > li:first-child a:hover {
   background-color: #e87274;
@@ -230,8 +259,42 @@ body {
   background-color: #f2f2f2;
   color: #3d4c67;
 }
+@media only screen and (max-width: 1024px) {
+  .wrapper nav a {
+    text-align: center;
+    width: 11%;
+    float: left;
+  }
+}
+@media only screen and (min-width: 660px) and (max-width: 1024px) {
+  .wrapper nav a {
+    padding: 20px 20px 20px 10px;
+  }
+  .wrapper nav a > i {
+    display: none;
+  }
+}
+@media only screen and (max-width: 660px) {
+  .wrapper nav a {
+    padding: 15px 24px 15px 1px;
+    font-size: .8em;
+  }
+  .wrapper nav a > i + span {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .wrapper nav .optional {
+    display: none;
+  }
+}
 .wrapper .main {
   margin-left: 200px;
+}
+@media only screen and (max-width: 1024px) {
+  .wrapper .main {
+    margin-left: 0;
+  }
 }
 .wrapper .main .sidebar {
   padding: 10px;

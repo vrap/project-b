@@ -210,6 +210,12 @@ input{
 *********/
 .content{
 	padding: 25px;
+
+	@media only screen 
+	and (max-width : 1024px) {
+		// Tablets & tablets
+		padding-bottom: 70px;
+	}
 }
 
 .bloc-top{
@@ -261,42 +267,111 @@ body{
 		width: 200px;
 		height: 100%;
 		position: fixed;
-	    top: 0;
-	    bottom: 0;
+    top: 0;
+    bottom: 0;
+
+		@media only screen 
+		and (max-width : 1024px) {
+			// Smartphones & tablets
+			width: 100%;
+	  	position: fixed;
+	  	bottom: 0;
+	  	top: auto;
+		}
+
+	  @media only screen 
+		and (max-width : 660px) {
+			// Smartphones
+	  	height: 50px;
+		}
+
+		@media only screen 
+		and (min-width : 660px) 
+		and (max-width : 1024px) {
+			// Tablets
+	  	height: 62px;
+		}
 
 		ul > li{
 			list-style: none;
 			&:first-child{
 				a{
+					@media only screen 
+					and (max-width : 660px) {
+						padding-left: 0;
+						padding-right: 0;
+					}
+
 					background-color: @color-primary;
 					&:hover{
 						background-color: darken(@color-primary, 2%);
 					}
 				}
 			}
-
 		}
 		a{	
-
 			background-color: @color-dark;
 			color: @color-light;
 			padding: 20px 20px 20px 40px;
 			display: block;
+
 			&:hover{
 				background-color: darken(@color-dark, 2%);
 			}
+
 			&.active{
 				background-color: @color-light;
 				color: @color-dark;
 			}
+			
+			@media only screen 
+			and (max-width : 1024px) {
+				// Smartphones & tablets
+				text-align: center;
+				width: 11%;
+				float: left;
+			}
 
+			@media only screen 
+			and (min-width : 660px) 
+			and (max-width : 1024px) {
+				// Tablets
+				padding: 20px 20px 20px 10px;
+
+				& > i {
+					display: none;
+				}
+	  	}
+
+			@media only screen 
+			and (max-width : 660px) {
+				// Smartphones
+				padding: 15px 24px 15px 1px;
+				font-size: .8em;
+
+				& > i + span {
+					display: none;
+				}
+			}
 		}
 		
+		@media only screen 
+		and (max-width : 1024px) {
+			.optional {
+				display: none;
+			}
+		}
 	}
 
 	.main{
 
 		margin-left: 200px;
+
+		@media only screen 
+		and (max-width : 1024px) {
+			// Smartphones & tablets
+			margin-left: 0;
+  	}
 
 		.sidebar{
 			padding: 10px;
