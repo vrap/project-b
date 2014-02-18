@@ -336,3 +336,62 @@ body {
 .wrapper-login .form-item Input[type="password"] {
   width: 93%;
 }
+.ui-dialog {
+  background-color: #ffffff;
+  z-index: 10000;
+  -moz-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  -webkit-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  -o-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  box-shadow: 0px 0px 50px 0px #cfcfcf;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=NaN, Strength=50);
+}
+.ui-dialog input {
+  border: 0;
+  padding: 5px;
+  color: #aaa;
+  border: solid 1px #ccc;
+  margin: 0 0 20px;
+  width: 95%;
+}
+.ui-dialog input:last-child {
+  margin-bottom: 0px;
+}
+.ui-dialog .ui-dialog-titlebar {
+  font-size: 1.2em;
+  padding: 15px;
+  border-bottom: 1px solid #d9d9d9;
+  overflow: auto;
+  color: #e97b7d;
+}
+.ui-dialog .ui-dialog-titlebar .ui-button {
+  display: none;
+}
+.ui-dialog .ui-dialog-content {
+  padding: 10px 20px 10px 20px;
+}
+.ui-dialog .ui-dialog-buttonset {
+  padding: 0px 20px 20px 20px;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button {
+  padding: 10px 15px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  background-color: #ebebeb;
+  color: #9f9f9f;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:hover {
+  background-color: #e3e3e3;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:first-child {
+  padding: 10px 15px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  background-color: #00dcff;
+  color: #008499;
+  margin-right: 10px;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:first-child:hover {
+  background-color: #00cff0;
+}

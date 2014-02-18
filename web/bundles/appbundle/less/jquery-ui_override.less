@@ -1,0 +1,52 @@
+@import "styles.less";
+
+.ui-dialog{
+	background-color: @color-white;
+	z-index: 10000;
+	.shadow;
+
+	input{
+		border:0; 
+		padding:5px; 
+		color:#aaa; 
+		border:solid 1px #ccc; 
+		margin:0 0 20px;
+		width: 100% - 5px;
+	}
+	input:last-child{
+		margin-bottom: 0px;
+	}
+
+	.ui-dialog-titlebar{
+		
+		font-size: 1.2em;
+		padding: 15px;
+		border-bottom: 1px solid darken(@color-light, 10%);
+		overflow: auto;
+		// background-color: @color-dark;
+		color: @color-primary;
+		
+		.ui-button {
+			display: none;
+		}
+	
+	}
+	.ui-dialog-content{
+		padding: 10px 20px 10px 20px;
+	}
+	.ui-dialog-buttonset{
+
+		padding: 0px 20px 20px 20px;
+
+		.ui-button{
+			.btn;
+			.btn-default;
+		}
+		.ui-button:first-child{
+			.btn;
+			.btn-second;
+			margin-right: 10px;
+		}
+	}
+	
+}
