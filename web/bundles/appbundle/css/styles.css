@@ -213,6 +213,7 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
+  transition: all 0.3s ease-out;
 }
 .wrapper nav ul > li {
   list-style: none;
@@ -265,6 +266,7 @@ body {
 }
 .wrapper .main {
   margin-left: 200px;
+  transition: all 0.3s ease-out;
 }
 @media only screen and (max-width: 800px) {
   .wrapper .main {
