@@ -35,6 +35,7 @@ class UserController extends Controller
             'users' => $users,
         );
     }
+    
     /**
      * Creates a new User entity.
      *

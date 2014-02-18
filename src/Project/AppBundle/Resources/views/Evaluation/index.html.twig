@@ -9,14 +9,15 @@
     {% endif %}
 
 	<div class="panel-group">
+	
+	 	{% if evaluationsList is empty %}
         <div class="panel-item">
-            {% if evaluationsList is empty %}
-            	<div class="panel-content">
-			    	Aucune évaluation est disponible pour le moment.
-			    </div>
-			{% else %}
+            <div class="panel-content">
+			    Aucune évaluation est disponible pour le moment.
+			   </div>
         </div>
-		
+		{% else %}
+
 		{% for evaluation in evaluationsList %}
 			<div class="panel-item">
 	            <div class="panel-header">
