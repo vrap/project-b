@@ -1,8 +1,6 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h2>Promotions</h2>
-
     <div class="bloc-top">
       <a class="btn btn-second" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
     </div>
@@ -32,9 +30,5 @@
 	</div>
 	{% endfor %}
 	{% endif %}
-    </div>
-
-    <div class="bloc-bottom">
-      <a class="btn btn-second" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
     </div>
 {% endblock %}
