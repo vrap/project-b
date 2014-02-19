@@ -33,12 +33,13 @@ class PromotionController extends Controller
         $manager  = $em->getRepository('ProjectAppBundle:Manager')->findOneBy(array(
             'user' => $user->getId()
         ));
-        $entities = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
+
+        $promotions = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
             'formation' => $manager->getFormation()->getId()
         ));
 
         return array(
-            'entities' => $entities,
+            'promotions' => $promotions,
         );
     }
 
