@@ -12,6 +12,7 @@
         {% endblock %}
     {% endblock %}
     <body>
+        {% block wrapper %}
         <div class="wrapper">
             {% include '::nav_dev.html.twig'%}
             <div class="main">
@@ -43,6 +44,7 @@
                 </div>
 		  	</div>
 		</div>
+        {% endblock %}
         {% block javascripts %}
 		  <script src="{{ asset('bundles/appbundle/js/jquery-2.1.0.min.js') }}" type="text/javascript" ></script>
 		  <script src="{{ asset('bundles/appbundle/js/ajax.js') }}" type="text/javascript" /></script>
