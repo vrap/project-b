@@ -44,6 +44,26 @@ class PromotionController extends Controller
     }
 
     /**
+     * Manage a promotion.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/manage", name="promotion_manage")
+     * @Method("GET")
+     *
+     * @param Int $id Id of promotion to manage.
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function manageAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $promotion = $em->getRepository('ProjectAppBundle:Promotion')->findOneBy(array('id' => $id));
+
+        return new RedirectResponse($this->generateUrl('module'));
+    }
+
+    /**
      * Creates a new Promotion entity.
      *
      * @Secure(roles="ROLE_MANAGER")
