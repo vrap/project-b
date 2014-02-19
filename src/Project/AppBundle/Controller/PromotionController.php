@@ -3,6 +3,7 @@
 namespace Project\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -33,13 +34,34 @@ class PromotionController extends Controller
         $manager  = $em->getRepository('ProjectAppBundle:Manager')->findOneBy(array(
             'user' => $user->getId()
         ));
-        $entities = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
+
+        $promotions = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
             'formation' => $manager->getFormation()->getId()
         ));
 
         return array(
-            'entities' => $entities,
+            'promotions' => $promotions,
         );
+    }
+
+    /**
+     * Manage a promotion.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/manage", name="promotion_manage")
+     * @Method("GET")
+     *
+     * @param Int $id Id of promotion to manage.
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function manageAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $promotion = $em->getRepository('ProjectAppBundle:Promotion')->findOneBy(array('id' => $id));
+
+        return new RedirectResponse($this->generateUrl('module'));
     }
 
     /**

@@ -15,6 +15,11 @@ class PromotionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('formation', 'entity', array(
+                                               'label' => 'Formation :',
+                                               'class' => 'ProjectAppBundle:Formation',
+                                               'property' => 'name'
+            ))
             ->add('startDate', 'date', array(
                 'label' => 'Date de début',
             ))
