@@ -1,0 +1,37 @@
+<nav class="close">
+	<ul>
+		<li class="extand-item"><a id="extand" href="#"><i class="flaticon-reorder flaticon-right responsive-icone"></i></a></li>
+		<li><a href="#"><i class="flaticon-house3 flaticon-left"></i> Home</a></li>
+	
+		{% if is_granted('ROLE_MANAGER') %}
+		   
+		   	<li><a href="{{path('project_app_agenda_index')}}">-Agenda</a></li>
+			<li><a href="">Présences</a></li>
+			<li><a href="{{path('evaluation')}}">-Évaluations</a></li>
+			<li><a class="optional" href="">Promotions</a></li>
+			<li><a href="">Module</a></li>
+			<li><a class="optional" href="{{path('user')}}">-Utilisateurs</a></li>
+			<li><a href="{{path('feedback')}}">-Feedbacks</a></li>
+			<li><a class="optional" href="">Archives</a></li>
+
+		{% elseif is_granted('ROLE_STUDENT') %}
+		   
+			<li><a href="{{path('project_app_agenda_index')}}">Agenda</a></li>
+			<li><a href="">Module</a></li>
+			<li><a href="">Évaluation</a></li>
+			<li><a href="{{path('feedback')}}">Feedback</a></li>
+
+		{% else %}
+
+			<li><a href="">Présence</a></li>
+			<li><a href="{{path('project_app_agenda_index')}}">Agenda</a></li>
+			<li><a href="">Évaluation</a></li>
+
+		{% endif %}
+
+
+	</ul>
+</nav>
+
+
+

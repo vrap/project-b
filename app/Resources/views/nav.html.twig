@@ -53,6 +53,7 @@ set	nav_manager = {
 
 		{% for key,value in nav %}
 			{% if value == 'Archives' or value == 'Promotions' or value == 'Utilisateurs'%}
+
 				<li class="optional"><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>
 			{% else %}
 				<li><a {{ croute.is_current_route(key) }} href="">{{value}}</a></li>

@@ -21,7 +21,7 @@ class FeedbackController extends Controller
 
     /**
      * Lists all Feedback entities.
-     *
+     * @Secure(roles="ROLE_MANAGER, ROLE_STUDENT")
      * @Route("/", name="feedback")
      * @Method("GET")
      * @Template()
