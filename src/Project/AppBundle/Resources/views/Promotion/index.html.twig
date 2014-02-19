@@ -1,18 +1,40 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main %}
+{% block content %}
     <h2>Promotions</h2>
 
-    <ul>
-        {% for entity in entities %}
-            <li>
-                {{ entity.startDate|date('d-m-Y') }}
-                {% if entity.endDate %}{{ entity.endDate|date('d-m-Y') }}{% endif %}
+    <div class="bloc-top">
+      <a class="btn btn-second" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
+    </div>
 
-                <a href="{{ path('promotion_edit', { 'id': entity.id }) }}">edit</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="panel-group">
+	{% if promotions is empty %}
+	<div class="panel-item">
+	  <div class="panel-content">
+	    Aucune promotion n'est actuellement disponible.
+	  </div>
+	</div>
+	{% else %}
+	{% for promotion in promotions %}
+	<div class="panel-item">
+	  <div class="panel-content">
+	    <div class="panel-header">
+	      <h3 class="pull-left">{{ promotion.startDate|date('Y') }} - {{ promotion.endDate|date('Y') }}</h3>
+	    </div>
+	    <div class="panel-content">
+	      Formation : {{ promotion.formation.name }}
+	      <div class="pull-right">
+		<a class="btn btn-second" href="{{ path('promotion_show', { 'id': promotion.id }) }}">Gérer</a>
+		<a class="btn btn-second" href="{{ path('promotion_show', { 'id': promotion.id }) }}">Archiver</a>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	{% endfor %}
+	{% endif %}
+    </div>
 
-    <a href="{{ path('promotion_new') }}">Créer</a>
+    <div class="bloc-bottom">
+      <a class="btn btn-second" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
+    </div>
 {% endblock %}
