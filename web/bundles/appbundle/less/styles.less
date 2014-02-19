@@ -46,6 +46,17 @@ button{
 @color-white : #FFFFFF;
 
 
+/*
+* Shadow
+**********/
+.shadow{
+	-moz-box-shadow: 0px 0px 50px 0px #cfcfcf;
+	-webkit-box-shadow: 0px 0px 50px 0px #cfcfcf;
+	-o-box-shadow: 0px 0px 50px 0px #cfcfcf;
+	box-shadow: 0px 0px 50px 0px #cfcfcf;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=NaN, Strength=50);
+}
+
 /**
 * Fonts
 **********/
@@ -86,9 +97,16 @@ button{
 	margin-left: 10px;
 }
 
-
-.flaticon-home:before {
+.flaticon-close12:before {
 	content: "\e000";
+}
+
+.flaticon-house3:before {
+	content: "\e001";
+}
+
+.flaticon-reorder:before {
+	content: "\e002";
 }
 
 
@@ -210,12 +228,6 @@ input{
 *********/
 .content{
 	padding: 25px;
-
-	@media only screen 
-	and (max-width : 1024px) {
-		// Tablets & tablets
-		padding-bottom: 70px;
-	}
 }
 
 .bloc-top{
@@ -270,41 +282,34 @@ body{
     top: 0;
     bottom: 0;
 
-		@media only screen 
-		and (max-width : 1024px) {
-			// Smartphones & tablets
-			width: 100%;
-	  	position: fixed;
-	  	bottom: 0;
-	  	top: auto;
-		}
-
-	  @media only screen 
-		and (max-width : 660px) {
-			// Smartphones
-	  	height: 50px;
-		}
-
-		@media only screen 
-		and (min-width : 660px) 
-		and (max-width : 1024px) {
-			// Tablets
-	  	height: 62px;
-		}
-
 		ul > li{
 			list-style: none;
 			&:first-child{
-				a{
+				&.extand-item{
+					
 					@media only screen 
-					and (max-width : 660px) {
-						padding-left: 0;
-						padding-right: 0;
+					and (max-width : 800px) {
+						a {
+							background-color: darken(@color-dark, 2%);
+							color : @color-primary;
+							text-align: right;
+						}
+						
+						width: 265px;
+						display: block;
+
 					}
 
-					background-color: @color-primary;
-					&:hover{
-						background-color: darken(@color-primary, 2%);
+					display: none;
+				}
+				
+				+ li > a{
+					@media only screen 
+					and (min-width : 800px) {
+						background-color: @color-primary;
+						&:hover{
+							background-color: darken(@color-primary, 2%);
+						}
 					}
 				}
 			}
@@ -323,44 +328,25 @@ body{
 				background-color: @color-light;
 				color: @color-dark;
 			}
-			
-			@media only screen 
-			and (max-width : 1024px) {
-				// Smartphones & tablets
-				text-align: center;
-				width: 11%;
-				float: left;
-			}
-
-			@media only screen 
-			and (min-width : 660px) 
-			and (max-width : 1024px) {
-				// Tablets
-				padding: 20px 20px 20px 10px;
-
-				& > i {
-					display: none;
-				}
-	  	}
-
-			@media only screen 
-			and (max-width : 660px) {
-				// Smartphones
-				padding: 15px 24px 15px 1px;
-				font-size: .8em;
-
-				& > i + span {
-					display: none;
-				}
-			}
 		}
-		
+
 		@media only screen 
-		and (max-width : 1024px) {
+		and (max-width : 800px) {
 			.optional {
 				display: none;
 			}
+
+
+			&.open {
+				margin-left: 0;
+			}
+
+			&.close {
+				margin-left: -200px;
+			}
 		}
+
+		transition: all .3s ease-out;
 	}
 
 	.main{
@@ -368,7 +354,7 @@ body{
 		margin-left: 200px;
 
 		@media only screen 
-		and (max-width : 1024px) {
+		and (max-width : 800px) {
 			// Smartphones & tablets
 			margin-left: 0;
   	}
@@ -383,6 +369,7 @@ body{
 
 		}
 
+		transition: all .3s ease-out;
 	}
 }
 

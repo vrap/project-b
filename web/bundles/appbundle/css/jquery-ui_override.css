@@ -74,14 +74,8 @@ button {
 .flaticon-right {
   margin-left: 10px;
 }
-.flaticon-close12:before {
+.flaticon-home:before {
   content: "\e000";
-}
-.flaticon-house3:before {
-  content: "\e001";
-}
-.flaticon-reorder:before {
-  content: "\e002";
 }
 /**
 * Mixins
@@ -183,6 +177,11 @@ input {
 .content {
   padding: 25px;
 }
+@media only screen and (max-width: 1024px) {
+  .content {
+    padding-bottom: 70px;
+  }
+}
 .bloc-top {
   margin-bottom: 25px;
 }
@@ -223,32 +222,39 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
-  transition: all 0.3s ease-out;
+}
+@media only screen and (max-width: 1024px) {
+  .wrapper nav {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+  }
+}
+@media only screen and (max-width: 660px) {
+  .wrapper nav {
+    height: 50px;
+  }
+}
+@media only screen and (min-width: 660px) and (max-width: 1024px) {
+  .wrapper nav {
+    height: 62px;
+  }
 }
 .wrapper nav ul > li {
   list-style: none;
 }
-.wrapper nav ul > li:first-child.extand-item {
-  display: none;
+.wrapper nav ul > li:first-child a {
+  background-color: #e97b7d;
 }
-@media only screen and (max-width: 800px) {
-  .wrapper nav ul > li:first-child.extand-item {
-    width: 265px;
-    display: block;
-  }
-  .wrapper nav ul > li:first-child.extand-item a {
-    background-color: #394761;
-    color: #e97b7d;
-    text-align: right;
+@media only screen and (max-width: 660px) {
+  .wrapper nav ul > li:first-child a {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
-@media only screen and (min-width: 800px) {
-  .wrapper nav ul > li:first-child + li > a {
-    background-color: #e97b7d;
-  }
-  .wrapper nav ul > li:first-child + li > a:hover {
-    background-color: #e87274;
-  }
+.wrapper nav ul > li:first-child a:hover {
+  background-color: #e87274;
 }
 .wrapper nav a {
   background-color: #3d4c67;
@@ -263,22 +269,39 @@ body {
   background-color: #f2f2f2;
   color: #3d4c67;
 }
-@media only screen and (max-width: 800px) {
-  .wrapper nav .optional {
+@media only screen and (max-width: 1024px) {
+  .wrapper nav a {
+    text-align: center;
+    width: 11%;
+    float: left;
+  }
+}
+@media only screen and (min-width: 660px) and (max-width: 1024px) {
+  .wrapper nav a {
+    padding: 20px 20px 20px 10px;
+  }
+  .wrapper nav a > i {
     display: none;
   }
-  .wrapper nav.open {
-    margin-left: 0;
+}
+@media only screen and (max-width: 660px) {
+  .wrapper nav a {
+    padding: 15px 24px 15px 1px;
+    font-size: .8em;
   }
-  .wrapper nav.close {
-    margin-left: -200px;
+  .wrapper nav a > i + span {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .wrapper nav .optional {
+    display: none;
   }
 }
 .wrapper .main {
   margin-left: 200px;
-  transition: all 0.3s ease-out;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1024px) {
   .wrapper .main {
     margin-left: 0;
   }
@@ -312,4 +335,63 @@ body {
 .wrapper-login .form-item Input[type="text"],
 .wrapper-login .form-item Input[type="password"] {
   width: 93%;
+}
+.ui-dialog {
+  background-color: #ffffff;
+  z-index: 10000;
+  -moz-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  -webkit-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  -o-box-shadow: 0px 0px 50px 0px #cfcfcf;
+  box-shadow: 0px 0px 50px 0px #cfcfcf;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf, Direction=NaN, Strength=50);
+}
+.ui-dialog input {
+  border: 0;
+  padding: 5px;
+  color: #aaa;
+  border: solid 1px #ccc;
+  margin: 0 0 20px;
+  width: 95%;
+}
+.ui-dialog input:last-child {
+  margin-bottom: 0px;
+}
+.ui-dialog .ui-dialog-titlebar {
+  font-size: 1.2em;
+  padding: 15px;
+  border-bottom: 1px solid #d9d9d9;
+  overflow: auto;
+  color: #e97b7d;
+}
+.ui-dialog .ui-dialog-titlebar .ui-button {
+  display: none;
+}
+.ui-dialog .ui-dialog-content {
+  padding: 10px 20px 10px 20px;
+}
+.ui-dialog .ui-dialog-buttonset {
+  padding: 0px 20px 20px 20px;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button {
+  padding: 10px 15px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  background-color: #ebebeb;
+  color: #9f9f9f;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:hover {
+  background-color: #e3e3e3;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:first-child {
+  padding: 10px 15px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  display: inline-block;
+  background-color: #00dcff;
+  color: #008499;
+  margin-right: 10px;
+}
+.ui-dialog .ui-dialog-buttonset .ui-button:first-child:hover {
+  background-color: #00cff0;
 }
