@@ -15,13 +15,6 @@
         <div class="wrapper">
             {% include '::nav_dev.html.twig'%}
             <div class="main">
-                <div class="dev" style="padding:10px;">
-                    <ul>
-                        <li>Route :  <span style="color:#E87274">{{ app.request.attributes.get('_route') }}</span></li>
-                        <li>Controller : <span style="color:#E87274">{{ app.request.attributes.get('_controller') }}</span></li>
-                        <li>Template :  <span style="color:#E87274">{{ app.request.attributes.get('_template') }}</span></li>
-                    </ul>
-                </div>
                 <div class="sidebar">
                     <ul class="list-inline">
                         <li>Profile | </li>
@@ -40,7 +33,14 @@
                    
                     {% block body %}
                     {% endblock %}
-
+            
+                <div class="dev" style="padding:10px;">
+                    <ul>
+                        <li>Route :  <span style="color:#E87274">{{ app.request.attributes.get('_route') }}</span></li>
+                        <li>Controller : <span style="color:#E87274">{{ app.request.attributes.get('_controller') }}</span></li>
+                        <li>Template :  <span style="color:#E87274">{{ app.request.attributes.get('_template') }}</span></li>
+                    </ul>
+                </div>
 		  	</div>
 		</div>
         {% block javascripts %}
