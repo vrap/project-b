@@ -182,6 +182,11 @@ ul.list-no-style > li {
 .btn-second:hover {
   background-color: #00cff0;
 }
+@media only screen and (max-width: 800px) {
+  .btn-second {
+    margin-top: 4px;
+  }
+}
 /**
 * Table
 **********/
