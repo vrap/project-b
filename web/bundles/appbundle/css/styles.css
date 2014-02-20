@@ -208,28 +208,6 @@ table tr th {
 table tr td {
   padding: 6px;
 }
-@media only screen and (max-width: 800px) {
-  table {
-    /* Force table to not be like tables anymore */
-    /* Hide table headers (but not display: none;, for accessibility) */
-  }
-  table table,
-  table thead,
-  table tbody,
-  table th,
-  table td,
-  table tr {
-    display: block;
-  }
-  table thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-  table tbody tr td:first-child {
-    font-weight: bold;
-  }
-}
 /**
 * Formulaire
 **********/
@@ -267,6 +245,28 @@ input {
 }
 .panel-group .panel-item .panel-content {
   padding: 18px;
+}
+@media only screen and (max-width: 800px) {
+  .panel-group .panel-item .panel-content {
+    /* Force table to not be like tables anymore */
+    /* Hide table headers (but not display: none;, for accessibility) */
+  }
+  .panel-group .panel-item .panel-content table,
+  .panel-group .panel-item .panel-content thead,
+  .panel-group .panel-item .panel-content tbody,
+  .panel-group .panel-item .panel-content th,
+  .panel-group .panel-item .panel-content td,
+  .panel-group .panel-item .panel-content tr {
+    display: block;
+  }
+  .panel-group .panel-item .panel-content thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .panel-group .panel-item .panel-content tbody tr td:first-child {
+    font-weight: bold;
+  }
 }
 /**
 * styles
