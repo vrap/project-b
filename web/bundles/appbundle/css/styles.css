@@ -208,6 +208,28 @@ table tr th {
 table tr td {
   padding: 6px;
 }
+@media only screen and (max-width: 800px) {
+  table {
+    /* Force table to not be like tables anymore */
+    /* Hide table headers (but not display: none;, for accessibility) */
+  }
+  table table,
+  table thead,
+  table tbody,
+  table th,
+  table td,
+  table tr {
+    display: block;
+  }
+  table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  table tbody tr td:first-child {
+    font-weight: bold;
+  }
+}
 /**
 * Formulaire
 **********/
