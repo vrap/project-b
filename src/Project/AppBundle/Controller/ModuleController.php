@@ -54,9 +54,9 @@ class ModuleController extends Controller
         $form   = $this->createCreateForm($entity);
 
         return array(
-                     'entity' => $entity,
-                     'form'   => $form->createView(),
-                     );
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
     }
 
     /**
@@ -69,13 +69,13 @@ class ModuleController extends Controller
     private function createCreateForm(Module $entity)
     {
         $form = $this->createForm(new ModuleType(), $entity, array(
-                                                                   'action' => $this->generateUrl('module_create'),
-                                                                   'method' => 'POST'
-                                                                   ));
+            'action' => $this->generateUrl('module_create'),
+            'method' => 'POST'
+        ));
 
         $form->add('submit', 'submit', array(
-                                             'label' => 'Enregistrer'
-                                             ));
+            'label' => 'Enregistrer'
+        ));
 
         return $form;
     }
