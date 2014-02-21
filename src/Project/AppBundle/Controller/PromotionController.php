@@ -39,6 +39,8 @@ class PromotionController extends Controller
             'formation' => $manager->getFormation()->getId()
         ));
 
+        $this->get('session')->remove('promotion');
+
         return array(
             'promotions' => $promotions,
         );
@@ -60,6 +62,8 @@ class PromotionController extends Controller
         $user = $this->getUser();
 
         $promotion = $em->getRepository('ProjectAppBundle:Promotion')->findOneBy(array('id' => $id));
+
+        $this->get('session')->set('promotion', $id);
 
         return new RedirectResponse($this->generateUrl('module'));
     }
