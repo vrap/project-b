@@ -31,7 +31,9 @@ class ModuleController extends Controller
         $em                  = $this->getDoctrine()->getManager();
         $repositoryModule    = $em->getRepository('ProjectAppBundle:Module');
 
-        $modulesList         = $repositoryModule->findAll();
+        $modulesList         = $repositoryModule->findBy(array(
+            'promotion' => $this->get('session')->get('promotion')
+        ));
         
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
             'modulesList'   => $modulesList
@@ -95,6 +97,13 @@ class ModuleController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $promotion = $em->getRepository('ProjectAppBundle:Promotion')
+                ->findOneBy(array(
+                                  'id' => $this->get('session')->get('promotion')
+                                  ));
+ 
+            $module->setPromotion($promotion);
+
 			$em->persist($module);
             $em->flush();
 
