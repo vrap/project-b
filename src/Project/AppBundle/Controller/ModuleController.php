@@ -111,8 +111,35 @@ class ModuleController extends Controller
         }
 
         return array(
-                     'entity' => $module,
-                     'form'   => $form->createView()
-                     );
+            'entity' => $module,
+            'form'   => $form->createView()
+        );
+    }
+
+    /**
+     * Deletes a Module entity.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}", name="module_delete")
+     * @Method("DELETE")
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em     = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('ProjectAppBundle:Module')->find($id);
+
+            if (! $entity) {
+                throw $this->createNotFoundException('Unable to find Promotion entity.');
+            }
+
+            $em->remove($entity);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('promotion'));
     }
 }
