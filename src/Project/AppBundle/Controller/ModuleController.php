@@ -34,9 +34,16 @@ class ModuleController extends Controller
         $modulesList         = $repositoryModule->findBy(array(
             'promotion' => $this->get('session')->get('promotion')
         ));
+
+        $deleteForms = array();
+
+        foreach ($modulesList as $module) {
+            $deleteForms[$module->getId()] = $this->createDeleteForm($module->getId())->createView();
+        }
         
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
-            'modulesList'   => $modulesList
+            'modulesList' => $modulesList,
+            'deleteForms' => $deleteForms
         ));
     }
 
@@ -130,16 +137,38 @@ class ModuleController extends Controller
 
         if ($form->isValid()) {
             $em     = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('ProjectAppBundle:Module')->find($id);
+            $entity = $em->getRepository('ProjectAppBundle:Module')->findOneBy(
+                          array(
+                              'id' => $id,
+                              'promotion' => $this->get('session')->get('promotion')
+                          )
+                      );
 
             if (! $entity) {
-                throw $this->createNotFoundException('Unable to find Promotion entity.');
+                throw $this->createNotFoundException('Unable to find Module entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('promotion'));
+        return $this->redirect($this->generateUrl('module'));
+    }
+
+    /**
+     * Creates a form to delete a User entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('module_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+            ;
     }
 }

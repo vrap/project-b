@@ -6,11 +6,17 @@
     </div>
 
     <div class="panel-group">
-        {% if modulesList %}
+        {% if modulesList|length > 0 %}
             {% for module in modulesList %}
                 <div class="panel-item">
                     <div class="panel-header">
                         {{ module.name }}
+			<div class="pull-right">
+			  <form action="{{ path('module_delete', { 'id': module.id }) }}" method="post">
+			    <input type="hidden" name="_method" value="DELETE" />
+			    {{ form_widget(deleteForms[module.id]) }}
+			  </form>
+			</div>
                     </div>
                     <div class="panel-content">
 		      {% if module.lessons|length <= 0 %}
