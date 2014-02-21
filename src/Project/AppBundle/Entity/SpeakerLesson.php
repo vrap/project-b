@@ -22,18 +22,15 @@ class SpeakerLesson
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="speaker_user_id", type="integer")
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Speaker", cascade={"all"})
      */
-    private $speakerUserId;
+    private $speaker;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="lesson_id", type="integer")
+     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Lesson", mappedBy="speakerLesson", cascade={"all"})
+     * @ORM\JoinColumn(name="lesson_id", referencedColumnName="id")
      */
-    private $lessonId;
+    private $lesson;
 
 
     /**
@@ -44,51 +41,5 @@ class SpeakerLesson
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set speakerUserId
-     *
-     * @param integer $speakerUserId
-     * @return Speaker_has_lesson
-     */
-    public function setSpeakerUserId($speakerUserId)
-    {
-        $this->speakerUserId = $speakerUserId;
-
-        return $this;
-    }
-
-    /**
-     * Get speakerUserId
-     *
-     * @return integer 
-     */
-    public function getSpeakerUserId()
-    {
-        return $this->speakerUserId;
-    }
-
-    /**
-     * Set lessonId
-     *
-     * @param integer $lessonId
-     * @return Speaker_has_lesson
-     */
-    public function setLessonId($lessonId)
-    {
-        $this->lessonId = $lessonId;
-
-        return $this;
-    }
-
-    /**
-     * Get lessonId
-     *
-     * @return integer 
-     */
-    public function getLessonId()
-    {
-        return $this->lessonId;
     }
 }
