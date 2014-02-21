@@ -17,6 +17,7 @@
             <div class="panel-item">
                 <div class="panel-content">
                     <table>
+                        <thead>
                         <tr>
                             <th>Nom</th>
                             <th>Prenom</th>
@@ -24,6 +25,8 @@
                             <th>Telephone</th>
                             <!-- <th></th> -->
                         </tr>
+                        </thead>
+                        <tbody>
                         {% for user in users %}
                             
                             <tr>
@@ -39,7 +42,7 @@
                             </tr>
 
                         {% endfor %}
-
+                        </tbody>
                     </table>
                 </div>
             </div>
