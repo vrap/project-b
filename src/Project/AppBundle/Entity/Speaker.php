@@ -23,7 +23,6 @@ class Speaker
 
     /**
      * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     private $user;
 
