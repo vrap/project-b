@@ -20,7 +20,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
 class ModuleController extends Controller
 {
     /**
-     * Display all modules for Manager
+     * Display all modules.
      *
      * @Route("/", name="module")
      * @Method("GET")
@@ -29,19 +29,53 @@ class ModuleController extends Controller
     public function indexAction()
     {
         $em                  = $this->getDoctrine()->getManager();
-        $repositoryManager   = $em->getRepository('ProjectAppBundle:Manager');
         $repositoryModule    = $em->getRepository('ProjectAppBundle:Module');
-        $repositoryFormation = $em->getRepository('ProjectAppBundle:Formation');
-        $user                = $this->getUser();
-        $modulesList         = $repositoryModule->findBy(array(
-            'promotion' => $user->getId(),
-        ));
-        $numberModules       = count($modulesList); 
+
+        $modulesList         = $repositoryModule->findAll();
         
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
-            'modulesList'   => $modulesList,
-            'numberModules' => $numberModules,
+            'modulesList'   => $modulesList
         ));
+    }
+
+    /**
+     * Displays a form to create a new Module entity.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/new", name="module_new")
+     * @Method("GET")
+     * @Template()
+     */
+    public function newAction()
+    {
+        $entity = new Module();
+        $form   = $this->createCreateForm($entity);
+
+        return array(
+                     'entity' => $entity,
+                     'form'   => $form->createView(),
+                     );
+    }
+
+    /**
+     * Creates a form to create a Module entity.
+     *
+     * @param Module $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(Module $entity)
+    {
+        $form = $this->createForm(new ModuleType(), $entity, array(
+                                                                   'action' => $this->generateUrl('module_create'),
+                                                                   'method' => 'POST'
+                                                                   ));
+
+        $form->add('submit', 'submit', array(
+                                             'label' => 'Enregistrer'
+                                             ));
+
+        return $form;
     }
 
      /**
@@ -50,27 +84,26 @@ class ModuleController extends Controller
      * @Secure(roles="ROLE_MANAGER")
      * @Route("/", name="module_create")
      * @Method("POST")
-     * @Template("ProjectAppBundle:module:new.html.twig")
+     * @Template("ProjectAppBundle:Module:new.html.twig")
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-    	$em               = $this->getDoctrine()->getManager();
-        $repositoryModule = $em->getRepository('ProjectAppBundle:Module');
     	$module           = new Module();
-    	$formModule       = $this->createForm(new ModuleType, $module);
-    	$request          = $this->get('request');
-  
-  		$formModule->handleRequest($request);
- 
-        if ($formModule->isValid()) {
+    	$form             = $this->createCreateForm($module);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
 			$em->persist($module);
             $em->flush();
-            
-            return $this->redirect($this->generateUrl('project_app_user_index'));
-        } 
 
-    	return $this->render('ProjectAppBundle:Module:create.html.twig', array(
-            'formModule' => $formModule->createView(),
-        ));
+            return $this->redirect($this->generateUrl('module'));
+        }
+
+        return array(
+                     'entity' => $module,
+                     'form'   => $form->createView()
+                     );
     }
 }

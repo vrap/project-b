@@ -1,8 +1,8 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-	<div class="bloc-top">
-        {{ numberModules }} modules
+    <div class="bloc-top">
+      <a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
     </div>
 
     <div class="panel-group">
@@ -13,11 +13,34 @@
                         {{ module.name }}
                     </div>
                     <div class="panel-content">
-                        Intervenant : {{ module.speaker.user.username }}
+		      {% if module.lessons|length <= 0 %}
+		      Aucun cours n'est actuellement prévue pour ce module.
+		      {% else %}
+		      Cours prévues :<br /><br />
+		      <table>
+			<thead>
+			    <tr>
+			      <th>Date</th>
+			      <th>Action</th>
+			    </tr>
+			</thead>
+			<tbody>
+			  {% for lesson in module.lessons %}
+			  <tr>
+			    <td>Du {{ lesson.startDate|date('d/m/Y à H:i') }} au {{ lesson.endDate|date('d/m/Y à H:i') }}</td>
+			    <td>
+			      <a href="" class="btn btn-second">Annuler le cours</a>
+			    </td>
+			  </tr>
+			  {% endfor %}
+			</tbody>
+			<tfoot>
+			</tfoot>
+		      </table>
+		      {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-    
 {% endblock %}

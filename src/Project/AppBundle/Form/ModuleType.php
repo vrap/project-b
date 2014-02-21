@@ -16,15 +16,8 @@ class ModuleType extends AbstractType
     {
         $builder
             ->add('name', 'text', array(
-                'label' => 'Nom :'
-            ))
-            ->add('formation', 'entity', array(
-                'class'    => 'ProjectAppBundle:Formation',
-                'property' => 'name',
-                'multiple' => false,
-                'expanded' => false,
-                'label'    => 'Formation :'
-            ));
+                                        'label' => 'Nom :'
+                                        ));
     }
     
     /**
