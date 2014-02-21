@@ -3,6 +3,7 @@
 namespace Project\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Module
@@ -33,7 +34,16 @@ class Module
      */
     private $promotion;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Project\AppBundle\Entity\Lesson", mappedBy="module", cascade={"all"})
+     */
+    private $lessons;
 
+
+    public function __construct()
+    {
+        $this->lessons = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -89,5 +99,10 @@ class Module
     public function getPromotion()
     {
         return $this->promotion;
+    }
+
+    public function getLessons()
+    {
+        return $this->lessons;
     }
 }

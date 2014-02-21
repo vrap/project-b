@@ -49,6 +49,11 @@ class Lesson
      */
     private $timecard;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Module", inversedBy="lessons", cascade={"all"})
+     */
+    private $module;
+
 
     /**
      * Get id
