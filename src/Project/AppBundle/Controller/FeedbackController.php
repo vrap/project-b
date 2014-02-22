@@ -115,7 +115,7 @@ class FeedbackController extends Controller
 
     /**
      * Displays a form to create a new Feedback entity.
-     *
+     * @Secure(roles="ROLE_STUDENT")
      * @Route("/new", name="feedback_new")
      * @Method("GET")
      * @Template()
