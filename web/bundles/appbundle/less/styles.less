@@ -147,6 +147,32 @@ ul.list-no-style > li{
 }
 
 /**
+* Col
+**********/
+.row{
+	width: 100%;
+	.col-2{
+		&:first-child{
+			margin-right: 2%;
+		}
+		width: 49%;
+		float: left;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		vertical-align: top;
+
+		 @media only screen
+		  and (max-width : 1000px) {
+		    width: 100%;
+		    &:first-child{
+				margin-right: 0%;
+			}
+		  }
+
+	}
+}
+
+/**
 * Button
 **********/
 .btn{
@@ -289,6 +315,9 @@ input{
 
 .bloc-top{
 	margin-bottom: 25px;
+}
+.bloc-bottom{
+	clear: both;
 }
 
 .panel-group{

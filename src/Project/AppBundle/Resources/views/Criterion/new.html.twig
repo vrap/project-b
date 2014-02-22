@@ -1,46 +1,53 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <div class="panel-group">
-        <div class="panel-item">
-            <div class="panel-header">
-                <h1>Ajouter un critère au barème</h1>
-            </div>
-            <div class="panel-content">
-                <div class="panel-form">
-                    {{ form_start(form) }}
-                    <div class="form-item">
-                        {{form_row(form.description)}}
+    <div class="row">
+        <div class="col-2">
+            <div class="panel-group">
+                <div class="panel-item">
+                    <div class="panel-header">
+                        <h1>Ajouter un critère au barème</h1>
                     </div>
-                    <div class="form-item">
-                        {{form_row(form.max)}}
+                    <div class="panel-content">
+                        <div class="panel-form">
+                            {{ form_start(form) }}
+                            <div class="form-item">
+                                {{form_row(form.description)}}
+                            </div>
+                            <div class="form-item">
+                                {{form_row(form.max)}}
+                            </div>
+                            <div class="form-item last">
+                                {{form_widget(form.crit_new)}}
+                                {{form_widget(form.submit)}}
+                            </div>
+                            {{ form_end(form) }}              
+                        </div>
                     </div>
-                    <div class="form-item last">
-                        {{form_widget(form.crit_new)}}
-                        {{form_widget(form.submit)}}
-                    </div>
-                    {{ form_end(form) }}              
                 </div>
             </div>
         </div>
-    </div>
-
-    {% if old_criterions is not empty %}
-    <div class="panel-group">
-        <div class="panel-item">
-            <div class="panel-header">
-                <h2>Critères précédents</h2>
+        
+        {% if old_criterions is not empty %}
+        <div class="col-2">
+            <div class="panel-group">
+                <div class="panel-item">
+                    <div class="panel-header">
+                        <h2>Critères précédents</h2>
+                    </div>
+                <div class="panel-content list">
+                    <ul>
+                        {% for criterion in old_criterions %}
+                            <li>{{ criterion.description }} sur {{ criterion.max }} point{% if criterion.max > 1 %}s{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-        <div class="panel-content list">
-            <ul>
-                {% for criterion in old_criterions %}
-                    <li>{{ criterion.description }} sur {{ criterion.max }} point{% if criterion.max > 1 %}s{% endif %}</li>
-                {% endfor %}
-            </ul>
         </div>
+        {% endif %}
     </div>
-    {% endif %}
-    
-    <a href="{{ path('evaluation') }}" class="btn btn-default">Retour à la liste des évaluations</a>
+    <div class="bloc-bottom">
+        <a href="{{ path('evaluation') }}" class="btn btn-default">Retour à la liste des évaluations</a>
+    </div>
 
 {% endblock %}

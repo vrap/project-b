@@ -21,7 +21,7 @@
                         <li>Profile</li>
                         <li>
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                {{ 'Bonjour %username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                                {{ '%username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
                                 <a class="btn-deconnection" href="{{ path('fos_user_security_logout') }}">
                                     {{ 'Déconnexion'|trans({}, 'FOSUserBundle') }}
                                 </a>
