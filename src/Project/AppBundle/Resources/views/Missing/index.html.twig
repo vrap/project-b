@@ -1,9 +1,11 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    {% if studentsList is defined and studentsList is not null%}
+    <a href="{{ path('project_app_index') }}">Retour à l'accueil</a>
+
+   {% if studentsList is defined and studentsList is not null%}
         <p>Cochez les absents :</p>
-        <form method="POST">
+        <form method="POST" action="{{ path('missing_save') }}">
             {% for student in studentsList %}
 
                 <li>
