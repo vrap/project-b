@@ -182,6 +182,11 @@ ul.list-no-style > li {
 .btn-second:hover {
   background-color: #00cff0;
 }
+@media only screen and (max-width: 800px) {
+  .btn-second {
+    margin-top: 4px;
+  }
+}
 /**
 * Table
 **********/
@@ -241,6 +246,28 @@ input {
 .panel-group .panel-item .panel-content {
   padding: 18px;
 }
+@media only screen and (max-width: 800px) {
+  .panel-group .panel-item .panel-content {
+    /* Force table to not be like tables anymore */
+    /* Hide table headers (but not display: none;, for accessibility) */
+  }
+  .panel-group .panel-item .panel-content table,
+  .panel-group .panel-item .panel-content thead,
+  .panel-group .panel-item .panel-content tbody,
+  .panel-group .panel-item .panel-content th,
+  .panel-group .panel-item .panel-content td,
+  .panel-group .panel-item .panel-content tr {
+    display: block;
+  }
+  .panel-group .panel-item .panel-content thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .panel-group .panel-item .panel-content tbody tr td:first-child {
+    font-weight: bold;
+  }
+}
 /**
 * styles
 **********/
@@ -265,6 +292,7 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
+  z-index: 2000;
   transition: all 0.3s ease-out;
 }
 .wrapper nav ul > li {

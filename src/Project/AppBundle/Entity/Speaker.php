@@ -23,9 +23,13 @@ class Speaker
 
     /**
      * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(name="id", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Project\AppBundle\Entity\Lesson", mappedBy="speaker", cascade={"all"})
+     */
+    private $lessons;
 
 
     /**

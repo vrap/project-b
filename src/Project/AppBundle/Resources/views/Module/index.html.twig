@@ -1,23 +1,50 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-	<div class="bloc-top">
-        {{ numberModules }} modules
+    <div class="bloc-top">
+      <a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
     </div>
 
     <div class="panel-group">
-        {% if modulesList %}
+        {% if modulesList|length > 0 %}
             {% for module in modulesList %}
                 <div class="panel-item">
                     <div class="panel-header">
                         {{ module.name }}
+			<div class="pull-right">
+			  <form action="{{ path('module_delete', { 'id': module.id }) }}" method="post">
+			    <input type="hidden" name="_method" value="DELETE" />
+			    {{ form_widget(deleteForms[module.id]) }}
+			  </form>
+			</div>
                     </div>
                     <div class="panel-content">
-                        Intervenant : {{ module.speaker.user.username }}
+		      {% if module.lessons|length <= 0 %}
+		      Aucun cours n'est actuellement prévue pour ce module.
+		      {% else %}
+		      Cours prévues :<br /><br />
+		      <table>
+			<thead>
+			    <tr>
+			      <th>Date</th>
+			      <th>Intervenant</th>
+			    </tr>
+			</thead>
+			<tbody>
+			  {% for lesson in module.lessons %}
+			  <tr>
+			    <td>Du {{ lesson.startDate|date('d/m/Y à H:i') }} au {{ lesson.endDate|date('d/m/Y à H:i') }}</td>
+			    <td>{{ lesson.speaker.user.username }} {{ lesson.speaker.user.surname }}</td>
+			  </tr>
+			  {% endfor %}
+			</tbody>
+			<tfoot>
+			</tfoot>
+		      </table>
+		      {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% endif %}
     </div>
-    
 {% endblock %}

@@ -49,6 +49,16 @@ class Lesson
      */
     private $timecard;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Module", inversedBy="lessons", cascade={"all"})
+     */
+    private $module;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", inversedBy="lessons", cascade={"all"})
+     */
+    private $speaker;
+
 
     /**
      * Get id
@@ -150,5 +160,28 @@ class Lesson
     public function getTimecard()
     {
         return $this->timecard;
+    }
+
+    /**
+     * Set speaker
+     *
+     * @param \Project\AppBundle\Entity\Speaker $speaker
+     * @return Speaker
+     */
+    public function setSpeaker(\Project\AppBundle\Entity\Speaker $speaker = null)
+    {
+        $this->speaker = $speaker;
+
+        return $this;
+    }
+
+    /**
+     * Get speaker
+     *
+     * @return \Project\AppBundle\Entity\Speaker 
+     */
+    public function getSpeaker()
+    {
+        return $this->speaker;
     }
 }
