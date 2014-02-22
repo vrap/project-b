@@ -18,7 +18,7 @@ class LessonStudentRepository extends EntityRepository
      * @param $lesson_id
      * @return array
      */
-    public function findStudentsByLesson($lesson_id)
+    public function findStudentsByLessonId($lesson_id)
     {
         $em = $this->getEntityManager();
 
