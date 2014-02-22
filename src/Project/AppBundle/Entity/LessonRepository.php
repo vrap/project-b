@@ -17,17 +17,17 @@ class LessonRepository extends EntityRepository
      *
      * @return array
      */
-    public function findTodayLessonId()
+    public function findTodayLesson()
     {
         $em = $this->getEntityManager();
 
         return $em->createQuery(
                 '
-                SELECT l.id
+                SELECT l
                 FROM ProjectAppBundle:Lesson l
                 WHERE CURRENT_TIMESTAMP()  BETWEEN l.startDate AND l.endDate
                 '
             )
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }
