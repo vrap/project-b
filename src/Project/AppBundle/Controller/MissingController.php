@@ -7,6 +7,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Null;
 
 /**
@@ -15,7 +16,9 @@ use Symfony\Component\Validator\Constraints\Null;
 class MissingController extends Controller
 {
     /**
-     * Lists all missings entities.
+     * Lists all missings for a manger.
+     * Display students list for a speaker.
+     * Show number of missings for a student.
      *
      * @Route("/", name="missing")
      * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER", "ROLE_STUDENT"})
@@ -43,7 +46,8 @@ class MissingController extends Controller
             // Lesson of the day
             $todayLesson = $repositoryLesson->findTodayLesson();
             if(null === $todayLesson) {
-                $this->get('session')->getFlashBag()->add('info', 'Il n\'y a pas de cours aujourd\'hui.');
+                $this->get('session')->getFlashBag()
+                        ->add('info', 'Il n\'y a pas de cours aujourd\'hui.');
 
                 return array(
                         'studentsList' => null
@@ -58,9 +62,10 @@ class MissingController extends Controller
                 foreach($dataStudents as $val) {
                     $students[] = $repositoryUser->findUserById($val['studentUserId']);
                 }
-
+                // No students had participated at this lesson
                 if(empty($students)) {
-                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue lors de la création du cours.');
+                    $this->get('session')->getFlashBag()
+                            ->add('error', 'Une erreur est survenue lors de la création du cours.');
 
                     return array(
                         'studentsList' => null
@@ -73,7 +78,9 @@ class MissingController extends Controller
                 );
             }
 
-            $this->get('session')->getFlashBag()->add('info', 'Vous n\'avez pas de cours aujourd\'hui.');
+            // Speaker is not in charge of the lesson today
+            $this->get('session')->getFlashBag()
+                    ->add('info', 'Vous n\'avez pas de cours aujourd\'hui.');
 
             return array(
                     'studentsList' => null
@@ -82,10 +89,69 @@ class MissingController extends Controller
         } elseif (in_array('ROLE_STUDENT', $userRoles)) {
             // If a student is connected
 
+        } else {
+            $this->get('session')->getFlashBag()
+                    ->add('error', 'Votre statut ne vous permet pas d\'accéder à cette partie.');
+
+            return array(
+                    'studentsList' => null
+            );
         }
 
+    }
+
+    /**
+     * Save missings.
+     *
+     * @Route("/save", name="missing_save")
+     * @Secure(roles={"ROLE_SPEAKER"})
+     * @Method("POST")
+     * @Template("ProjectAppBundle:Missing:index.html.twig")
+     */
+    public function saveAction(Request $request) {
+        // Init database manager
+        $em = $this->getDoctrine()->getManager();
+        $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
+        $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
+
+        $todayLesson = $repositoryLesson->findTodayLesson();
+
+        // Get missings
+        $studentsMissing = $request->request->get('missings');
+
+        // Save missings
+        if(null !== $studentsMissing)
+        {
+            foreach ($studentsMissing as $absentId) {
+                $res = $repositoryLessonStudent->setAbsent($absentId, $todayLesson->getId());
+
+                // An error has occured during saving.
+                if(false === $res)
+                {
+                    $this->get('session')->getFlashBag()
+                            ->add('error', 'Une erreur inconnue est survenue. Veuillez nous excuser.');
+
+                    return array(
+                            'studentsList' => null
+                    );
+                }
+            }
+
+            // All absents are saved
+            $this->get('session')->getFlashBag()
+                    ->add('success', 'L\'appel est enregistré. Les absences seront transmises au(x) responsable(s) de la formation.');
+
+            return array(
+                    'studentsList' => null
+            );
+        }
+
+        // Nobody is absent
+        $this->get('session')->getFlashBag()
+                ->add('success', 'L\'appel est enregistré. Aucun absent.');
+
         return array(
-                'evaluationsList' => $entities,
+                'studentsList' => null
         );
     }
 }
