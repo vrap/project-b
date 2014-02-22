@@ -20,7 +20,7 @@ class FeedbackType extends AbstractType
             'class' => 'ProjectAppBundle:Module',
             'property' => 'name'
                 ))
-            ->add('comment', 'text',array(
+            ->add('comment', 'textarea',array(
             'label'=> 'commentaire '
                 ));
             

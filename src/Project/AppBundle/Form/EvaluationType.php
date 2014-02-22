@@ -27,10 +27,12 @@ class EvaluationType extends AbstractType
                   'property' => 'name'
                 ))
             ->add('criterions_add', 'submit', array(
-                    'label' => 'Ajouter un barème'
+                    'label' => 'Ajouter un barème',
+                    'attr' => (array( 'class' => 'btn btn-default' ))
                 ))
             ->add('submit', 'submit', array(
-                    'label' => 'Terminer'
+                    'label' => 'Terminer',
+                    'attr' => (array( 'class' => 'btn btn-second' ))
                 ))
         ;
     }

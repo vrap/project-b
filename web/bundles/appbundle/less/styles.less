@@ -139,6 +139,12 @@ ul.list-no-style > li{
 .pull-left{
 	float: left;
 }
+.block{
+	display: block;
+}
+.margin-right{
+	margin-right: 10px;
+}
 
 /**
 * Button
@@ -161,6 +167,7 @@ ul.list-no-style > li{
 .btn-default{
 	background-color: @color-grey;
 	color: darken(@color-grey, 30%);
+	border: 1px solid darken(@color-grey, 20%);
 	&:hover{
 		background-color: darken(@color-grey, 3%);
 	}
@@ -218,14 +225,48 @@ input{
 	padding:10px; 
 	color:#aaa; 
 	border:solid 1px #ccc; 
-	margin:0 0 20px;
+	margin:0;
 }
 
-.form-item{
-	margin-bottom: 10px;
-	&:last-child{
-		margin-bottom: 0;
+.panel-form{
+	.form-item{
+		margin-bottom: 20px;
+		&.last{
+			margin-top: 35px;
+			margin-bottom: 0;
+		}
 	}
+
+}
+
+#form{
+	display: inline-block;
+}
+
+/**
+* Flash
+*********/
+.flash{
+	padding: 10px;
+	margin-bottom: 20px;
+	.animated;
+	.bounceInDown;
+
+}
+.flash-error{
+	@color: rgba(231, 76, 60,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
+}
+.flash-warning{
+	@color: rgba(243, 156, 18,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
+}
+.flash-info{
+	@color: rgba(26, 188, 156,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
 }
 
 
@@ -254,6 +295,10 @@ input{
 		}
 		.panel-content{
 			padding:18px;
+			
+			&.list{
+				li{list-style: none;}
+			}
 
 			  @media only screen
 			  and (max-width : 800px) {
