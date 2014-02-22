@@ -7,33 +7,10 @@
 @-webkit-keyframes bounceInDown {
   0% {
     opacity: 0;
-    -webkit-transform: translateY(-2000px);
-  }
-  60% {
-    opacity: 1;
-    -webkit-transform: translateY(30px);
-  }
-  80% {
-    -webkit-transform: translateY(-10px);
+    -webkit-transform: translateY(-30px);
   }
   100% {
     -webkit-transform: translateY(0);
-  }
-}
-@keyframes bounceInDown {
-  0% {
-    opacity: 0;
-    transform: translateY(-2000px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(30px);
-  }
-  80% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
   }
 }
 .bounceInDown {
@@ -158,6 +135,15 @@ ul.list-no-style > li {
   -webkit-border-radius: 3px;
   border-radius: 3px;
   display: inline-block;
+}
+.btn-deconnection {
+  padding: 20px;
+  display: inline-block;
+  background-color: #344057;
+  color: #f2f2f2;
+}
+.btn-deconnection:hover {
+  background-color: #303b51;
 }
 .btn.disabled {
   opacity: 0.5;
@@ -395,7 +381,6 @@ body {
   }
 }
 .wrapper .main .sidebar {
-  padding: 10px;
   background-color: #3d4c67;
   color: #f2f2f2;
   text-align: right;

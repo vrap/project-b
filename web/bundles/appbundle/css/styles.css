@@ -136,6 +136,15 @@ ul.list-no-style > li {
   border-radius: 3px;
   display: inline-block;
 }
+.btn-deconnection {
+  padding: 20px;
+  display: inline-block;
+  background-color: #344057;
+  color: #f2f2f2;
+}
+.btn-deconnection:hover {
+  background-color: #303b51;
+}
 .btn.disabled {
   opacity: 0.5;
   cursor: default;
@@ -372,7 +381,6 @@ body {
   }
 }
 .wrapper .main .sidebar {
-  padding: 10px;
   background-color: #3d4c67;
   color: #f2f2f2;
   text-align: right;

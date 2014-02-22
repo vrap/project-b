@@ -154,6 +154,16 @@ ul.list-no-style > li{
 	.border-radius(3px);
 	display: inline-block;
 }
+
+.btn-deconnection{
+	padding: 20px;
+	display: inline-block;
+	background-color: darken(@color-dark, 5%);
+	color: @color-light;
+	&:hover{
+		background-color: lighten(darken(@color-dark, 10%), 3%);
+	}
+}
 .btn.disabled{
 	opacity: 0.5;
 	cursor: default;
@@ -430,7 +440,6 @@ body{
   	}
 
 		.sidebar{
-			padding: 10px;
 			background-color: @color-dark;
 			color: @color-light;
 			text-align: right;
