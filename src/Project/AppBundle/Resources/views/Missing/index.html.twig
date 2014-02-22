@@ -1,0 +1,17 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+    {% if studentsList is defined and studentsList is not null%}
+        <p>Cochez les absents :</p>
+        <form method="POST">
+            {% for student in studentsList %}
+
+                <li>
+                    Student : {{ student.username }} - {{ student.surname }} - {{ student.email }}
+                    <input type="checkbox" name="missings[]" value="{{ student.id }}"/>
+                </li>
+            {% endfor %}
+            <button type="submit">Valider l'appel</button>
+        </form>
+    {% endif %}
+{% endblock %}
