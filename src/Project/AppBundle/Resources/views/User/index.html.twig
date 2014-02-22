@@ -1,5 +1,6 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 {% block content %}
+    
     <div class="bloc-top">
         <a class="btn btn-second" href="{{ path('user_student_new') }}">
             Créer étudiant
@@ -18,13 +19,13 @@
                 <div class="panel-content">
                     <table>
                         <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Prenom</th>
-                            <th>Mail</th>
-                            <th>Telephone</th>
-                            <!-- <th></th> -->
-                        </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Mail</th>
+                                <th>Telephone</th>
+                                <!-- <th></th> -->
+                            </tr>
                         </thead>
                         <tbody>
                         {% for user in users %}

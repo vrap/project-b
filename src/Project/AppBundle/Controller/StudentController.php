@@ -53,7 +53,7 @@ class StudentController extends Controller
 
             $entity->getUser()->setEnabled(1);
             $entity->getUser()->setRoles(array('ROLE_STUDENT'));
-
+            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouter');
             $em->persist($entity);
             $em->flush();
 
@@ -92,7 +92,7 @@ class StudentController extends Controller
      *
      * @Route("/new", name="user_student_new")
      * @Method("GET")
-     * @Template("ProjectAppBundle:User:new.html.twig")
+     * @Template("ProjectAppBundle:Student:new.html.twig")
      */
     public function newAction()
     {

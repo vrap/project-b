@@ -11,6 +11,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Project\AppBundle\Entity\Manager;
 use Project\AppBundle\Form\ManagerType;
 
+/**
+ * Manager controller.
+ *
+ * @Route("/manager")
+ */
 class ManagerController extends Controller
 {
     public function indexAction()
@@ -46,7 +51,7 @@ class ManagerController extends Controller
             $entity->getUser()->setEnabled(1);
             $entity->getUser()->setRoles(array('ROLE_MANAGER'));
             $entity->setIsAdministrator(0);
-
+            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouté');
             $em->persist($entity);
             $em->flush();
 
@@ -71,7 +76,7 @@ class ManagerController extends Controller
     private function createCreateForm(Manager $entity)
     {
         $form = $this->createForm(new ManagerType(), $entity, array(
-            'action' => $this->generateUrl('speaker_create'),
+            'action' => $this->generateUrl('manager_create'),
             'method' => 'POST',
         ));
 
@@ -85,7 +90,7 @@ class ManagerController extends Controller
      *
      * @Route("/new", name="user_manager_new")
      * @Method("GET")
-     * @Template("ProjectAppBundle:User:new.html.twig")
+     * @Template("ProjectAppBundle:Manager:new.html.twig")
      */
     public function newAction()
     {

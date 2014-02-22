@@ -21,7 +21,7 @@ class FeedbackType extends AbstractType
             'property' => 'name'
                 ))
             ->add('comment', 'textarea',array(
-            'label'=> 'commentaire '
+            'label'=> 'Commentaire '
                 ));
             
         ;

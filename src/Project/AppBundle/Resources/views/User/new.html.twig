@@ -8,7 +8,41 @@
                 <h1>{{title}}</h1>
             </div>
             <div class="panel-content">
-                {{ form(form) }}
+
+                 <div class="panel-form">
+
+                    {{ form_start(form) }}
+                        {# Errors #}
+                        <div class="form-item">
+                            {{ form_errors(form)}}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(form.user.username) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(form.user.surname) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(form.user.phone) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(form.user.email) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(form.user.plainPassword) }}
+                        </div>
+
+                        {% block form %}
+                            
+                        {% endblock %}
+
+                         {# Buttons #}
+                         <div class="form-item last">
+                            {{ form_row(form.submit) }}
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+
             </div>
         </div>
     </div>

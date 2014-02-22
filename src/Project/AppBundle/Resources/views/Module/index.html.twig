@@ -1,10 +1,11 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <div class="bloc-top">
-      <a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
-    </div>
-
+	{% if not is_granted('ROLE_STUDENT') %}
+	    <div class="bloc-top">
+	      <a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
+	    </div>
+	{% endif %}
     <div class="panel-group">
         {% if modulesList|length > 0 %}
             {% for module in modulesList %}
