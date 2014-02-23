@@ -3,6 +3,7 @@
 namespace Project\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -104,5 +105,104 @@ class ManagerController extends Controller
         );
     }
 
+    /**
+     * Enables Manager to export Student absences.
+     *
+     * @Route("/export_absence", name="manager_export_absence")
+     */
+    public function exportAbsenceAction()
+    {
+        $em         = $this->getDoctrine()->getManager();
+        $module     = $em->getRepository('ProjectAppBundle:Module')->find(1);
+        $moduleName = $module->getName();
+        $lessons    = $em->getRepository('ProjectAppBundle:Lesson')->findBy(array(
+            'module' => $module->getId()
+        ));
+        $handle     = fopen('php://memory', 'r+');
+        $header     = array();
 
+        if (! $module) {
+            throw $this->createNotFoundException('Impossible de trouver le module.');
+        }
+
+        if (! $lessons) {
+            throw $this->createNotFoundException('Impossible de trouver les cours.');
+        }
+
+        foreach ($lessons as $lesson) {
+            $lessonsStudents = $em->getRepository('ProjectAppBundle:LessonStudent')->findStudentsByLesson($lesson->getId());
+
+            foreach ($lessonsStudents as $lessonStudent) { 
+                $student       = $em->getRepository('ProjectAppBundle:Student')->find($lessonStudent['studentUserId']);
+                $user          = $em->getRepository('ProjectAppBundle:User')->find($student->getUser());
+                $lessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent')->findBy(array(
+                    'lessonId'      => $lesson->getId(),
+                    'studentUserId' => $lessonStudent['studentUserId'],
+                ));
+
+                $dateLesson = $lesson->getStartDate();
+                $idStudent  = $user->getId();
+                $absence    = (($lessonStudent[0]->getAbsent())) ? 1 : 0;
+
+                if ($dateLesson && $idStudent && $absence) {
+                    fputcsv($handle, array($moduleName, $dateLesson->format('d-m-Y'), $dateLesson->format('H:i'), $idStudent, $absence));
+                }
+            }
+        }
+
+        rewind($handle);
+        
+        $content = stream_get_contents($handle);
+        
+        fclose($handle);
+
+        return new Response($content, 200, array(
+            'Content-Type'        => 'application/force-download',
+            'Content-Disposition' => 'attachment; filename="export_' . rawurlencode($moduleName) . '_absences.csv"',
+        ));
+    }
+
+    /**
+     * Enables Manager to export Student scores.
+     *
+     * @Route("/export_score", name="manager_export_score")
+     */
+    public function exportScoreAction()
+    {
+        $em          = $this->getDoctrine()->getEntityManager();
+        $module      = $em->getRepository('ProjectAppBundle:Module')->find(1);
+        $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')->findBy(array(
+            'module' => $module->getId()
+        ));
+        $handle      = fopen('php://memory', 'r+');
+        $header      = array();
+
+        foreach ($evaluations as $evaluation) {
+            $studentsEvaluations = $em->getRepository('ProjectAppBundle:StudentEvaluation')->findBy(array(
+                'evaluation' => $evaluation->getId()
+            ));
+
+            foreach ($studentsEvaluations as $studentEvaluation) {
+                $student = $em->getRepository('ProjectAppBundle:Student')->find($studentEvaluation->getId());
+
+                error_log(print_r($student, TRUE));
+                exit(0);
+
+                fputcsv($handle, array(1, $student->getId(), $studentEvaluation->getScore()));
+            }
+        }
+
+        rewind($handle);
+        
+        $content = stream_get_contents($handle);
+        
+        fclose($handle);
+
+        $moduleName = $module->getName();
+
+        return new Response($content, 200, array(
+            'Content-Type'        => 'application/force-download',
+            'Content-Disposition' => 'attachment; filename="export_' . rawurlencode($moduleName) . '_absences.csv"',
+        ));
+    }
 }
