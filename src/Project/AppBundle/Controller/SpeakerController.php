@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * speaker controller.
  *
- * @Route("/speaker")
+ * @Route("")
  */
 class SpeakerController extends Controller
 {
@@ -203,7 +203,7 @@ class SpeakerController extends Controller
     /**
      * Creates a new Speaker entity.
      *
-     * @Route("/", name="speaker_create")
+     * @Route("/speaker/", name="speaker_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:Speaker:new.html.twig")
      */
