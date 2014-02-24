@@ -126,20 +126,31 @@ class MissingController extends Controller
             // If a student is connected
             $lessonsMissed = array();
             $justified = array();
+            $daysMissed = 0;
+            $hoursMissed = 0;
+            $minutesMissed = 0;
             $lessonsStudent = $repositoryLessonStudent->findByStudentUserId($user->getId());
 
             foreach ($lessonsStudent as $lessonStudent) {
                 if(true === $lessonStudent->getAbsent()) {
-                    $lessonsMissed[] = $repositoryLesson->findOneById($lessonStudent->getLessonId());
+                    $temp = $repositoryLesson->findOneById($lessonStudent->getLessonId());
+
+                    $lessonsMissed[] = $temp;
+
+                    $daysMissed += $temp->getEndDate()->diff($temp->getStartDate())->format('%d');
+                    $hoursMissed += $temp->getEndDate()->diff($temp->getStartDate())->format('%h');
+                    $minutesMissed += $temp->getEndDate()->diff($temp->getStartDate())->format('%i');
 
                     if(true === $lessonStudent->getJustified()) {
-                        $justified[] = $repositoryLesson->findOneById($lessonStudent->getLessonId());
+                        $justified[] = $temp;
                     }
                 }
             }
+            $totalMissed = $daysMissed . ' jours, ' . $hoursMissed . ' heures, ' . $minutesMissed . ' minutes.';
 
             return array(
                 'lessonsMissed' => $lessonsMissed,
+                'totalMissed' => $totalMissed,
                 'justified' => $justified
             );
 
