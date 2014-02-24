@@ -199,7 +199,38 @@ class MissingController extends Controller
      * @Method("POST")
      * @Template()
      */
-    public function editAction() {
+    public function editAction(Request $request) {
+        // Init database manager
+        $em = $this->getDoctrine()->getManager();
+        $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
+
+        $lessonId = $request->request->get('lessonId');
+        $correspondingStudentsId = $repositoryLessonStudent->findStudentsByLessonId($lessonId);
+
+        // Get missings
+        $missings = $request->request->get('missings');
+
+        if(null === $missings) {
+            $missings = array();
+        }
+
+        // Go on each students who participated at the lesson
+        foreach($correspondingStudentsId as $studentId) {
+            $lessonStudent = $repositoryLessonStudent->findOneByLessonStudent($studentId['studentUserId'], $lessonId);
+
+            if(true === in_array($studentId['studentUserId'], $missings)) {
+                // If the student is checked as absent
+                $lessonStudent->setAbsent(true);
+            } else {
+                $lessonStudent->setAbsent(false);
+            }
+
+            $em->persist($lessonStudent);
+        }
+
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add('success', 'Modification(s) enregistrées.');
 
         return $this->redirect($this->generateUrl('missing'));
     }
@@ -216,22 +247,32 @@ class MissingController extends Controller
         // Init database manager
         $em = $this->getDoctrine()->getManager();
         $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
-        $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
 
         $lessonId = $request->request->get('lessonId');
-        $lesson = $repositoryLesson->findOneById($lessonId);
+        $correspondingStudentsId = $repositoryLessonStudent->findStudentsByLessonId($lessonId);
 
         // Get missings justified
         $missingsJustified = $request->request->get('justify');
 
-        if(null !== $missingsJustified) {
-            foreach($missingsJustified as $missingId) {
-                $lessonStudent = $repositoryLessonStudent->findOneByLessonStudent($missingId, $lessonId);
-                $lessonStudent->setJustified(true);
-                $em->persist($lessonStudent);
-            }
-            $em->flush();
+        if(null === $missingsJustified) {
+            $missingsJustified = array();
         }
+
+        // Go on each students who participated at the lesson
+        foreach($correspondingStudentsId as $studentId) {
+            $lessonStudent = $repositoryLessonStudent->findOneByLessonStudent($studentId['studentUserId'], $lessonId);
+
+            if(true === in_array($studentId['studentUserId'], $missingsJustified)) {
+                // If the missing student is checked as a justified missing
+                $lessonStudent->setJustified(true);
+            } else {
+                $lessonStudent->setJustified(false);
+            }
+
+            $em->persist($lessonStudent);
+        }
+
+        $em->flush();
 
         $this->get('session')->getFlashBag()->add('success', 'Justification(s) enregistrées.');
 
