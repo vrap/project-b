@@ -61,7 +61,7 @@
                                 <br/>
                                 
                                 <label for="{{ lesson.lesson.id }}" class="content-hidden-header">Voir la liste d'appel complète</label>
-                                <input type="checkbox" class="checkbox-hidden" id="{{ lesson.lesson.id }}">
+                                <input type="checkbox" class="checkbox-hidden" id="{{ lesson.lesson.id }}" checked="false">
                                 <div class="content-hidden close">
                                     <br>
                                     <form method="POST" action="{{ path('missing_edit') }}">
@@ -107,18 +107,31 @@
     {% elseif is_granted('ROLE_SPEAKER') %}
 
         {% if studentsList is defined and studentsList is not null %}
-            <p>Cochez les absents :</p>
+            <h2>Cochez les absents :</h2>
             <form method="POST" action="{{ path('missing_save') }}">
-                <ul>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for student in studentsList %}
-
-                        <li>
-                            Student : {{ student.username }} - {{ student.surname }} - {{ student.email }}
-                            <input type="checkbox" name="missings[]" value="{{ student.id }}"/>
-                        </li>
+                        <tr>
+                            <td>{{ student.surname }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>
+                                <input class="checkbox-hidden" type="checkbox" id="missing{{ student.id }}" name="missings[]" value="{{ student.id }}" />
+                                <label class="label-missing" for="missing{{ student.id }}"><span></span></label>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ul>
-                <button type="submit">Valider l'appel</button>
+                    </tbody>
+                </table>
+                <br/>
+                <button class="btn" type="submit">Valider l'appel</button>
             </form>
         {% else %}
             <a href="{{ path('project_app_index') }}">Retour à l'accueil</a>
