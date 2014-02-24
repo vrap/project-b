@@ -38,4 +38,5 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/administrator, roles: ROLE_ADMIN }
         - { path: ^/manager, roles: ROLE_MANAGER }
-        - { path: ^/speaker, roles: ROLE_SPEAKER }
+        - { path: ^/speaker, roles: [ROLE_SPEAKER, ROLE_MANAGER] }
+        - { path: ^/student, roles: ROLE_MANAGER }
