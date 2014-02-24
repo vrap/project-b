@@ -39,7 +39,43 @@ class MissingController extends Controller
 
         if(in_array('ROLE_MANAGER', $userRoles)){
             // If a manager is connected
-            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
+            $lessons = array();
+            $endedLessons = $repositoryLesson->findEndedLessons();
+
+            foreach($endedLessons as $endedLesson) {
+                $students = array();
+                $missings = array();
+                $justified = array();
+
+                $correspondingStudentsId = $repositoryLessonStudent->findStudentsByLessonId($endedLesson->getId());
+
+                foreach($correspondingStudentsId as $studentId) {
+                    $studentTemp = $repositoryUser->findUserById($studentId['studentUserId']);
+                    $lessonStudent = $repositoryLessonStudent->findOneByStudentUserId($studentId['studentUserId']);
+
+                    if(true === $lessonStudent->getAbsent()) {
+
+                        if(true === $lessonStudent->getJustified()) {
+                            $justified[] = $studentTemp;
+                        }
+
+                        $missings[] = $studentTemp;
+                    }
+
+                    $students[] = $studentTemp;
+                }
+
+                $lessons[] = array(
+                    'lesson' => $endedLesson,
+                    'missings' => $missings,
+                    'justified' => $justified,
+                    'students' => $students
+                );
+            }
+
+            return array(
+              'lessons' => $lessons
+            );
 
         } elseif (in_array('ROLE_SPEAKER', $userRoles)) {
             // If a speaker is connected
@@ -153,5 +189,52 @@ class MissingController extends Controller
         return array(
                 'studentsList' => null
         );
+    }
+
+    /**
+     * Edit missings.
+     *
+     * @Route("/edit", name="missing_edit")
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Method("POST")
+     * @Template()
+     */
+    public function editAction() {
+
+        return $this->redirect($this->generateUrl('missing'));
+    }
+
+    /**
+     * Save missings justified.
+     *
+     * @Route("/justify", name="missing_justify")
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Method("POST")
+     * @Template()
+     */
+    public function justifyAction(Request $request) {
+        // Init database manager
+        $em = $this->getDoctrine()->getManager();
+        $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
+        $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
+
+        $lessonId = $request->request->get('lessonId');
+        $lesson = $repositoryLesson->findOneById($lessonId);
+
+        // Get missings justified
+        $missingsJustified = $request->request->get('justify');
+
+        if(null !== $missingsJustified) {
+            foreach($missingsJustified as $missingId) {
+                $lessonStudent = $repositoryLessonStudent->findOneByLessonStudent($missingId, $lessonId);
+                $lessonStudent->setJustified(true);
+                $em->persist($lessonStudent);
+            }
+            $em->flush();
+        }
+
+        $this->get('session')->getFlashBag()->add('success', 'Justification(s) enregistrées.');
+
+        return $this->redirect($this->generateUrl('missing'));
     }
 }
