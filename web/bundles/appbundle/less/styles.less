@@ -175,6 +175,8 @@ ul.list-no-style > li{
 /**
 * Button
 **********/
+.checkbox-hidden + .label-missing,
+.checkbox-hidden + .label-justify,
 .btn{
 	padding: 10px 15px;
 	.border-radius(3px);
@@ -201,6 +203,7 @@ ul.list-no-style > li{
 	font-size: .9em
 }
 
+.checkbox-hidden:not(:checked) + .label-missing,
 .btn-default{
 	background-color: @color-grey;
 	color: darken(@color-grey, 30%);
@@ -209,6 +212,9 @@ ul.list-no-style > li{
 		background-color: darken(@color-grey, 3%);
 	}
 }
+
+.checkbox-hidden:checked + .label-missing,
+.checkbox-hidden:not(:checked) + .label-justify,
 .btn-primary{
 	background-color: @color-primary;
 	color: @color-light;
@@ -216,6 +222,8 @@ ul.list-no-style > li{
 		background-color: darken(@color-primary, 3%);
 	}
 }
+
+.checkbox-hidden:checked + .label-justify,
 .btn-second{
 	background-color: @color-second;
 	color: darken(@color-second, 20%);
@@ -251,8 +259,36 @@ table{
 	}
 }
 
+/**
+* Checkboxes
+**********/
+.checkbox-hidden {
+	display: none;
 
+	&:checked + .label-missing {
+		span:before {
+			content: "Absent";
+		}
+	}
 
+	&:not(:checked) + .label-missing {
+		span:before {
+			content: "Présent";
+		}
+	}
+		
+	&:checked + .label-justify {
+		span:before {
+			content: "Justifiée";
+		}
+	}
+
+	&:not(:checked) + .label-justify {
+		span:before {
+			content: "Non justifiée";
+		}
+	}
+}
 
 /**
 * Formulaire
@@ -370,24 +406,42 @@ input{
 				li{list-style: none;}
 			}
 
-			  @media only screen
-			  and (max-width : 800px) {
-			    /* Force table to not be like tables anymore */
-			    table, thead, tbody, th, td, tr {
-			      display: block;
-			    }
+		  @media only screen
+		  and (max-width : 800px) {
+		    /* Force table to not be like tables anymore */
+		    table, thead, tbody, th, td, tr {
+		      display: block;
+		    }
 
-			    /* Hide table headers (but not display: none;, for accessibility) */
-					thead tr { 
-						position: absolute;
-						top: -9999px;
-						left: -9999px;
-					}
+		    /* Hide table headers (but not display: none;, for accessibility) */
+				thead tr { 
+					position: absolute;
+					top: -9999px;
+					left: -9999px;
+				}
 
-					tbody tr td:first-child {
-						font-weight: bold;
+				tbody tr td:first-child {
+					font-weight: bold;
+				}
+		  }
+			
+			.content-hidden-header + .checkbox-hidden {
+				&:checked {
+					& + .content-hidden {
+						&.close {
+			  			display: none;
+			  		}
+
+			  		&.open {
+				  		display: block;
+				  	}
 					}
-			  }
+					
+				}
+			}
+		  .content-hidden {
+		  	transition: all .3s ease-out;
+		  }
 		}
 
 	}
