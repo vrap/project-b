@@ -75,3 +75,7 @@ fos_user:
     registration:
       form:
         type: override_fosuser_registration
+        
+services:
+    log:
+      class: Project\AppBundle\Service\Log
