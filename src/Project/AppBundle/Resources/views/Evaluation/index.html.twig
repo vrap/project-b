@@ -32,7 +32,11 @@
                                 Modifier
                             </a>
                         {% endif %}
-
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <a class="pull-right btn btn-default btn-small" href="{{ path('evaluation_validate', { 'id': entity.evaluation.id }) }}">
+                                Valider
+                            </a>
+                        {% endif %}
                     </div>
                     <div class="panel-content">
                         {% if is_granted('ROLE_STUDENT') %}

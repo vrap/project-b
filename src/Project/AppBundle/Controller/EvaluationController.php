@@ -46,15 +46,19 @@ class EvaluationController extends Controller
         
         // Si l'utilisateur est MANAGER ou SPEAKER
         if(in_array('ROLE_MANAGER', $userRoles)){
+            $evals = $repoEval->findAllUnvalidatedByPromotion($this->get('session')->get('promotion'));
 
-            $evals = $repoEval->findAll();
-
-            foreach($evals as $eval) {
-                $entities[] = array(
-                        'evaluation' => $eval,
-                        'criterions' => $repoCrit->findByEvaluation($eval)
-                );
+            if(!empty($evals)) {
+                foreach($evals as $eval) {
+                    $entities[] = array(
+                            'evaluation' => $eval,
+                            'criterions' => $repoCrit->findByEvaluation($eval)
+                    );
+                }
+            } else {
+                $entities = array();
             }
+
 
         } else if (in_array('ROLE_STUDENT', $userRoles)) {
 
@@ -377,5 +381,50 @@ class EvaluationController extends Controller
                     ))
                 ->getForm()
                 ;
+    }
+
+    /**
+     * Show an Evaluation to validate.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/validate", name="evaluation_validate")
+     * @METHOD("GET")
+     * @Template("ProjectAppBundle:Evaluation:validate.html.twig")
+     */
+    public function validateForm($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $evaluation = $em->getRepository('ProjectAppBundle:Evaluation')->findOneBy(array(
+            'id' => $id
+        ));
+        $promotion = $evaluation->getModule()->getPromotion();
+
+        if ($this->get('session')->get('promotion') == $promotion->getId()) {
+            $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findBy(array(
+                'evaluation' => $id
+            ));
+
+            $studentNotes = $em->getRepository('ProjectAppBundle:StudentEvaluation')->findBy(array(
+                'evaluation' => $id
+            ));
+
+            $notes = array();
+            foreach ($studentNotes as $note) {
+                $notes[$note->getStudent()->getId()]['infos'] = $note;
+                $studentCriterions = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion')->findBy(array(
+                                                                                                                     'studentEvaluation' => $note->getId()
+                                                                                                                     ));
+
+                foreach ($studentCriterions as $criterion) {
+                    $notes[$note->getStudent()->getId()]['details'][$criterion->getId()] = $criterion;
+                }
+            }
+
+            return array(
+                         'criterions' => $criterions,
+                         'evaluation' => $evaluation,
+                         'notes'      => $notes
+            );
+        }
     }
 }
