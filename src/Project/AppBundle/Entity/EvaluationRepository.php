@@ -23,4 +23,19 @@ class EvaluationRepository extends EntityRepository
                 ->setParameter('speaker', $speakerId)
                 ->getResult();
     }
+
+    public function findAllUnvalidatedByPromotion($promotionId)
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                          'SELECT e
+FROM ProjectAppBundle:Evaluation e
+LEFT JOIN e.module m
+LEFT JOIN m.promotion p
+WHERE p.id = :promotion
+AND e.validated = 0'
+                          )
+            ->setParameter('promotion', $promotionId)
+            ->getResult();
+    }
 }
