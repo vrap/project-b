@@ -25,10 +25,10 @@
                         {% if is_granted('ROLE_STUDENT') %}
                             <h2><span class="pull-right">{{ entity.notation.score }} / {{ entity.evaluation.max }}</span></h2>
                         {% elseif is_granted('ROLE_SPEAKER') %}
-                            <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': evaluation.id }) }}">
+                            <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': entity.evaluation.id }) }}">
                                 Noter
                             </a>
-                            <a class="pull-right btn btn-default btn-small margin-right" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">
+                            <a class="pull-right btn btn-default btn-small margin-right" href="{{ path('evaluation_edit', { 'id': entity.evaluation.id }) }}">
                                 Modifier
                             </a>
                         {% endif %}
