@@ -1,0 +1,196 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+    {% if is_granted('ROLE_MANAGER') %}
+
+        <div class="panel-group">
+            {% if lessons is defined and lessons is not null %}
+                {% for lesson in lessons %}
+                    <div class="panel-item">
+                        <div class="panel-header">
+                            <h2 class="pull-left">
+                                {{ lesson.lesson.name }}
+                                <small><i>
+                                    du {{ lesson.lesson.startDate|date("d/m/y à H:i") }} au
+                                    {{ lesson.lesson.endDate|date("d/m/y à H:i") }} par
+                                    {{ lesson.lesson.speaker.user.username|capitalize }} {{ lesson.lesson.speaker.user.surname|capitalize }}
+                                </i></small>
+                            </h2>
+                        </div>
+
+                        <div class="panel-content">
+                            {% if lesson.students is empty %}
+                                <p>Aucun étudiant a participé à ce cours.</p>
+                            {% else %}
+                                <h3>Les absents :</h3>
+                                {% if lesson.missings is not empty %}
+                                    <form method="POST" action="{{ path('missing_justify') }}">
+                                        <input type="hidden" name="lessonId" value="{{ lesson.lesson.id }}">
+                                        <input type="hidden" name="lessonId" value="{{ lesson.lesson.id }}">
+                                        <table>
+                                            <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Prénom</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for absent in lesson.missings %}
+                                                <tr>
+                                                    <td>{{ absent.surname }}</td>
+                                                    <td>{{ absent.username }}</td>
+                                                    <td>
+                                                        <input class="checkbox-hidden" type="checkbox" id="justify{{ absent.id }}" name="justify[]" value="{{ absent.id }}"
+                                                                {% if absent in lesson.justified %}
+                                                                    checked
+                                                                {% endif %}
+                                                                />
+                                                        <label class="label-justify" for="justify{{ absent.id }}"><span></span></label>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <br/>
+                                        <button class="btn" type="submit">Valider</button>
+                                    </form>
+                                {% else %}
+                                    <p>Aucun élève absent à ce cours.</p>
+                                {%  endif %}
+                                <br/>
+                                
+                                <label for="{{ lesson.lesson.id }}" class="content-hidden-header">Voir la liste d'appel complète</label>
+                                <input type="checkbox" class="checkbox-hidden" id="{{ lesson.lesson.id }}" checked="false">
+                                <div class="content-hidden close">
+                                    <br>
+                                    <form method="POST" action="{{ path('missing_edit') }}">
+                                        <input type="hidden" name="lessonId" value="{{ lesson.lesson.id }}">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Prénom</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for student in lesson.students %}
+                                                    <tr>
+                                                        <td>{{ student.surname }}</td>
+                                                        <td>{{ student.username }}</td>
+                                                        <td>
+                                                            <input class="checkbox-hidden" type="checkbox" id="missing{{ student.id }}" name="missings[]" value="{{ student.id }}"
+                                                                    {% if student in lesson.missings %}
+                                                                        checked
+                                                                    {% endif %}
+                                                                    />
+                                                            <label class="label-missing" for="missing{{ student.id }}"><span></span></label>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <br/>
+                                        <button class="btn" type="submit">Enregistrer les modifications.</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun cours est terminé pour le moment.</p>
+            {% endif %}
+        </div>
+
+    {% elseif is_granted('ROLE_SPEAKER') %}
+
+        {% if studentsList is defined and studentsList is not null %}
+            <h2>Cochez les absents :</h2>
+            <form method="POST" action="{{ path('missing_save') }}">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in studentsList %}
+                        <tr>
+                            <td>{{ student.surname }}</td>
+                            <td>{{ student.username }}</td>
+                            <td>
+                                <input class="checkbox-hidden" type="checkbox" id="missing{{ student.id }}" name="missings[]" value="{{ student.id }}" />
+                                <label class="label-missing" for="missing{{ student.id }}"><span></span></label>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <br/>
+                <button class="btn" type="submit">Valider l'appel</button>
+            </form>
+        {% else %}
+            <a href="{{ path('project_app_index') }}">Retour à l'accueil</a>
+        {% endif %}
+
+    {% elseif is_granted('ROLE_STUDENT') %}
+
+        <div class="panel-group">
+            <div class="panel-item">
+                <div class="panel-header">
+                    <h2>Vos absences</h2>
+                </div>
+                <div class="panel-content">
+                    {% if lessonsMissed is not empty %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Dates</th>
+                                    <th>Cours</th>
+                                    <th>Intervenant</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for lesson in lessonsMissed %}
+                                <tr>
+                                    <td>
+                                        Du {{ lesson.startDate|date("d/m/y à H:i") }}
+                                        au {{ lesson.endDate|date("d/m/y à H:i") }}
+                                    </td>
+                                    <td>
+                                        {{ lesson.name }}
+                                    </td>
+                                    <td>
+                                        {{ lesson.speaker.user.username|capitalize }} {{ lesson.speaker.user.surname|capitalize }}
+                                    </td>
+                                    <td>
+                                        {% if lesson in justified %}
+                                            Justifée
+                                        {% else %}
+                                            Non justifiée
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                        <p><b>Total :</b> {{ totalMissed }}</p>
+                    {% else %}
+                        <p>Vous n'avez pas d'absence.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    {% else %}
+
+        <p>Vous n'êtes pas autorisé à accéder à cette partie.</p>
+
+    {% endif %}
+{% endblock %}

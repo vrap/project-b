@@ -163,6 +163,8 @@ ul.list-no-style > li {
 /**
 * Button
 **********/
+.checkbox-hidden + .label-missing,
+.checkbox-hidden + .label-justify,
 .btn {
   padding: 10px 15px;
   -webkit-border-radius: 3px;
@@ -187,29 +189,38 @@ ul.list-no-style > li {
   padding: 8px 13px;
   font-size: 0.9em;
 }
+.checkbox-hidden:not(:checked) + .label-missing,
 .btn-default {
   background-color: #ebebeb;
   color: #9f9f9f;
   border: 1px solid #b8b8b8;
 }
+.checkbox-hidden:not(:checked) + .label-missing:hover,
 .btn-default:hover {
   background-color: #e3e3e3;
 }
+.checkbox-hidden:checked + .label-missing,
+.checkbox-hidden:not(:checked) + .label-justify,
 .btn-primary {
   background-color: #e97b7d;
   color: #f2f2f2;
 }
+.checkbox-hidden:checked + .label-missing:hover,
+.checkbox-hidden:not(:checked) + .label-justify:hover,
 .btn-primary:hover {
   background-color: #e76e70;
 }
+.checkbox-hidden:checked + .label-justify,
 .btn-second {
   background-color: #00dcff;
   color: #008499;
 }
+.checkbox-hidden:checked + .label-justify:hover,
 .btn-second:hover {
   background-color: #00cff0;
 }
 @media only screen and (max-width: 800px) {
+  .checkbox-hidden:checked + .label-justify,
   .btn-second {
     margin-top: 4px;
   }
@@ -234,6 +245,24 @@ table tr th {
 }
 table tr td {
   padding: 6px;
+}
+/**
+* Checkboxes
+**********/
+.checkbox-hidden {
+  display: none;
+}
+.checkbox-hidden:checked + .label-missing span:before {
+  content: "Absent";
+}
+.checkbox-hidden:not(:checked) + .label-missing span:before {
+  content: "Présent";
+}
+.checkbox-hidden:checked + .label-justify span:before {
+  content: "Justifiée";
+}
+.checkbox-hidden:not(:checked) + .label-justify span:before {
+  content: "Non justifiée";
 }
 /**
 * Formulaire
@@ -332,9 +361,7 @@ input {
 @media only screen and (max-width: 800px) {
   .panel-group .panel-item .panel-content {
     /* Force table to not be like tables anymore */
-  
     /* Hide table headers (but not display: none;, for accessibility) */
-  
   }
   .panel-group .panel-item .panel-content table,
   .panel-group .panel-item .panel-content thead,
@@ -352,6 +379,15 @@ input {
   .panel-group .panel-item .panel-content tbody tr td:first-child {
     font-weight: bold;
   }
+}
+.panel-group .panel-item .panel-content .content-hidden-header + .checkbox-hidden:checked + .content-hidden.close {
+  display: none;
+}
+.panel-group .panel-item .panel-content .content-hidden-header + .checkbox-hidden:checked + .content-hidden.open {
+  display: block;
+}
+.panel-group .panel-item .panel-content .content-hidden {
+  transition: all 0.3s ease-out;
 }
 /**
 * styles

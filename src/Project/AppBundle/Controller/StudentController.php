@@ -53,7 +53,7 @@ class StudentController extends Controller
 
             $entity->getUser()->setEnabled(1);
             $entity->getUser()->setRoles(array('ROLE_STUDENT'));
-            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouter');
+            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouté.');
             $em->persist($entity);
             $em->flush();
 

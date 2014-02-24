@@ -1,10 +1,4 @@
 <?php
-/**
- * SpeakerController.php
- * @author Valentin
- * 04/02/14.
- */
-
 namespace Project\AppBundle\Controller;
 
 use Project\AppBundle\Entity\Evaluation;
@@ -14,7 +8,6 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\SpeakerLesson;
 use Project\AppBundle\Entity\Lesson;
 use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
@@ -28,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * speaker controller.
  *
- * @Route("/speaker")
+ * @Route("")
  */
 class SpeakerController extends Controller
 {
@@ -43,102 +36,6 @@ class SpeakerController extends Controller
     public function indexAction()
     {
         return $this->render('ProjectAppBundle:Speaker:index.html.twig');
-    }
-
-    /**
-     * Display students list and save absents
-     *
-     * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/missings", name="speaker_missings")
-     * @Method({"GET", "POST"})
-     * @Template()
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function missingsAction(Request $request)
-    {
-        // Get logged in user
-        $user = $this->getUser();
-
-        if(null === $user) {
-            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                    'msg' => 'Vous devez être connecté au préalable.'
-            ));
-        }
-
-        // Init repositories
-        $em = $this->getDoctrine()
-                ->getManager();
-        $repositorySpeakerLesson = $em->getRepository('ProjectAppBundle:SpeakerLesson');
-        $repositoryLesson = $em->getRepository('ProjectAppBundle:Lesson');
-        $repositoryLessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent');
-        $repositoryUser = $em->getRepository('ProjectAppBundle:User');
-
-        // Speaker's lessons
-        $lessons = array();
-        $lessonsTemp = $repositorySpeakerLesson->findLessonsBySpeaker($user->getId());
-        foreach ($lessonsTemp as $value) {
-            $lessons[] = $value['lessonId'];
-        }
-
-        // Lesson of the day
-        $todayLesson = $repositoryLesson->findTodayLessonId();
-        if(empty($todayLesson)) {
-
-            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                    'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
-            ));
-        }
-        $lessonId = $todayLesson[0]['id'];
-
-        // If method post, save missings
-        if('POST' === $request->getMethod())
-        {
-            // Get missings
-            $studentsMissing = $request->request->get('missings');
-
-            // Save missings
-            if(null !== $studentsMissing)
-            {
-                foreach ($studentsMissing as $absentId) {
-                    $res = $repositoryLessonStudent->setAbsent($absentId, $lessonId);
-                    if(false === $res)
-                    {
-                        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                                'msg' => 'Une erreur est survenue.'
-                        ));
-                    }
-                }
-
-                return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                        'msg' => 'L\'appel est enregistré. Les absences seront transmises au(x) responsable(s) de la formation.'
-                ));
-            }
-
-            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                    'msg' => 'L\'appel est enregistré. Aucun absent.'
-            ));
-        }
-
-        // The speaker assumes the lesson of the day
-        if(in_array($lessonId, $lessons)){
-            // Get the students
-            $students = array();
-            $dataStudents = $repositoryLessonStudent->findStudentsByLesson($todayLesson);
-            foreach($dataStudents as $val) {
-                $students[] = $repositoryUser->findUserById($val['studentUserId']);
-            }
-
-            // Display all students in speaker's lesson
-            return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                    'studentsList' => $students
-            ));
-        }
-
-        return $this->render('ProjectAppBundle:Speaker:missings.html.twig', array(
-                'msg' => 'Vous n\'avez pas de cours aujourd\'hui.'
-        ));
     }
 
     /**
@@ -299,7 +196,8 @@ class SpeakerController extends Controller
     /**
      * Creates a new Speaker entity.
      *
-     * @Route("/", name="speaker_create")
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/speaker/", name="speaker_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:Speaker:new.html.twig")
      */
@@ -350,8 +248,9 @@ class SpeakerController extends Controller
 
     /**
      * Displays a form to create a new Speaker entity.
+     * 
      * @Secure(roles="ROLE_MANAGER")
-     * @Route("/new", name="user_speaker_new")
+     * @Route("/speaker/new", name="user_speaker_new")
      * @Method("GET")
      * @Template("ProjectAppBundle:User:new.html.twig")
      */

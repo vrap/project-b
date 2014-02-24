@@ -7,7 +7,7 @@
 
 		    {% if app.session.get('promotion') %}
 		   	<li><a href="{{path('project_app_agenda_index')}}">-Agenda</a></li>
-			<li><a href="">-Présences</a></li>
+            <li><a href="{{ path('missing') }}">-Présences</a></li>
 			<li><a href="{{path('evaluation')}}">-Évaluations</a></li>
 			<li><a href="{{path('module')}}">-Module</a></li>
 			<li><a class="optional" href="{{path('user')}}">-Utilisateurs</a></li>
@@ -22,11 +22,12 @@
 			<li><a href="{{path('project_app_agenda_index')}}">-Agenda</a></li>
 			<li><a href="{{path('module')}}">-Module</a></li>
 			<li><a href="{{path('evaluation')}}">-Évaluation</a></li>
-			<li><a href="{{path('feedback')}}">-Feedback</a></li>
+            <li><a href="{{ path('missing') }}">-Présences</a></li>
+            <li><a href="{{path('feedback')}}">-Feedback</a></li>
 
 		{% else %}
 
-			<li><a href="">Présence</a></li>
+			<li><a href="{{ path('missing') }}">-Présences</a></li>
 			<li><a href="{{path('project_app_agenda_index')}}">-Agenda</a></li>
 			<li><a href="{{path('evaluation')}}">-Évaluation</a></li>
 
