@@ -204,7 +204,7 @@ class MissingController extends Controller
 
             // All absents are saved
             $this->get('session')->getFlashBag()
-                    ->add('success', 'L\'appel est enregistré. Les absences seront transmises au(x) responsable(s) de la formation.');
+                    ->add('info', 'L\'appel est enregistré. Les absences seront transmises au(x) responsable(s) de la formation.');
 
             return array(
                     'studentsList' => null
@@ -213,7 +213,7 @@ class MissingController extends Controller
 
         // Nobody is absent
         $this->get('session')->getFlashBag()
-                ->add('success', 'L\'appel est enregistré. Aucun absent.');
+                ->add('info', 'L\'appel est enregistré. Aucun absent.');
 
         return array(
                 'studentsList' => null
@@ -259,7 +259,7 @@ class MissingController extends Controller
 
         $em->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Modification(s) enregistrées.');
+        $this->get('session')->getFlashBag()->add('info', 'Modification(s) enregistrées.');
 
         return $this->redirect($this->generateUrl('missing'));
     }
@@ -303,7 +303,7 @@ class MissingController extends Controller
 
         $em->flush();
 
-        $this->get('session')->getFlashBag()->add('success', 'Justification(s) enregistrées.');
+        $this->get('session')->getFlashBag()->add('info', 'Justification(s) enregistrées.');
 
         return $this->redirect($this->generateUrl('missing'));
     }
