@@ -15,7 +15,7 @@ class LessonRepository extends EntityRepository
     /**
      * Find the today lesson
      *
-     * @return array
+     * @return Lesson
      */
     public function findTodayLesson()
     {
@@ -29,5 +29,22 @@ class LessonRepository extends EntityRepository
                 '
             )
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Find lessons terminated
+     *
+     * @return array
+     */
+    public function findEndedLessons()
+    {
+        $em = $this->getEntityManager();
+
+        return $em->createQuery('
+                SELECT l
+                FROM ProjectAppBundle:Lesson l
+                WHERE CURRENT_TIMESTAMP() > l.endDate
+                ')
+                ->getResult();
     }
 }
