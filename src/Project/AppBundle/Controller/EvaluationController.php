@@ -32,18 +32,68 @@ class EvaluationController extends Controller
      */
     public function indexAction()
     {
-        // Récupération de l'utilisateur connecté
+        // Get user logged in
         $user = $this->getUser();
         $userRoles = $user->getRoles();
 
-        // Préparation de la base
+        // init database
         $em = $this->getDoctrine()->getManager();
+        $repoStudentEval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
+        $repoEval = $em->getRepository('ProjectAppBundle:Evaluation');
+        $repoStudent = $em->getRepository('ProjectAppBundle:Student');
+        $repoCrit = $em->getRepository('ProjectAppBundle:Criterion');
+        $repoStudentEvalCrit = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion');
         
         // Si l'utilisateur est MANAGER ou SPEAKER
         if(in_array('ROLE_MANAGER', $userRoles)){
-            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
-        }else{
-            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findBySpeaker($user->getId());
+
+            $evals = $repoEval->findAll();
+
+            foreach($evals as $eval) {
+                $entities[] = array(
+                        'evaluation' => $eval,
+                        'criterions' => $repoCrit->findByEvaluation($eval)
+                );
+            }
+
+        } else if (in_array('ROLE_STUDENT', $userRoles)) {
+
+            $student = $repoStudent->findOneByUser($user);
+            $studentEvals = $repoStudentEval->findByStudent($student);
+            $studentCritScores = array();
+
+            foreach($studentEvals as $studentEval) {
+                $criterions = $repoCrit->findByEvaluation($studentEval->getEvaluation());
+
+                foreach ( $criterions as $criterion ) {
+                    $critEval = $repoStudentEvalCrit->findOneByCritEval($criterion, $studentEval);
+
+                    $studentCritScores[] = array(
+                        'criterion' => $criterion,
+                        'score' => $critEval->getScore()
+                    );
+                }
+
+                $entities[] = array(
+                    'evaluation' => $studentEval->getEvaluation(),
+                    'criterions' => $studentCritScores,
+                    'notation' => array(
+                            'score' => $studentEval->getScore(),
+                            'comment' => $studentEval->getComment()
+                        )
+                );
+            }
+
+        } else{
+
+            $evals = $repoEval->findBySpeaker($user->getId());
+
+            foreach($evals as $eval) {
+                $entities[] = array(
+                        'evaluation' => $eval,
+                        'criterions' => $repoCrit->findByEvaluation($eval)
+                );
+            }
         }
 
         return array(
