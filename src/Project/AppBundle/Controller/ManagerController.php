@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Manager;
 use Project\AppBundle\Form\ManagerType;
 
@@ -108,6 +109,7 @@ class ManagerController extends Controller
     /**
      * Enables Manager to export Student absences.
      *
+     * @Secure(roles="ROLE_MANAGER")
      * @Route("/export_absence", name="manager_export_absence")
      */
     public function exportAbsenceAction()
@@ -165,30 +167,42 @@ class ManagerController extends Controller
     /**
      * Enables Manager to export Student scores.
      *
+     * @Secure(roles="ROLE_MANAGER")
      * @Route("/export_score", name="manager_export_score")
      */
     public function exportScoreAction()
     {
         $em          = $this->getDoctrine()->getEntityManager();
         $module      = $em->getRepository('ProjectAppBundle:Module')->find(1);
+        $moduleName  = $module->getName();
         $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')->findBy(array(
             'module' => $module->getId()
         ));
         $handle      = fopen('php://memory', 'r+');
         $header      = array();
 
+        if (! $module) {
+            throw $this->createNotFoundException('Impossible de trouver le module.');
+        }
+
+        if (! $evaluations) {
+            throw $this->createNotFoundException('Impossible de trouver les évaluations.');
+        }
+
         foreach ($evaluations as $evaluation) {
             $studentsEvaluations = $em->getRepository('ProjectAppBundle:StudentEvaluation')->findBy(array(
                 'evaluation' => $evaluation->getId()
             ));
 
-            foreach ($studentsEvaluations as $studentEvaluation) {
-                $student = $em->getRepository('ProjectAppBundle:Student')->find($studentEvaluation->getId());
+            foreach ($studentsEvaluations as $studentEvaluation) { error_log('STUDENTEVALUATION : ' . $studentEvaluation->getId());
+                $student = $em->getRepository('ProjectAppBundle:Student')->find($studentEvaluation->getStudent()->getId());
 
-                error_log(print_r($student, TRUE));
-                exit(0);
+                $idStudent = $student->getId();
+                $score     = $studentEvaluation->getScore();
 
-                fputcsv($handle, array(1, $student->getId(), $studentEvaluation->getScore()));
+                if ($idStudent && $score) {
+                    fputcsv($handle, array($moduleName, $idStudent, $score));
+                }
             }
         }
 
@@ -197,8 +211,6 @@ class ManagerController extends Controller
         $content = stream_get_contents($handle);
         
         fclose($handle);
-
-        $moduleName = $module->getName();
 
         return new Response($content, 200, array(
             'Content-Type'        => 'application/force-download',
