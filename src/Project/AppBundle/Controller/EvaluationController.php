@@ -26,7 +26,7 @@ class EvaluationController extends Controller
      * Lists all Evaluation entities.
      *
      * @Route("/", name="evaluation")
-     * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER"})
+     * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER", "ROLE_STUDENT"})
      * @Method("GET")
      * @Template("ProjectAppBundle:Evaluation:index.html.twig")
      */
