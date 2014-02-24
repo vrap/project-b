@@ -81,7 +81,8 @@ class ModuleController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Enregistrer'
+            'label' => 'Enregistrer',
+            'attr' => array('class' => 'btn btn-second')
         ));
 
         return $form;

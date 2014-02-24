@@ -25,7 +25,8 @@ class CriterionType extends AbstractType
                     'attr' => array('min' => 1, 'max' => 20)
                 ))
             ->add('submit', 'submit', array(
-                    'label' => 'Terminer'
+                    'label' => 'Terminer',
+                    'attr' => (array( 'class' => 'btn btn-default' ))
                 ))
         ;
     }

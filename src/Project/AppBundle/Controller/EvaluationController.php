@@ -131,7 +131,8 @@ class EvaluationController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-                'label' => 'Enregistrer'
+                'label' => 'Enregistrer',
+                'attr' => (array( 'class' => 'btn btn-second' ))
         ));
 
         return $form;
@@ -226,7 +227,10 @@ class EvaluationController extends Controller
                 'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Enregistrer les modifications'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Enregistrer les modifications',
+            'attr' => (array( 'class' => 'btn btn-second' ))
+            ));
 
         return $form;
     }
@@ -317,7 +321,10 @@ class EvaluationController extends Controller
         return $this->createFormBuilder()
                 ->setAction($this->generateUrl('evaluation_delete', array('id' => $id)))
                 ->setMethod('DELETE')
-                ->add('submit', 'submit', array('label' => 'Supprimer'))
+                ->add('submit', 'submit', array(
+                    'label' => 'Supprimer',
+                    'attr' => (array( 'class' => 'btn btn-default' ))
+                    ))
                 ->getForm()
                 ;
     }

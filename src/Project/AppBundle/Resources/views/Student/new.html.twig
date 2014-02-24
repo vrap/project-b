@@ -1,18 +1,10 @@
-{% extends "ProjectAppBundle::layout.html.twig" %}
+{% extends "ProjectAppBundle::User/new.html.twig" %}
 
-{% block content %}
-	
-	<div class="panel-group">
-        <div class="panel-item">
-            <div class="panel-header">
-            	<h1>Ajouter un étudiant</h1>
-            </div>
-            <div class="panel-content">
-            	{{ form(form) }}
-            </div>
-        </div>
+{% block form %}
+
+    <div class="form-item">
+        {{ form_row(form.promotion) }}
     </div>
-    <a href="{{ path('user') }}" class="btn btn-default">Annuler</a>
 
 {% endblock %}
-
+                        

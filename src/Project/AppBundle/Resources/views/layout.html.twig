@@ -7,22 +7,20 @@
 #}
 {% block body %}
     <div class="content">
-
-        {% block fos_user_content %}
-        {% endblock %}
+        
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flash flash-{{ type }}">
+                    {{ message }}
+                    <i class="pull-right flaticon-close12 close"></i>
+                </div>
+            {% endfor %}
+        {% endfor %}
 
         {% block content %}
         {% endblock %}
 
     </div>
-
-        {% for type, messages in app.session.flashbag.all() %}
-            {% for message in messages %}
-                <div class="flash-{{ type }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
 
 {% endblock %}
 

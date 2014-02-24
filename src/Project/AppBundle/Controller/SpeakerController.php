@@ -24,8 +24,11 @@ use Project\AppBundle\Form\SpeakerType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 
+
 /**
- * @Route("")
+ * speaker controller.
+ *
+ * @Route("/speaker")
  */
 class SpeakerController extends Controller
 {
@@ -202,7 +205,7 @@ class SpeakerController extends Controller
      *
      * @Route("/", name="speaker_create")
      * @Method("POST")
-     * @Template("ProjectAppBundle:User:new.html.twig")
+     * @Template("ProjectAppBundle:Speaker:new.html.twig")
      */
     public function createAction(Request $request)
     {
@@ -215,7 +218,7 @@ class SpeakerController extends Controller
 
             $entity->getUser()->setEnabled(1);
             $entity->getUser()->setRoles(array('ROLE_SPEAKER'));
-
+            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouter');
             $em->persist($entity);
             $em->flush();
 
@@ -251,7 +254,8 @@ class SpeakerController extends Controller
 
     /**
      * Displays a form to create a new Speaker entity.
-     *
+     * 
+     * @Secure(roles="ROLE_MANAGER")
      * @Route("/speaker/new", name="user_speaker_new")
      * @Method("GET")
      * @Template("ProjectAppBundle:User:new.html.twig")

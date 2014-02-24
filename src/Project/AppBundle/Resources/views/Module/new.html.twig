@@ -8,7 +8,22 @@
             	<h1>Créer un module</h1>
             </div>
             <div class="panel-content">
-            	{{ form(form) }}
+                <div class="panel-form">
+                    {{ form_start(form) }}
+                        {# Errors #}
+                        <div class="form-item">
+                            {{ form_errors(form)}}
+                        </div>
+                        {# Inputs #}
+                        <div class="form-item">
+                            {{ form_widget(form.name) }}
+                        </div>
+                         {# Buttons #}
+                         <div class="form-item">
+                            {{ form_row(form.submit) }}
+                        </div>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
     </div>

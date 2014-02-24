@@ -1,9 +1,43 @@
-{% extends 'ProjectAppBundle::layout.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h1>Evaluation edit</h1>
+	<div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+            	<h1 class="pull-left">Édité une évaluation</h1>
+            	<div class="pull-right">{{ form(delete_form) }}</div>
+            </div>
+            <div class="panel-content">
+                <div class="panel-form">
+                    {{ form_start(edit_form) }}
+                        {# Errors #}
+                        <div class="form-item">
+                            {{ form_errors(edit_form)}}
+                        </div>
+                        {# Inputs #}
+                        <div class="form-item">
+                            {{ form_row(edit_form.description) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(edit_form.module) }}
+                        </div>
+                        <div class="form-item">
+                            {{ form_row(edit_form.max) }}
+                        </div>
+                        {# Buttons #}
+                        <div class="form-item">
+                            {{ form_widget(edit_form.criterions_add) }}
+                            {{ form_widget(edit_form.submit) }}
+                        </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <a href="{{ path('evaluation') }}" class="btn btn-default">Annuler</a>
 
-    {{ form(edit_form) }}
-
-    {{ form(delete_form) }}
 {% endblock %}
+
+
+

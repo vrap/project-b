@@ -139,6 +139,38 @@ ul.list-no-style > li{
 .pull-left{
 	float: left;
 }
+.block{
+	display: block;
+}
+.margin-right{
+	margin-right: 10px;
+}
+
+/**
+* Col
+**********/
+.row{
+	width: 100%;
+	.col-2{
+		&:first-child{
+			margin-right: 2%;
+		}
+		width: 49%;
+		float: left;
+		box-sizing:border-box;
+		-moz-box-sizing:border-box;
+		vertical-align: top;
+
+		 @media only screen
+		  and (max-width : 1000px) {
+		    width: 100%;
+		    &:first-child{
+				margin-right: 0%;
+			}
+		  }
+
+	}
+}
 
 /**
 * Button
@@ -147,6 +179,17 @@ ul.list-no-style > li{
 	padding: 10px 15px;
 	.border-radius(3px);
 	display: inline-block;
+}
+
+.btn-deconnection{
+	margin-left: 20px;
+	padding: 20px;
+	display: inline-block;
+	background-color: darken(@color-dark, 5%);
+	color: @color-light;
+	&:hover{
+		background-color: lighten(darken(@color-dark, 10%), 3%);
+	}
 }
 .btn.disabled{
 	opacity: 0.5;
@@ -161,6 +204,7 @@ ul.list-no-style > li{
 .btn-default{
 	background-color: @color-grey;
 	color: darken(@color-grey, 30%);
+	border: 1px solid darken(@color-grey, 20%);
 	&:hover{
 		background-color: darken(@color-grey, 3%);
 	}
@@ -218,13 +262,77 @@ input{
 	padding:10px; 
 	color:#aaa; 
 	border:solid 1px #ccc; 
-	margin:0 0 20px;
+	margin:0;
 }
 
-.form-item{
-	margin-bottom: 10px;
-	&:last-child{
-		margin-bottom: 0;
+.panel-form{
+	.form-item{
+		margin-bottom: 20px;
+		&.last{
+			margin-top: 35px;
+			margin-bottom: 0;
+		}
+		label{
+			width: 10%;
+			display: inline-block;
+			margin-right: 10px;
+		}
+	}
+
+}
+
+#form{
+	display: inline-block;
+}
+
+/**
+* Flash
+*********/
+.flash{
+	padding: 10px;
+	margin-bottom: 20px;
+	.animated;
+	.bounceInDown;
+	i{
+		font-size: 1.2em;
+		margin: 0;
+		&.close{
+			&:hover{
+				cursor: pointer;
+			}
+		}
+	}
+
+}
+
+.flash-error{
+	@color: rgba(231, 76, 60,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
+	i.close{
+		&:hover{
+			color: darken(@color, 30%);
+		}
+	}
+}
+.flash-warning{
+	@color: rgba(243, 156, 18,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
+	i.close{
+		&:hover{
+			color: darken(@color, 30%);
+		}
+	}
+}
+.flash-info{
+	@color: rgba(26, 188, 156,0.7);
+	background-color: @color;
+	color: darken(@color, 20%);
+	i.close{
+		&:hover{
+			color: darken(@color, 30%);
+		}
 	}
 }
 
@@ -238,6 +346,9 @@ input{
 
 .bloc-top{
 	margin-bottom: 25px;
+}
+.bloc-bottom{
+	clear: both;
 }
 
 .panel-group{
@@ -254,6 +365,10 @@ input{
 		}
 		.panel-content{
 			padding:18px;
+			
+			&.list{
+				li{list-style: none;}
+			}
 
 			  @media only screen
 			  and (max-width : 800px) {
@@ -385,7 +500,6 @@ body{
   	}
 
 		.sidebar{
-			padding: 10px;
 			background-color: @color-dark;
 			color: @color-light;
 			text-align: right;

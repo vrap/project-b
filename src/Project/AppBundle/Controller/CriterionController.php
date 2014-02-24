@@ -111,7 +111,8 @@ class CriterionController extends Controller
             'method' => 'POST',
         ));
         $form->add('crit_new', 'submit', array(
-                'label' => 'Ajouter un critère'
+                'label' => 'Ajouter',
+                'attr' => (array( 'class' => 'btn btn-second' ))
         ));
 
         return $form;
