@@ -124,6 +124,24 @@ class MissingController extends Controller
 
         } elseif (in_array('ROLE_STUDENT', $userRoles)) {
             // If a student is connected
+            $lessonsMissed = array();
+            $justified = array();
+            $lessonsStudent = $repositoryLessonStudent->findByStudentUserId($user->getId());
+
+            foreach ($lessonsStudent as $lessonStudent) {
+                if(true === $lessonStudent->getAbsent()) {
+                    $lessonsMissed[] = $repositoryLesson->findOneById($lessonStudent->getLessonId());
+
+                    if(true === $lessonStudent->getJustified()) {
+                        $justified[] = $repositoryLesson->findOneById($lessonStudent->getLessonId());
+                    }
+                }
+            }
+
+            return array(
+                'lessonsMissed' => $lessonsMissed,
+                'justified' => $justified
+            );
 
         } else {
             $this->get('session')->getFlashBag()

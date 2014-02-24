@@ -11,8 +11,8 @@
                             <h2 class="pull-left">
                                 {{ lesson.lesson.name }}
                                 <small><i>
-                                    du {{ lesson.lesson.startDate|date("d/m/y", "Europe/Paris") }} au
-                                    {{ lesson.lesson.endDate|date("d/m/y", "Europe/Paris") }} par
+                                    du {{ lesson.lesson.startDate|date("d/m/y à H:i") }} au
+                                    {{ lesson.lesson.endDate|date("d/m/y à H:i") }} par
                                     {{ lesson.lesson.speaker.user.username|capitalize }} {{ lesson.lesson.speaker.user.surname|capitalize }}
                                 </i></small>
                             </h2>
@@ -88,9 +88,53 @@
         {% endif %}
 
     {% elseif is_granted('ROLE_STUDENT') %}
+        <div class="panel-group">
+            <div class="panel-item">
+                <div class="panel-header">
+                    <h2>Vos absences</h2>
+                </div>
+                <div class="panel-content">
+                    {% if lessonsMissed is not empty %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Dates</th>
+                                    <th>Cours</th>
+                                    <th>Intervenant</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for lesson in lessonsMissed %}
+                                <tr>
+                                    <td>
+                                        Du {{ lesson.startDate|date("d/m/y à H:i") }}
+                                        au {{ lesson.endDate|date("d/m/y à H:i") }}
+                                    </td>
+                                    <td>
+                                        {{ lesson.name }}
+                                    </td>
+                                    <td>
+                                        {{ lesson.speaker.user.username|capitalize }} {{ lesson.speaker.user.surname|capitalize }}
+                                    </td>
+                                    <td>
+                                        {% if lesson in justified %}
+                                            Justifée
+                                        {% else %}
+                                            Non justifiée
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>Vous n'avez pas d'absence.</p>
+                    {% endif %}
+                </div>
+            </div>
 
-       <h2>Vos absences :</h2>
-
+        </div>
     {% else %}
 
         <p>Vous n'êtes pas autorisé à accéder à cette partie.</p>
