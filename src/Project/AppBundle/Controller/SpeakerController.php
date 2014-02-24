@@ -252,7 +252,7 @@ class SpeakerController extends Controller
     /**
      * Displays a form to create a new Speaker entity.
      *
-     * @Route("/new", name="user_speaker_new")
+     * @Route("/speaker/new", name="user_speaker_new")
      * @Method("GET")
      * @Template("ProjectAppBundle:User:new.html.twig")
      */
