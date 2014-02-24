@@ -44,6 +44,7 @@ class LessonRepository extends EntityRepository
                 SELECT l
                 FROM ProjectAppBundle:Lesson l
                 WHERE CURRENT_TIMESTAMP() > l.endDate
+                ORDER BY l.startDate DESC
                 ')
                 ->getResult();
     }
