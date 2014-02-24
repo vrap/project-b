@@ -1,10 +1,4 @@
 <?php
-/**
- * SpeakerController.php
- * @author Valentin
- * 04/02/14.
- */
-
 namespace Project\AppBundle\Controller;
 
 use Project\AppBundle\Entity\Evaluation;
@@ -14,7 +8,6 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\SpeakerLesson;
 use Project\AppBundle\Entity\Lesson;
 use Project\AppBundle\Entity\LessonStudent;
 use Project\AppBundle\Entity\User;
@@ -203,6 +196,7 @@ class SpeakerController extends Controller
     /**
      * Creates a new Speaker entity.
      *
+     * @Secure(roles="ROLE_MANAGER")
      * @Route("/speaker/", name="speaker_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:Speaker:new.html.twig")
