@@ -74,7 +74,13 @@ class SpeakerController extends Controller
         $evaluation = $repo_eval->find($eval_id);
 
         if(null === $evaluation) {
-            throw new \InvalidArgumentException('Unable to find evaluation ' . $eval_id);
+            $this->get('session')->getFlashBag()->add('error', 'Cette évaluation est introuvable.');
+
+            return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                    'evaluation' => null,
+                    'criterions' => null,
+                    'student' => null
+            ));
         }
 
         // Find corresponding criterions
@@ -83,7 +89,13 @@ class SpeakerController extends Controller
         $students = $repo_student_eval->findStudentsByEvaluation($evaluation);
 
         if(empty($students)) {
-            throw new \Exception('Array $students can not be empty');
+            $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue lors de la création de l\'évaluation.');
+
+            return $this->render('ProjectAppBundle:Speaker:evaluate.html.twig', array(
+                    'evaluation' => $evaluation,
+                    'criterions' => $criterions,
+                    'student' => null
+            ));
         }
 
         // Actions when submiting

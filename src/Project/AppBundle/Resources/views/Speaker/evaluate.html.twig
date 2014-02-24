@@ -1,15 +1,16 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h1>Sujet : {{ evaluation.description }}</h1>
-    <div class="panel-group">
-        <div class="panel-item">
-            <div class="panel-header">
-                <h2>{{ student.username }} {{ student.surname }}</h2>
-            </div>
-            <div class="panel-content">
+    {% if student is not empty %}
+        <h1>Sujet : {{ evaluation.description }}</h1>
+        <div class="panel-group">
+            <div class="panel-item">
+                <div class="panel-header">
+                    <h2>{{ student.username }} {{ student.surname }}</h2>
+                </div>
+                <div class="panel-content">
 
-                {% if student is not empty %}
+
                     <form method="POST">
                         <table>
                             <thead>
@@ -47,13 +48,11 @@
                         <br/>
                         <button class="btn btn-second" type="submit">Enregistrer et passer à l'élève suivant</button>
                     </form>
-                {% else %}
-                    <p>Aucun élève a participé à cette évaluation.</p>
-                {% endif %}
-
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+    <a class="btn btn-default" href="{{ path('evaluation') }}">Retour</a>
 
     <script>
         var criterions = $('.criterion');
