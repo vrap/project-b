@@ -21,12 +21,20 @@
 		{% for evaluation in evaluationsList %}
 			<div class="panel-item">
 	            <div class="panel-header">
-	                <h2 class="pull-left">{{ evaluation.description }}</h2>
+	                <h2 class="pull-left">
+			  {{ evaluation.description }}
+			  {% if is_granted('ROLE_MANAGER') %}
+			  - {{ evaluation.speaker.user.username }}
+			  {% endif %}
+			</h2>
 	                {% if is_granted('ROLE_SPEAKER') %}
                         <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': evaluation.id }) }}">Noter </a>
 						<a class="pull-right btn btn-default btn-small margin-right" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier
 						</a>
 				    {% endif %}
+	                {% if is_granted('ROLE_MANAGER') %}
+			    <a class="pull-right btn btn-default btn-small" href="{{ path('evaluation_validate', { 'id': evaluation.id }) }}">Valider</a>
+		        {% endif %}
 	                
 	            </div>
 	            <div class="panel-content">
