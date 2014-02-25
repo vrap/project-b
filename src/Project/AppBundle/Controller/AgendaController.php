@@ -7,8 +7,12 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\Lesson;
+//use Project\AppBundle\Entity\Lesson;
 use Symfony\Component\HttpFoundation\Response;
+use Project\AppBundle\Form\SpeakerType;
+use Project\AppBundle\Form\ModuleType;
+use Project\AppBundle\Entity\Speaker;
+use Project\AppBundle\Entity\Module;
 
 /**
  * Archive controller.
@@ -18,17 +22,35 @@ use Symfony\Component\HttpFoundation\Response;
 class AgendaController extends Controller
 {
     /**
-     * @Secure("ROLE_USER")
-     * @Route("/")
+     * @Secure("ROLE_STUDENT")
+     * @Route("/", name="agenda_index")
      * @Method("GET")
      * @Template("ProjectAppBundle:Agenda:index.html.twig")
      */
     public function indexAction()
     {
-        return array();
+        $speakerEntity = new Speaker();
+        
+        $formSpeaker = $this->createForm(new SpeakerType(), $speakerEntity, array());
+        $formSpeaker->add('user', 'entity', array(
+            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+            'property' => 'user',
+            'class' => 'ProjectAppBundle:Speaker',
+        ));
+            
+        $moduleEntity = new Module();
+        $moduleForm = $this->createForm(new ModuleType(), $moduleEntity, array());
+        $moduleForm->add('name', 'entity', array(
+            'query_builder' => function($entity) { return $entity->createQueryBuilder('p')->orderBy('p.id', 'ASC'); },
+            'property' => 'name',
+            'class' => 'ProjectAppBundle:Module',
+        ));
+
+        return array('formSpeaker' => $formSpeaker->createView(), 'formModule' => $moduleForm->createView());
     }
     
     /**
+     * @Secure("ROLE_SUPER_ADMIN")
      * @Route("/add", name="agenda_add_lesson")
      * @Template()
      * @Method("POST")
@@ -65,6 +87,7 @@ class AgendaController extends Controller
 
 
     /**
+     * @Secure("ROLE_SUPER_ADMIN")
      * @Route("/delete", name="agenda_delete_lesson")
      * @Template()
      * @Method("POST")
