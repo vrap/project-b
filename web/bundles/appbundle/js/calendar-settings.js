@@ -35,7 +35,12 @@ $(function () {
                     Ajouter: function() {
                         startDate = startDate.getUTCFullYear() + "-" + (1 + startDate.getUTCMonth()) + "-" +  (1 + startDate.getUTCDate()) + " " + $("#start_time").val();
                         endDate = endDate.getUTCFullYear() + "-" + (1 + endDate.getUTCMonth()) + "-" +  (1 + endDate.getUTCDate()) + " " + $("#end_time").val();
-                        var json = { name: $("#lesson_name").val(), startDate: startDate, endDate: endDate};
+                        var json = { name: $("#lesson_name").val(),
+                                     startDate: startDate,
+                                     endDate: endDate, 
+                                     speakerId : $("#project_appbundle_speaker_user").val(),
+                                     moduleId : $("#project_appbundle_module_name").val()
+                                   };
                         $.ajax({
                             url     : Routing.generate('agenda_add_lesson', { data: JSON.stringify(json) } ), 
                             type    : 'POST',
