@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\User;
 use Project\AppBundle\Form\UserType;
 
@@ -21,9 +22,10 @@ class UserController extends Controller
     /**
      * Lists all User entities.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/", name="user")
      * @Method("GET")
-     * @Template()
+     * @Template("ProjectAppBundle:User:index.html.twig"))
      */
     public function indexAction()
     {
@@ -38,7 +40,8 @@ class UserController extends Controller
     
     /**
      * Creates a new User entity.
-     *
+
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/", name="user_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:User:new.html.twig")
@@ -87,6 +90,7 @@ class UserController extends Controller
     /**
      * Displays a form to create a new User entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/new", name="user_new")
      * @Method("GET")
      * @Template()
@@ -106,6 +110,7 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
+     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
      * @Route("/{id}", name="user_show")
      * @Method("GET")
      * @Template()
@@ -131,6 +136,7 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}/edit", name="user_edit")
      * @Method("GET")
      * @Template()
@@ -176,6 +182,7 @@ class UserController extends Controller
     /**
      * Edits an existing User entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="user_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:User:edit.html.twig")
@@ -209,6 +216,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="user_delete")
      * @Method("DELETE")
      */

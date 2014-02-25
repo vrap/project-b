@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Student;
 use Project\AppBundle\Form\StudentType;
 
@@ -38,6 +39,7 @@ class StudentController extends Controller
     /**
      * Creates a new Student entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/", name="student_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:User:new.html.twig")
@@ -90,6 +92,7 @@ class StudentController extends Controller
     /**
      * Displays a form to create a new Student entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/new", name="user_student_new")
      * @Method("GET")
      * @Template("ProjectAppBundle:Student:new.html.twig")
@@ -134,6 +137,7 @@ class StudentController extends Controller
     /**
      * Displays a form to edit an existing Student entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}/edit", name="student_edit")
      * @Method("GET")
      * @Template()
@@ -179,6 +183,7 @@ class StudentController extends Controller
     /**
      * Edits an existing Student entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="student_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:Student:edit.html.twig")
@@ -213,6 +218,7 @@ class StudentController extends Controller
     /**
      * Deletes a Student entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="student_delete")
      * @Method("DELETE")
      */

@@ -1,7 +1,3 @@
-project_app_index:
-    path:     /index
-    defaults: { _controller: ProjectAppBundle:User:index }
-
 # Manager
 
 project_app_manager_module:
@@ -11,19 +7,3 @@ project_app_manager_module:
 project_app_manager_module_create:
     path:     /manager/module_create
     defaults: { _controller: ProjectAppBundle:Module:create }
-
-# Speaker
-
-
-# Student
-
-
-# Evaluation
-
-project_app_evaluation_show:
-    path:     /evaluation/index
-    defaults: { _controller: ProjectAppBundle:Evaluation:index }
-
-project_app_evaluation_create:
-    path:     /evaluation/create
-    defaults: { _controller: ProjectAppBundle:Evaluation:create }

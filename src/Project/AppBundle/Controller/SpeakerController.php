@@ -26,16 +26,21 @@ use Symfony\Component\HttpFoundation\Response;
 class SpeakerController extends Controller
 {
     /**
-     * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/", name="speaker")
+     * Lists all Speaker entities.
+     *
+     * @Route("/speaker", name="speaker")
      * @Method("GET")
      * @Template()
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
-        return $this->render('ProjectAppBundle:Speaker:index.html.twig');
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('ProjectAppBundle:Speaker')->findAll();
+
+        return array(
+                'entities' => $entities,
+        );
     }
 
     /**
