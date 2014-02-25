@@ -12,6 +12,17 @@ $(function () {
         eventColor: '#3d4c67',
         eventTextColor: '#FFFFFF',
         weekends: true,
+        /***** Translations (Full translation at http://pastebin.com/G6wBDP8K) *****/
+        monthNames:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        buttonText: {
+            today: 'aujourd\'hui',
+            day: 'jour',
+            week:'semaine',
+            month:'mois'
+        },
         /** You can change value here (as event color, calendar column...) **/
         header: {
             left: 'prev, next',
