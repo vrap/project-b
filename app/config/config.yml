@@ -79,3 +79,4 @@ fos_user:
 services:
     log:
       class: Project\AppBundle\Service\Log
+      arguments: [%kernel.root_dir%, %log_dir_path%, %log_file_name%, %log_output%, %log_file_max_size%, @fos_user.user_manager]
