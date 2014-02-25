@@ -44,9 +44,9 @@ $(function () {
         },
         eventClick: function(calEvent, jsEvent, view) {
             var json = { name:calEvent.title, startDate:calEvent.start, endDate:calEvent.end };
-            $("<div>Voulez-vous vraiment supprimer cette entrée ?</div>").dialog({
+            $( "#dialog-drop-events" ).dialog({
                 buttons: {
-                  Delete: function() {
+                  Supprimer: function() {
                     $.ajax({
                           url     : Routing.generate('agenda_delete_lesson', { id:calEvent.id } ), 
                           type    : 'POST',
@@ -57,7 +57,7 @@ $(function () {
                           }
                       });
                     },
-                  Cancel: function() {
+                  Annuler: function() {
                     $( this ).dialog( "close" );
                   }
                 }
