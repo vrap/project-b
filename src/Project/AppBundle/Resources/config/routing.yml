@@ -1,5 +1,5 @@
 project_app_index:
-    path:     /index
+    path:     /
     defaults: { _controller: ProjectAppBundle:User:index }
 
 # Manager
