@@ -3,8 +3,8 @@
 namespace Project\AppBundle\EventListener;
 
 use ADesigns\CalendarBundle\Event\CalendarEvent;
-use ADesigns\CalendarBundle\Entity\EventEntity;
 use Doctrine\ORM\EntityManager;
+use Project\AppBundle\Entity\EventEntity;
 
 class CalendarEventListener
 {
@@ -29,36 +29,20 @@ class CalendarEventListener
         // load events using your custom logic here,
         // for instance, retrieving events from a repository
         $events = $this->entityManager->getRepository('ProjectAppBundle:Lesson')
-                          ->createQueryBuilder('lesson_events')
-                          ->where('lesson_events.startDate >= :startDate and lesson_events.endDate <= :endDate')
+                          ->createQueryBuilder('lesson')
+                          ->where('lesson.startDate >= :startDate and lesson.endDate <= :endDate')
                           ->setParameter('startDate', $startDate->format('Y-m-d H:i:s'))
                           ->setParameter('endDate', $endDate->format('Y-m-d H:i:s'))
                           ->getQuery()->getResult();
 
-        // $companyEvents and $companyEvent in this example
-        // represent entities from your database, NOT instances of EventEntity
-        // within this bundle.
-        //
-        // Create EventEntity instances and populate it's properties with data
-        // from your own entities/database values.
-
+        
         foreach($events as $event) {
-
-            // create an event with a start/end time, or an all day event
-           /* if ($event->getAllDayEvent() === false) {
-                $eventEntity = new EventEntity($event->getTitle(), $event->getStartDatetime(), $event->getEndDatetime());
-            } else {
-                $eventEntity = new EventEntity($event->getTitle(), $event->getStartDatetime(), null, true);
-            }
-
-            //optional calendar event settings
-            $eventEntity->setAllDay(true); // default is false, set to true if this is an all day event
-            $eventEntity->setBgColor('#FF0000'); //set the background color of the event's label
-            $eventEntity->setFgColor('#FFFFFF'); //set the foreground color of the event's label
-            $eventEntity->setUrl('http://www.google.com'); // url to send user to when event label is clicked
-            $eventEntity->setCssClass('my-custom-class'); // a custom class you may want to apply to event labels*/
-            $eventEntity = new EventEntity($event->getName(), $event->getStartDate(), $event->getEndDate());
-            $eventEntity->setId($event->getId());
+            $eventEntity = new EventEntity( $event->getName(),
+                                            $event->getStartDate(),
+                                            $event->getEndDate(),
+                                            $event->getId(),
+                                            $event->getSpeaker(),
+                                            $event->getModule());
             
             //finally, add the event to the CalendarEvent for displaying on the calendar
             $calendarEvent->addEvent($eventEntity);

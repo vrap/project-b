@@ -184,4 +184,28 @@ class Lesson
     {
         return $this->speaker;
     }
+    
+    /**
+     * Get module
+     * 
+     * @return \Project\AppBundle\Entity\Module
+     */
+    public function getModule()
+    {
+        return $this->module;
+    }
+
+    /**
+     * Set Module
+     * 
+     * @param \Project\AppBundle\Entity\Module $module
+     */
+    public function setModule(\Project\AppBundle\Entity\Module $module = null)
+    {
+        $this->module = $module;
+        
+        return $this;
+    }
+
+
 }
