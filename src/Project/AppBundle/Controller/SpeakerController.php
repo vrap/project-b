@@ -27,7 +27,7 @@ class SpeakerController extends Controller
 {
     /**
      * @Secure(roles="ROLE_SPEAKER")
-     * @Route("/", name="speaker")
+     * @Route("/speaker", name="speaker")
      * @Method("GET")
      * @Template()
      *
