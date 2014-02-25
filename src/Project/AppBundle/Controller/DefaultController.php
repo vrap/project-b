@@ -2,19 +2,17 @@
 
 namespace Project\AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use Project\AppBundle\Entity\User;
-use Project\AppBundle\Form\UserType;
+
 
 class DefaultController extends Controller
 {
     /**
-     * Lists all User entities.
+     * Routes to the right application part in function of role.
      *
      * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
      * @Route("/", name="project_app_index")
@@ -28,10 +26,13 @@ class DefaultController extends Controller
         $userRoles = $user->getRoles();
 
         if(in_array('ROLE_MANAGER', $userRoles)) {
+            // Redirect to promotion gestion
             return $this->redirect($this->generateUrl('promotion'));
         } elseif(in_array('ROLE_SPEAKER', $userRoles)) {
+            // Redirect to missing list
             return $this->redirect($this->generateUrl('missing'));
         } elseif(in_array('ROLE_STUDENT', $userRoles)) {
+            // Redirect to the agenda
             return $this->redirect($this->generateUrl('project_app_agenda_index'));
         }
     }
