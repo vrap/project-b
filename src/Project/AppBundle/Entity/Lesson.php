@@ -50,12 +50,12 @@ class Lesson
     private $timecard;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Module", inversedBy="lessons", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Module", inversedBy="lessons")
      */
     private $module;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", inversedBy="lessons", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Speaker", inversedBy="lessons")
      */
     private $speaker;
 

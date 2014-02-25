@@ -7,7 +7,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-//use Project\AppBundle\Entity\Lesson;
+use Project\AppBundle\Entity\Lesson;
 use Symfony\Component\HttpFoundation\Response;
 use Project\AppBundle\Form\SpeakerType;
 use Project\AppBundle\Form\ModuleType;
@@ -23,7 +23,7 @@ class AgendaController extends Controller
 {
     /**
      * @Secure("ROLE_STUDENT")
-     * @Route("/", name="agenda_index")
+     * @Route("/", name="project_app_agenda_index")
      * @Method("GET")
      * @Template("ProjectAppBundle:Agenda:index.html.twig")
      */
@@ -72,12 +72,17 @@ class AgendaController extends Controller
 
         // Fill the entity and save it
         $entity = new Lesson();
+        
         $em = $this->getDoctrine()->getManager();
+        $speakerEntity = $em->getRepository('ProjectAppBundle:Speaker')->find($data->speakerId);
+        $moduleEntity = $em->getRepository('ProjectAppBundle:Module')->find($data->moduleId);
 
         $entity->setName($data->name);
         $entity->setStartDate($startDate);
         $entity->setEndDate($endDate);
         $entity->setTimecard(1);
+        $entity->setSpeaker($speakerEntity);
+        $entity->setModule($moduleEntity);
 
         $em->persist($entity);
         $em->flush();
