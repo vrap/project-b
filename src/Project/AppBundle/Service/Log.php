@@ -45,7 +45,7 @@ class Log {
      *
      * @var array
      */
-    private $_aRequiredFields = array('fields', 'module');
+    private $_aRequiredFields = array('fields', 'module', 'username');
 
     /**
      * Message to add to save in log
