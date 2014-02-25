@@ -1,0 +1,54 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+
+{% block content %}
+<div class="bloc-top">
+  <a class="btn btn-second" href="{{ path('evaluation') }}">Retour à la liste</a>
+  <a class="btn btn-second pull-right" href="{{ path('evaluation_validate', { 'id': evaluation.id }) }}">Valider les notes</a>
+</div>
+
+<div class="panel-group">
+  <table>
+    <thead>
+      <tr>
+	<th>Etudiant</th>
+	{% for criterion in criterions %}
+	<th>{{ criterion.description }}</th>
+	{% endfor %}
+	<th>Note global</th>
+	<th>Commentaire</th>
+	<th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for note in notes %}
+      <tr>
+	<td>{{ note.infos.student.user.username }}</td>
+	{% if note.details is defined %}
+	{% for criterion in note.details %}
+	<td>{{ criterion.score }}</td>
+	{% endfor %}
+	{% endif %}
+	<td>{{ note.infos.score }}</td>
+	<td>{{ note.infos.comment }}</td>
+	<td><a class="btn btn-second btn-small" href="#">Modifier</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+	<th>Etudiant</th>
+	{% for criterion in criterions %}
+	<th>{{ criterion.description }}</th>
+	{% endfor %}
+	<th>Note global</th>
+	<th>Commentaire</th>
+	<th>Action</th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<br />
+<div class="bloc-bottom">
+  <a class="btn btn-second pull-right" href="{{ path('evaluation_validate', { 'id': evaluation.id }) }}">Valider les notes</a>
+</div>
+{% endblock %}

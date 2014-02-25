@@ -26,24 +26,78 @@ class EvaluationController extends Controller
      * Lists all Evaluation entities.
      *
      * @Route("/", name="evaluation")
-     * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER"})
+     * @Secure(roles={"ROLE_SPEAKER", "ROLE_MANAGER", "ROLE_STUDENT"})
      * @Method("GET")
      * @Template("ProjectAppBundle:Evaluation:index.html.twig")
      */
     public function indexAction()
     {
-        // Récupération de l'utilisateur connecté
+        // Get user logged in
         $user = $this->getUser();
         $userRoles = $user->getRoles();
 
-        // Préparation de la base
+        // init database
         $em = $this->getDoctrine()->getManager();
+        $repoStudentEval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
+        $repoEval = $em->getRepository('ProjectAppBundle:Evaluation');
+        $repoStudent = $em->getRepository('ProjectAppBundle:Student');
+        $repoCrit = $em->getRepository('ProjectAppBundle:Criterion');
+        $repoStudentEvalCrit = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion');
         
         // Si l'utilisateur est MANAGER ou SPEAKER
         if(in_array('ROLE_MANAGER', $userRoles)){
-            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findAll();
-        }else{
-            $entities = $em->getRepository('ProjectAppBundle:Evaluation')->findBySpeaker($user->getId());
+            $evals = $repoEval->findAllUnvalidatedByPromotion($this->get('session')->get('promotion'));
+
+            if(!empty($evals)) {
+                foreach($evals as $eval) {
+                    $entities[] = array(
+                            'evaluation' => $eval,
+                            'criterions' => $repoCrit->findByEvaluation($eval)
+                    );
+                }
+            } else {
+                $entities = array();
+            }
+
+
+        } else if (in_array('ROLE_STUDENT', $userRoles)) {
+
+            $student = $repoStudent->findOneByUser($user);
+            $studentEvals = $repoStudentEval->findByStudent($student);
+            $studentCritScores = array();
+
+            foreach($studentEvals as $studentEval) {
+                $criterions = $repoCrit->findByEvaluation($studentEval->getEvaluation());
+
+                foreach ( $criterions as $criterion ) {
+                    $critEval = $repoStudentEvalCrit->findOneByCritEval($criterion, $studentEval);
+
+                    $studentCritScores[] = array(
+                        'criterion' => $criterion,
+                        'score' => $critEval->getScore()
+                    );
+                }
+
+                $entities[] = array(
+                    'evaluation' => $studentEval->getEvaluation(),
+                    'criterions' => $studentCritScores,
+                    'notation' => array(
+                            'score' => $studentEval->getScore(),
+                            'comment' => $studentEval->getComment()
+                        )
+                );
+            }
+
+        } else{
+
+            $evals = $repoEval->findBySpeaker($user->getId());
+
+            foreach($evals as $eval) {
+                $entities[] = array(
+                        'evaluation' => $eval,
+                        'criterions' => $repoCrit->findByEvaluation($eval)
+                );
+            }
         }
 
         return array(
@@ -327,5 +381,50 @@ class EvaluationController extends Controller
                     ))
                 ->getForm()
                 ;
+    }
+
+    /**
+     * Show an Evaluation to validate.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/validate", name="evaluation_validate")
+     * @METHOD("GET")
+     * @Template("ProjectAppBundle:Evaluation:validate.html.twig")
+     */
+    public function validateForm($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $evaluation = $em->getRepository('ProjectAppBundle:Evaluation')->findOneBy(array(
+            'id' => $id
+        ));
+        $promotion = $evaluation->getModule()->getPromotion();
+
+        if ($this->get('session')->get('promotion') == $promotion->getId()) {
+            $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findBy(array(
+                'evaluation' => $id
+            ));
+
+            $studentNotes = $em->getRepository('ProjectAppBundle:StudentEvaluation')->findBy(array(
+                'evaluation' => $id
+            ));
+
+            $notes = array();
+            foreach ($studentNotes as $note) {
+                $notes[$note->getStudent()->getId()]['infos'] = $note;
+                $studentCriterions = $em->getRepository('ProjectAppBundle:StudentEvaluationCriterion')->findBy(array(
+                                                                                                                     'studentEvaluation' => $note->getId()
+                                                                                                                     ));
+
+                foreach ($studentCriterions as $criterion) {
+                    $notes[$note->getStudent()->getId()]['details'][$criterion->getId()] = $criterion;
+                }
+            }
+
+            return array(
+                         'criterions' => $criterions,
+                         'evaluation' => $evaluation,
+                         'notes'      => $notes
+            );
+        }
     }
 }

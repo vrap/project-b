@@ -1,34 +1,59 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h1>{{ evaluation.description }}</h1>
-    <h2>Noter vos élèves</h2>
     {% if student is not empty %}
-        <form method="POST">
-            <p>
-                {{ student.username }} {{ student.surname }}
-            </p>
-            <ul>
-                {% if criterions is not empty %}
-                    {% for criterion in criterions %}
-                        <li>
-                            {{ criterion.description }} :
-                            <input class="criterion" type="text" name="criterion_score[]" size="2" maxlength="2" required> / {{ criterion.max }}
-                        </li>
-                    {% endfor %}
-                {% endif %}
-                <li>
-                    Note totale : <input type="text" name="evaluation_score" id="total_score" size="2" maxlength="2" required> / {{ evaluation.max }}
-                </li>
-            </ul>
-            Commentaire : <br/>
-            <textarea placeholder="Votre commentaire" name="evaluation_comment"></textarea>
-            <br/>
-            <button type="submit">Enregistrer et passer à l'élève suivant</button>
-        </form>
-    {% else %}
-        <p>Aucun élève a participé à cette évaluation.</p>
+        <h1>Sujet : {{ evaluation.description }}</h1>
+        <div class="panel-group">
+            <div class="panel-item">
+                <div class="panel-header">
+                    <h2>{{ student.username }} {{ student.surname }}</h2>
+                </div>
+                <div class="panel-content">
+
+
+                    <form method="POST">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Critère</th>
+                                    <th>Note</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if criterions is not empty %}
+                                    {% for criterion in criterions %}
+                                        <tr>
+                                            <td>{{ criterion.description }}</td>
+                                            <td>
+                                                <input class="criterion" type="text" name="criterion_score[]" size="2" maxlength="2" required>
+                                                / {{ criterion.max }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                <tr>
+                                    <td>
+                                        <b>Note totale</b>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="evaluation_score" id="total_score" size="2" maxlength="2" required>
+                                        / {{ evaluation.max }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <label for="commentary"><b>Commentaire</b></label><br/>
+                        <textarea cols="41" rows="2" id="commentary" placeholder="Votre commentaire" name="evaluation_comment"></textarea>
+                        <br/>
+                        <button class="btn btn-second" type="submit">Enregistrer et passer à l'élève suivant</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endif %}
+    <a class="btn btn-default" href="{{ path('evaluation') }}">Retour</a>
+
     <script>
         var criterions = $('.criterion');
 

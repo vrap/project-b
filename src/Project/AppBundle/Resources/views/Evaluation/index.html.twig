@@ -11,32 +11,80 @@
 	<div class="panel-group">
 	
 	 	{% if evaluationsList is empty %}
-        <div class="panel-item">
-            <div class="panel-content">
-			    Aucune évaluation est disponible pour le moment.
-			   </div>
-        </div>
+            <div class="panel-item">
+                <div class="panel-content">
+                    Aucune évaluation est disponible pour le moment.
+                </div>
+            </div>
 		{% else %}
 
-		{% for evaluation in evaluationsList %}
-			<div class="panel-item">
-	            <div class="panel-header">
-	                <h2 class="pull-left">{{ evaluation.description }}</h2>
-	                {% if is_granted('ROLE_SPEAKER') %}
-                        <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': evaluation.id }) }}">Noter </a>
-						<a class="pull-right btn btn-default btn-small margin-right" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier
-						</a>
-				    {% endif %}
-	                
-	            </div>
-	            <div class="panel-content">
-	            	Note maximale : {{ evaluation.max }} 
-				</div>
-	        </div>
-        {% endfor %}
+            {% for entity in evaluationsList %}
+                <div class="panel-item">
+                    <div class="panel-header">
+                        <h2 class="pull-left">{{ entity.evaluation.description }}</h2>
+                        {% if is_granted('ROLE_STUDENT') %}
+                            <h2><span class="pull-right">{{ entity.notation.score }} / {{ entity.evaluation.max }}</span></h2>
+                        {% elseif is_granted('ROLE_SPEAKER') %}
+                            <a class="pull-right btn btn-default btn-small" href="{{ path('speaker_evaluate', { 'eval_id': entity.evaluation.id }) }}">
+                                Noter
+                            </a>
+                            <a class="pull-right btn btn-default btn-small margin-right" href="{{ path('evaluation_edit', { 'id': entity.evaluation.id }) }}">
+                                Modifier
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <a class="pull-right btn btn-default btn-small" href="{{ path('evaluation_validate', { 'id': entity.evaluation.id }) }}">
+                                Valider
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="panel-content">
+                        {% if is_granted('ROLE_STUDENT') %}
+                            Commentaire : <i>{{ entity.notation.comment }}</i>
+                        {% else %}
+                            Note maximale : {{ entity.evaluation.max }}
+                        {% endif %}
+                        <br/><br/>
+                        <label for="{{ entity.evaluation.id }}" class="content-hidden-header">Voir le détail</label>
+                        <input type="checkbox" class="checkbox-hidden" id="{{ entity.evaluation.id }}" checked="false">
+                        <div class="content-hidden close">
+                            <br/>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Critère</th>
+                                        <th>
+                                            Note
+                                            {% if not is_granted('ROLE_STUDENT') %}
+                                                maximale
+                                            {% endif %}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for criterion in entity.criterions %}
+                                        {% if is_granted('ROLE_STUDENT') %}
+                                            <tr>
+                                                <td>{{ criterion.criterion.description }}</td>
+                                                <td>{{ criterion.score }} / {{ criterion.criterion.max }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td>{{ criterion.description }}</td>
+                                                <td>{{ criterion.max }}</td>
+                                            </tr>
+                                        {% endif %}
 
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% endif %}
     </div>	
 
-	{% endif %}
 
 {% endblock %}
