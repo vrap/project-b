@@ -1,21 +1,67 @@
-{% extends '::base.html.twig' %}
+{% extends '@ProjectApp/layout.html.twig' %}
 
-{% block body -%}
-    <h1>User</h1>
-    {{ entity.username }}
- 
+{% block content %}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Utilisateur</h1>
+            </div>
+            <div class="panel-content">
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('user') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('user_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+                <div class="panel-form">
+
+                    <div class="form-item">
+                        <label for="username">Prénom</label>
+                        <span id="username">{{ entity.username | capitalize }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="surname">Nom</label>
+                        <span id="surname">{{ entity.surname | capitalize }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="phone">Téléphone</label>
+                        <span id="phone">{{ entity.phone | capitalize }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="email">E-mail</label>
+                        <span id="email"><{{ entity.email }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="role">Statut</label>
+                        {% if 'ROLE_MANAGER' in entity.roles %}
+                            <span id="role">Responsable</span>
+                        {% elseif 'ROLE_STUDENT' in entity.roles %}
+                            <span id="role">Étudiant</span>
+                        {% elseif 'ROLE_SPEAKER' in entity.roles %}
+                            <span id="role">Intervenant</span>
+                        {% else %}
+                            <span id="role">Autre</span>
+                        {% endif %}
+                    </div>
+
+                    {% if 'ROLE_MANAGER' in entity.roles and formation is defined %}
+                        <div class="form-item">
+                            <label for="formation">Formation</label>
+                            <span id="formation">{{ formation.name }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if 'ROLE_STUDENT' in entity.roles and promotion is defined %}
+                        <div class="form-item">
+                            <label for="promotion">Promotion</label>
+                            <span id="promotion">{{ promotion.id }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('user') }}" class="btn btn-default">Retour</a>
+    <a class="btn btn-default" href="{{ path('user_edit', { 'id': entity.id }) }}">
+        Modifier
+    </a>
+    {% if 'ROLE_ADMIN' in entity.roles or 'ROLE_SUPER_ADMIN' in entity.roles %}
+        <br/><br/>
+        {{ form(delete_form) }}
+    {% endif %}
 {% endblock %}

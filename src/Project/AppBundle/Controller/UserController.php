@@ -2,6 +2,12 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\Formation;
+use Project\AppBundle\Entity\Promotion;
+use Project\AppBundle\Entity\Speaker;
+use Project\AppBundle\Form\ManagerType;
+use Project\AppBundle\Form\SpeakerType;
+use Project\AppBundle\Form\StudentType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -176,10 +182,29 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $promotion = null;
+        $formation = null;
+
+        $userRoles = $entity->getRoles();
+
+        if (in_array('ROLE_STUDENT', $userRoles)) {
+            $promotion = $em->getRepository('ProjectAppBundle:Student')
+                            ->findOneByUser($entity)
+                            ->getPromotion();
+        }
+
+        if (in_array('ROLE_MANAGER', $userRoles)) {
+            $formation = $em->getRepository('ProjectAppBundle:Manager')
+                            ->findOneByUser($entity)
+                            ->getFormation();
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
+            'promotion'   => $promotion,
+            'formation'   => $formation,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -221,12 +246,45 @@ class UserController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $em = $this->getDoctrine()->getManager();
+        $userRoles = $entity->getRoles();
+
+        if (in_array('ROLE_STUDENT', $userRoles)) {
+
+            $type = new StudentType();
+            $class = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneByUser($entity);
+
+        } elseif (in_array('ROLE_MANAGER', $userRoles)) {
+
+            $type = new ManagerType();
+            $class = $em->getRepository('ProjectAppBundle:Manager')
+                    ->findOneByUser($entity);
+
+        } elseif (in_array('ROLE_SPEAKER', $userRoles)) {
+
+            $type = new SpeakerType();
+            $class = $em->getRepository('ProjectAppBundle:Speaker')
+                    ->findOneByUser($entity);
+
+        } else {
+
+            $type = new UserType();
+            $class = $entity;
+
+        }
+
+        $form = $this->createForm($type, $class, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+                'label' => 'Modifier',
+                'attr' => array(
+                    'class' => 'btn btn-second'
+                )
+             ));
 
         return $form;
     }
@@ -303,7 +361,12 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                        'label' => 'Suprimer',
+                        'attr' => array(
+                            'class' => 'btn btn-primary'
+                        )
+                ))
             ->getForm()
         ;
     }
