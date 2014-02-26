@@ -133,6 +133,7 @@ class FeedbackController extends Controller
     /**
      * Finds and displays a Feedback entity.
      *
+     * @Secure(roles="ROLE_MANAGER, ROLE_STUDENT")
      * @Route("/{id}", name="feedback_show")
      * @Method("GET")
      * @Template()
@@ -158,6 +159,7 @@ class FeedbackController extends Controller
     /**
      * Displays a form to edit an existing Feedback entity.
      *
+     * @Secure(roles="ROLE_STUDENT")
      * @Route("/{id}/edit", name="feedback_edit")
      * @Method("GET")
      * @Template()
@@ -196,13 +198,19 @@ class FeedbackController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+                'label' => 'Enregistrer',
+                'attr'  => array(
+                    'class' => 'btn btn-second'
+                )
+        ));
 
         return $form;
     }
     /**
      * Edits an existing Feedback entity.
      *
+     * @Secure(roles="ROLE_STUDENT")
      * @Route("/{id}", name="feedback_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:Feedback:edit.html.twig")
@@ -224,6 +232,8 @@ class FeedbackController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('info', 'Modifications enregistrées.');
+
             return $this->redirect($this->generateUrl('feedback_edit', array('id' => $id)));
         }
 
@@ -236,6 +246,7 @@ class FeedbackController extends Controller
     /**
      * Deletes a Feedback entity.
      *
+     * @Secure(roles="ROLE_STUDENT")
      * @Route("/{id}", name="feedback_delete")
      * @Method("DELETE")
      */
@@ -256,6 +267,8 @@ class FeedbackController extends Controller
             $em->flush();
         }
 
+        $this->get('session')->getFlashBag()->add('info', 'Commentaire supprimé.');
+
         return $this->redirect($this->generateUrl('feedback'));
     }
 
@@ -271,7 +284,12 @@ class FeedbackController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('feedback_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                        'label' => 'Supprimer',
+                        'attr'  => array(
+                            'class' => 'btn btn-primary btn-small'
+                        )
+                ))
             ->getForm()
         ;
     }

@@ -1,16 +1,41 @@
-{% extends '::base.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>Feedback edit</h1>
+{% block content %}
 
-    {{ form(edit_form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('feedback') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Modifier votre commentaire</h1>
+            </div>
+            <div class="panel-content">
+                <div class="panel-form">
+                    {{ form_start(edit_form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(edit_form)}}
+                    </div>
+                    {# Inputs #}
+                    <div class="form-item">
+                        {{ form_row(edit_form.module) }}
+                    </div>
+                    <div class="form-item">
+                        <div class="block">
+                            {{ form_label(edit_form.comment) }}
+                        </div>
+                        {{ form_widget(edit_form.comment) }}
+                    </div>
+                    {# Buttons #}
+                    <div class="form-item">
+                        {{ form_row(edit_form.submit) }}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('feedback') }}" class="btn btn-default">Annuler</a>
+    <br/><br/>
+    {% if is_granted('ROLE_STUDENT') %}
+        {{ form(delete_form) }}
+    {% endif %}
 {% endblock %}

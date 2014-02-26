@@ -10,7 +10,7 @@
                 <div class="panel-item">
                     <div class="panel-header">
                         {{ entity.module.getName }}
-                        {{ entity.created|date('Y-m-d H:i:s') }}
+                        Le {{ entity.created|date('d/m/Y à H:i') }}
                     </div>
                     <div class="panel-content">
                         {{ entity.comment }}
