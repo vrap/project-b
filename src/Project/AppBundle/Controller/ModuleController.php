@@ -28,13 +28,11 @@ class ModuleController extends Controller
      */
     public function indexAction()
     {
-        $em                  = $this->getDoctrine()->getManager();
-        $repositoryModule    = $em->getRepository('ProjectAppBundle:Module');
-
-        $modulesList         = $repositoryModule->findBy(array(
+        $em               = $this->getDoctrine()->getManager();
+        $repositoryModule = $em->getRepository('ProjectAppBundle:Module');
+        $modulesList      = $repositoryModule->findBy(array(
             'promotion' => $this->get('session')->get('promotion')
         ));
-
         $deleteForms = array();
 
         foreach ($modulesList as $module) {
