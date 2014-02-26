@@ -20,23 +20,6 @@ class StudentController extends Controller
 {
 
     /**
-     * Lists all Student entities.
-     *
-     * @Route("/", name="student")
-     * @Method("GET")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('ProjectAppBundle:Student')->findAll();
-
-        return array(
-            'entities' => $entities,
-        );
-    }
-    /**
      * Creates a new Student entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
