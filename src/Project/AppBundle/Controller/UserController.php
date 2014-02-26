@@ -325,7 +325,7 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
-     * @Secure(roles={"ROLE_MANAGER"})
+     * @Secure(roles={"ROLE_ADMIN"})
      * @Route("/{id}", requirements={"id" = "\d+"}, name="user_delete")
      * @Method("DELETE")
      */
