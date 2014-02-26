@@ -12,3 +12,10 @@ parameters:
     mailer_password: null
     locale: fr
     secret: ThisTokenIsNotSoSecretChangeIt
+    ## Log service
+    # log_dir_path start from kernel app route directory
+    log_dir_path : /cache/
+    log_file_name : lpdw-website.log
+    log_output : text
+    # value in bytes
+    log_file_max_size : 10485760
