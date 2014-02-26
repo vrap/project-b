@@ -37,6 +37,57 @@ class UserController extends Controller
             'users' => $users,
         );
     }
+
+    /**
+     * Lists all User entities in function of his role.
+     *
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Route("/list/{type}", requirements={"type" = "student|speaker|manager"}, name="user_list")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:User:index.html.twig"))
+     */
+    public function listAction($type)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if('student' == $type) {
+            $students = $em->getRepository('ProjectAppBundle:Student')->findAll();
+
+            foreach($students as $student) {
+                $users[] = $student->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        if ('speaker' == $type) {
+            $speakers = $em->getRepository('ProjectAppBundle:Speaker')->findAll();
+
+            foreach($speakers as $speaker) {
+                $users[] = $speaker->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        if ('manager' == $type) {
+            $managers = $em->getRepository('ProjectAppBundle:Manager')->findAll();
+
+            foreach($managers as $manager) {
+                $users[] = $manager->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        return $this->redirect($this->generateUrl('user'));
+    }
     
     /**
      * Creates a new User entity.
@@ -137,7 +188,7 @@ class UserController extends Controller
      * Displays a form to edit an existing User entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -183,7 +234,7 @@ class UserController extends Controller
      * Edits an existing User entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:User:edit.html.twig")
      */
@@ -217,7 +268,7 @@ class UserController extends Controller
      * Deletes a User entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}", name="user_delete")
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
