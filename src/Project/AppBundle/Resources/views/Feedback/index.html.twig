@@ -4,7 +4,7 @@
     
     {% if is_granted('ROLE_STUDENT') %}
 	<div class="bloc-top">
-        <a class='btn btn-second' href="{{ path('feedback_new') }}">Faire une retour</a>
+        <a class='btn btn-second' href="{{ path('feedback_new') }}">Faire un retour</a>
     </div>
     {% endif %}
 
@@ -31,7 +31,7 @@
         {% else %}
             <div class="panel-item">
                 <div class="panel-content">
-                    Aucun FeedBack
+                    Aucun retour
                 </div>
             </div>
         {% endif %}

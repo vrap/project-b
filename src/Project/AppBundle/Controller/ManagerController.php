@@ -3,11 +3,13 @@
 namespace Project\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Manager;
 use Project\AppBundle\Form\ManagerType;
 
@@ -104,5 +106,117 @@ class ManagerController extends Controller
         );
     }
 
+    /**
+     * Enables Manager to export Student absences.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Method("GET")
+     * @Route("/export_absence/{id_module}", name="manager_export_absence")
+     */
+    public function exportAbsenceAction($id_module)
+    {
+        $em         = $this->getDoctrine()->getManager();
+        $module     = $em->getRepository('ProjectAppBundle:Module')->find($id_module);
+        $moduleName = $module->getName();
+        $lessons    = $em->getRepository('ProjectAppBundle:Lesson')->findBy(array(
+            'module' => $module->getId()
+        ));
+        $handle     = fopen('php://memory', 'r+');
+        $header     = array();
 
+        if (! $module) {
+            throw $this->createNotFoundException('Impossible de trouver le module.');
+        }
+
+        if (! $lessons) {
+            throw $this->createNotFoundException('Impossible de trouver les cours.');
+        }
+
+        foreach ($lessons as $lesson) {
+            $lessonsStudents = $em->getRepository('ProjectAppBundle:LessonStudent')->findStudentsByLessonId($lesson->getId());
+
+            foreach ($lessonsStudents as $lessonStudent) { 
+                $student       = $em->getRepository('ProjectAppBundle:Student')->find($lessonStudent['studentUserId']);
+                $user          = $em->getRepository('ProjectAppBundle:User')->find($student->getUser());
+                $lessonStudent = $em->getRepository('ProjectAppBundle:LessonStudent')->findBy(array(
+                    'lessonId'      => $lesson->getId(),
+                    'studentUserId' => $lessonStudent['studentUserId'],
+                ));
+
+                $dateLesson = $lesson->getStartDate();
+                $idStudent  = $user->getId();
+                $absence    = (($lessonStudent[0]->getAbsent())) ? 1 : 0;
+
+                if ($dateLesson && $idStudent && $absence) {
+                    fputcsv($handle, array($moduleName, $dateLesson->format('d-m-Y'), $dateLesson->format('H:i'), $idStudent, $absence));
+                }
+            }
+        }
+
+        rewind($handle);
+        
+        $content = stream_get_contents($handle);
+        
+        fclose($handle);
+
+        return new Response($content, 200, array(
+            'Content-Type'        => 'application/force-download',
+            'Content-Disposition' => 'attachment; filename="export_' . rawurlencode($moduleName) . '_absences.csv"',
+        ));
+    }
+
+    /**
+     * Enables Manager to export Student scores.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Method("GET")
+     * @Route("/export_score/{id_module}", name="manager_export_score")
+     */
+    public function exportScoreAction($id_module)
+    {
+        $em          = $this->getDoctrine()->getEntityManager();
+        $module      = $em->getRepository('ProjectAppBundle:Module')->find($id_module);
+        $moduleName  = $module->getName();
+        $evaluations = $em->getRepository('ProjectAppBundle:Evaluation')->findBy(array(
+            'module' => $module->getId()
+        ));
+        $handle      = fopen('php://memory', 'r+');
+        $header      = array();
+
+        if (! $module) {
+            throw $this->createNotFoundException('Impossible de trouver le module.');
+        }
+
+        if (! $evaluations) {
+            throw $this->createNotFoundException('Impossible de trouver les évaluations.');
+        }
+
+        foreach ($evaluations as $evaluation) {
+            $studentsEvaluations = $em->getRepository('ProjectAppBundle:StudentEvaluation')->findBy(array(
+                'evaluation' => $evaluation->getId()
+            ));
+
+            foreach ($studentsEvaluations as $studentEvaluation) { error_log('STUDENTEVALUATION : ' . $studentEvaluation->getId());
+                $student = $em->getRepository('ProjectAppBundle:Student')->find($studentEvaluation->getStudent()->getId());
+
+                $idStudent = $student->getId();
+                $score     = $studentEvaluation->getScore();
+
+                if ($idStudent && $score) {
+                    fputcsv($handle, array($moduleName, $idStudent, $score));
+                }
+            }
+        }
+
+        rewind($handle);
+        
+        $content = stream_get_contents($handle);
+        
+        fclose($handle);
+
+        return new Response($content, 200, array(
+            'Content-Type'        => 'application/force-download',
+            'Content-Disposition' => 'attachment; filename="export_' . rawurlencode($moduleName) . '_absences.csv"',
+        ));
+    }
 }

@@ -2,24 +2,30 @@
 
 {% block content %}
 	{% if not is_granted('ROLE_STUDENT') %}
-	    <div class="bloc-top">
-	      <a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
-	    </div>
+		<div class="bloc-top">
+			<a class="btn btn-second" href="{{ path('module_new') }}">Ajouter un module</a>
+		</div>
 	{% endif %}
+
     <div class="panel-group">
         {% if modulesList|length > 0 %}
             {% for module in modulesList %}
                 <div class="panel-item">
                     <div class="panel-header">
                         {{ module.name }}
-            {% if not is_granted('ROLE_STUDENT') %}
+
 			<span class="pull-right">
-			  <form action="{{ path('module_delete', { 'id': module.id }) }}" method="post">
-			    <input type="hidden" name="_method" value="DELETE" />
-			    {{ form_widget(deleteForms[module.id]) }}
-			  </form>
+                <a href="{{ path('manager_export_absence', { 'id_module': module.id }) }}">Exporter les absences</a>
+				<a href="{{ path('manager_export_score', { 'id_module': module.id }) }}">Exporter les notes</a>
+
+                {% if not is_granted('ROLE_STUDENT') %}
+                    <form action="{{ path('module_delete', { 'id': module.id }) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    {{ form_widget(deleteForms[module.id]) }}
+                    </form>
+                {% endif %}
 			</span>
-            {% endif %}
+
                     </div>
                     <div class="panel-content">
 		      {% if module.lessons|length <= 0 %}
