@@ -12,17 +12,23 @@
                 <div class="panel-item">
                     <div class="panel-header">
                         {{ module.name }}
-			<div class="pull-right">
+            {% if not is_granted('ROLE_STUDENT') %}
+			<span class="pull-right">
 			  <form action="{{ path('module_delete', { 'id': module.id }) }}" method="post">
 			    <input type="hidden" name="_method" value="DELETE" />
 			    {{ form_widget(deleteForms[module.id]) }}
 			  </form>
-			</div>
+			</span>
+            {% endif %}
                     </div>
                     <div class="panel-content">
 		      {% if module.lessons|length <= 0 %}
 		      Aucun cours n'est actuellement prévue pour ce module.
 		      {% else %}
+                  {% if is_granted('ROLE_STUDENT') %}
+                      Moyenne : {{ student_average | number_format(2)}} / 20 <br/><br/>
+                  {% endif %}
+                  Moyenne de classe : {{ class_average | number_format(2)}} / 20 <br/><br/>
 		      Cours prévues :<br /><br />
 		      <table>
 			<thead>
