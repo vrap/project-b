@@ -21,7 +21,7 @@
             {% for entity in evaluationsList %}
                 <div class="panel-item">
                     <div class="panel-header">
-                        <h2 class="pull-left">{{ entity.evaluation.description }}</h2>
+                        <h2 class="pull-left">{{ entity.evaluation.module.name }} - {{ entity.evaluation.description }}</h2>
                         {% if is_granted('ROLE_STUDENT') %}
                             <h2><span class="pull-right">{{ entity.notation.score }} / {{ entity.evaluation.max }}</span></h2>
                         {% elseif is_granted('ROLE_SPEAKER') %}
