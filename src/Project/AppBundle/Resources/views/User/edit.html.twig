@@ -1,16 +1,71 @@
-{% extends '::base.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>User edit</h1>
+{% block content %}
+    {% if edit_form.user is defined %}
+        {% set form = edit_form.user %}
+    {% else %}
+        {% set form = edit_form %}
+    {% endif %}
 
-    {{ form(edit_form) }}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Modifier l'utilisateur</h1>
+            </div>
+            <div class="panel-content">
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('user') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+                <div class="panel-form">
+
+                    {{ form_start(edit_form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(edit_form)}}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.username) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.surname) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.phone) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.email) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.plainPassword) }}
+                    </div>
+
+                    {% if 'ROLE_STUDENT' in entity.roles %}
+
+                        <div class="form-item">
+                            {{ form_row(edit_form.promotion) }}
+                        </div>
+
+                    {% endif %}
+
+                    {% if 'ROLE_MANAGER' in entity.roles %}
+
+                        <div class="form-item">
+                            {{ form_row(edit_form.formation) }}
+                        </div>
+
+                    {% endif %}
+
+                    {# Buttons #}
+                    <div class="form-item last">
+                        {{ form_row(edit_form.submit) }}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('user') }}" class="btn btn-default">Annuler</a>
+    {% if 'ROLE_ADMIN' in entity.roles or 'ROLE_SUPER_ADMIN' in entity.roles %}
+        <br/><br/>
+        {{ form(delete_form) }}
+    {% endif %}
 {% endblock %}

@@ -66,37 +66,46 @@ class EvaluationController extends Controller
             $studentEvals = $repoStudentEval->findByStudent($student);
             $studentCritScores = array();
 
-            foreach($studentEvals as $studentEval) {
-                $criterions = $repoCrit->findByEvaluation($studentEval->getEvaluation());
+            if(!empty($studentEvals)) {
+                foreach($studentEvals as $studentEval) {
+                    $criterions = $repoCrit->findByEvaluation($studentEval->getEvaluation());
 
-                foreach ( $criterions as $criterion ) {
-                    $critEval = $repoStudentEvalCrit->findOneByCritEval($criterion, $studentEval);
+                    foreach ( $criterions as $criterion ) {
+                        $critEval = $repoStudentEvalCrit->findOneByCritEval($criterion, $studentEval);
 
-                    $studentCritScores[] = array(
-                        'criterion' => $criterion,
-                        'score' => $critEval->getScore()
+                        $studentCritScores[] = array(
+                                'criterion' => $criterion,
+                                'score' => $critEval->getScore()
+                        );
+                    }
+
+                    $entities[] = array(
+                            'evaluation' => $studentEval->getEvaluation(),
+                            'criterions' => $studentCritScores,
+                            'notation' => array(
+                                    'score' => $studentEval->getScore(),
+                                    'comment' => $studentEval->getComment()
+                            )
                     );
                 }
-
-                $entities[] = array(
-                    'evaluation' => $studentEval->getEvaluation(),
-                    'criterions' => $studentCritScores,
-                    'notation' => array(
-                            'score' => $studentEval->getScore(),
-                            'comment' => $studentEval->getComment()
-                        )
-                );
+            } else {
+                $entities = array();
             }
+
 
         } else{
 
             $evals = $repoEval->findBySpeaker($user->getId());
 
-            foreach($evals as $eval) {
-                $entities[] = array(
-                        'evaluation' => $eval,
-                        'criterions' => $repoCrit->findByEvaluation($eval)
-                );
+            if(!empty($evals)) {
+                foreach($evals as $eval) {
+                    $entities[] = array(
+                            'evaluation' => $eval,
+                            'criterions' => $repoCrit->findByEvaluation($eval)
+                    );
+                }
+            } else {
+                $entities = array();
             }
         }
 

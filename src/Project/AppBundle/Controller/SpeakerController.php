@@ -26,24 +26,6 @@ use Symfony\Component\HttpFoundation\Response;
 class SpeakerController extends Controller
 {
     /**
-     * Lists all Speaker entities.
-     *
-     * @Route("/speaker", name="speaker")
-     * @Method("GET")
-     * @Template()
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('ProjectAppBundle:Speaker')->findAll();
-
-        return array(
-                'entities' => $entities,
-        );
-    }
-
-    /**
      * Marks students for an evaluation
      *
      * @Secure(roles="ROLE_SPEAKER")
@@ -229,7 +211,7 @@ class SpeakerController extends Controller
 
             $entity->getUser()->setEnabled(1);
             $entity->getUser()->setRoles(array('ROLE_SPEAKER'));
-            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouter');
+            $this->get('session')->getFlashBag()->add('info', 'L\'utilisateur à bien été ajouté');
             $em->persist($entity);
             $em->flush();
 

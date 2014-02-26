@@ -10,7 +10,7 @@
 
 {% block content %}
     {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
-    {% if is_granted('ROLE_SUPER_ADMIN') %}
+    {% if is_granted('ROLE_MANAGER') %}
         <div id="dialog-create-events" title="Créer une nouvelle entrée">
             <label>Nom :</label>
             <input type="text" name="lesson_name" id="lesson_name"/>

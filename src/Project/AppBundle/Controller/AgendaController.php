@@ -22,7 +22,7 @@ use Project\AppBundle\Entity\Module;
 class AgendaController extends Controller
 {
     /**
-     * @Secure("ROLE_STUDENT")
+     * @Secure({"ROLE_STUDENT", "ROLE_SPEAKER", "ROLE_MANAGER"})
      * @Route("/", name="project_app_agenda_index")
      * @Method("GET")
      * @Template("ProjectAppBundle:Agenda:index.html.twig")
@@ -50,7 +50,7 @@ class AgendaController extends Controller
     }
     
     /**
-     * @Secure("ROLE_SUPER_ADMIN")
+     * @Secure("ROLE_MANAGER")
      * @Route("/add", name="agenda_add_lesson")
      * @Template()
      * @Method("POST")
@@ -92,7 +92,7 @@ class AgendaController extends Controller
 
 
     /**
-     * @Secure("ROLE_SUPER_ADMIN")
+     * @Secure("ROLE_MANAGER")
      * @Route("/delete", name="agenda_delete_lesson")
      * @Template()
      * @Method("POST")

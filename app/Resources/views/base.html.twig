@@ -18,10 +18,11 @@
             <div class="main">
                 <div class="sidebar">
                     <ul class="list-inline">
-                        <li>Profile</li>
                         <li>
                             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                                {{ '%username%'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                                <a href="{{ path('user_profile') }}">
+                                    {{ '%username%'|trans({'%username%': app.user.username}, 'FOSUserBundle')|capitalize }}
+                                </a>
                                 <a class="btn-deconnection" href="{{ path('fos_user_security_logout') }}">
                                     {{ 'Déconnexion'|trans({}, 'FOSUserBundle') }}
                                 </a>

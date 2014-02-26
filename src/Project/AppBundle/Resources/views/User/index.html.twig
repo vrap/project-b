@@ -2,14 +2,30 @@
 {% block content %}
     
     <div class="bloc-top">
+        {% if users %}
+            <div class="pull-right">
+                <a class="btn btn-default btn-small" href="{{ path('user_list', {'type' : 'student'}) }}">
+                    Voir les étudiants
+                </a>
+                <a class="btn btn-default btn-small" href="{{ path('user_list', {'type' : 'speaker'}) }}">
+                    Voir les intervenants
+                </a>
+                <a class="btn btn-default btn-small" href="{{ path('user_list', {'type' : 'manager'}) }}">
+                    Voir les résponsables
+                </a>
+                <a class="btn btn-default btn-small" href="{{ path('user') }}">
+                    Voir tout
+                </a>
+            </div>
+        {% endif %}
         <a class="btn btn-second" href="{{ path('user_student_new') }}">
             Créer étudiant
         </a>
         <a class="btn btn-second" href="{{ path('user_speaker_new') }}">
-            Créer Intervenant
+            Créer intervenant
         </a>
         <a class="btn btn-second" href="{{ path('user_manager_new') }}">
-            Créer Résponsable
+            Créer résponsable
         </a>
     </div>
     
@@ -24,24 +40,32 @@
                                 <th>Prenom</th>
                                 <th>Mail</th>
                                 <th>Telephone</th>
-                                <!-- <th></th> -->
+                                {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_ADMIN') %}
+                                    <th></th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
                         {% for user in users %}
-                            
                             <tr>
+
                                 <td>{{user.username}}</td>
                                 <td>{{user.surname}}</td>
                                 <td>{{user.email}}</td>
                                 <td>{{user.phone}}</td>
-                                <!-- <td>
-                                    <a class="pull-right btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
-                                        Modifier
-                                    </a>
-                                </td> -->
-                            </tr>
 
+                                {% if is_granted('ROLE_MANAGER') or is_granted('ROLE_ADMIN') %}
+                                    <td class="pull-right">
+                                        <a class="btn btn-default btn-small" href="{{ path('user_show', { 'id': user.id }) }}">
+                                            Détails
+                                        </a>
+                                        <a class="btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
+                                            Modifier
+                                        </a>
+                                    </td>
+                                {% endif %}
+
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
