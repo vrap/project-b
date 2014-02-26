@@ -110,8 +110,8 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
-     * @Route("/{id}", name="user_show")
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_show")
      * @Method("GET")
      * @Template()
      */
@@ -255,5 +255,77 @@ class UserController extends Controller
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
         ;
+    }
+
+    /**
+     * User profile
+     *
+     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
+     * @Route("/profile", name="user_profile")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:User:profile.html.twig")
+     */
+    public function profileAction() {
+        $user = $this->getUser();
+
+        return array(
+            'user' => $user
+        );
+    }
+
+    /**
+     * Update user profile
+     *
+     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
+     * @Route("/profile", name="user_profile_update")
+     * @Method("POST")
+     * @Template()
+     */
+    public function updateProfileAction(Request $request) {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $new_pw = $request->request->get('new_pw');
+        $confirm_new_pw = $request->request->get('confirm_new_pw');
+
+        if('' == $confirm_new_pw && '' != $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Veuillez confirmer votre mot de passe.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if('' != $confirm_new_pw && '' == $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Veuillez renseigner votre mot de passe.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if($confirm_new_pw != $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Le mot de passe et sa confirmation sont différents.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if(strlen($confirm_new_pw) < 8 || strlen($new_pw) < 8) {
+            $this->get('session')->getFlashBag()->add('error', 'Votre mot de passe doit contenir 8 caractères au minimum.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if('' != $confirm_new_pw && '' != $new_pw) {
+            // FOS User manipulator
+            $manipulator = $this->get('fos_user.util.user_manipulator');
+            // Change password and crypt it
+            $manipulator->changePassword($user->getUsername(), $new_pw);
+            // Saving in database
+            $em->persist($user);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Modifications enregistrées.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        return $this->redirect($this->generateUrl('user_profile'));
     }
 }
