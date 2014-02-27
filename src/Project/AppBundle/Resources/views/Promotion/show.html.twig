@@ -1,36 +1,24 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main %}
-    <h1>Promotion</h1>
+{% block content %}
+    <div class="bloc-top">
+        <a class="btn btn-second" href="{{ path('promotion_new') }}">Ajouter une promotion</a>
+    </div>
 
-    <table class="record_properties">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ entity.id }}</td>
-        </tr>
-        <tr>
-            <th>Startdate</th>
-            <td>{{ entity.startDate|date('Y-m-d H:i:s') }}</td>
-        </tr>
-        <tr>
-            <th>Enddate</th>
-            <td>{{ entity.endDate|date('Y-m-d H:i:s') }}</td>
-        </tr>
-        </tbody>
-    </table>
-
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('promotion') }}">
-                Back to the list
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('promotion_edit', { 'id': entity.id }) }}">
-                Edit
-            </a>
-        </li>
-        <li>{{ form(delete_form) }}</li>
-    </ul>
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-content">
+                <div class="panel-header">
+                    <h3 class="pull-left">{{ entity.startDate|date('Y') }} - {{ entity.endDate|date('Y') }}</h3>
+                </div>
+                <div class="panel-content">
+                    Formation : {{ entity.formation.name }}
+                    <div class="pull-right">
+                        <a class="btn btn-second" href="{{ path('promotion_edit', { 'id': entity.id }) }}">Modifier</a>
+                        {{ form(delete_form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
