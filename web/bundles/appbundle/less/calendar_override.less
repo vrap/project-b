@@ -1,18 +1,24 @@
 @import "styles.less";
 
-.fc-event{
+.fc-event {
 	padding: 5px;
 	margin-bottom: 3px;
 }
 
-.fc-event-time{
+.fc-event-time {
 	display: block;
 }
-#calendar-holder{
+
+#calendar-holder {
 	margin-bottom: 20px;
 }
 
-#dialog-create-events{
+#dialog-create-events,
+#dialog-drop-events {
+	display: none;
+}
+
+#dialog-create-events {
  	padding:18px;
  	background-color: @color-white;
 	margin-bottom: 15px;
