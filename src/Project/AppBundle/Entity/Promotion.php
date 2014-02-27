@@ -45,6 +45,11 @@ class Promotion
      */
     private $formation;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", cascade={"persist"})
+     */
+    private $archive;
+
     public function __construct() {
         $this->startDate = new \Datetime();
         $this->endDate   = new \Datetime();
@@ -128,5 +133,28 @@ class Promotion
     public function getFormation()
     {
         return $this->formation;
+    }
+
+    /**
+     * Set archive
+     *
+     * @param \Project\AppBundle\Entity\Archive $archive
+     * @return Promotion
+     */
+    public function setArchive(\Project\AppBundle\Entity\Archive $archive = null)
+    {
+        $this->archive = $archive;
+
+        return $this;
+    }
+
+    /**
+     * Get archive
+     *
+     * @return \Project\AppBundle\Entity\Archive 
+     */
+    public function getArchive()
+    {
+        return $this->archive;
     }
 }
