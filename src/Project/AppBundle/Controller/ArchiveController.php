@@ -63,9 +63,15 @@ class ArchiveController extends Controller
     {
         $archive = new Archive();
         $form = $this->createForm(new ArchiveType, $archive);
+        $form->add('submit', 'submit', array(
+                'label' => 'Enregistrer',
+                'attr'  => array(
+                        'class' => 'btn btn-second'
+                )
+        ));
+
         $request = $this->get('request');
-        
-        
+
         if($request->isMethod('POST')) {
             
             $em = $this->getDoctrine()->getManager();
@@ -75,8 +81,12 @@ class ArchiveController extends Controller
                 $em->persist($archive);
                 $em->flush();
 
+                $this->get('session')->getFlashBag()->add('info', 'Archive créée.');
+
                 return $this->redirect($this->generateUrl('archive_new'));
             }
+
+            $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue. Merci de vérifier vos informations');
         }
 
     	return $this->render('ProjectAppBundle:Archive:new.html.twig', array(
