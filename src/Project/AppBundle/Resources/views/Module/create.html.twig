@@ -1,6 +1,6 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main %}
+{% block content %}
 	<form action="{{ path('project_app_manager_module_create') }}" method="POST" {{ form_enctype(formModule) }} >
 		{{ form_errors(formModule) }}
 		{{ form_widget(formModule) }}
