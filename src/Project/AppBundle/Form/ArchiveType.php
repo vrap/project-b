@@ -15,8 +15,12 @@ class ArchiveType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('year')
+            ->add('name', 'text', array(
+                    'label' => 'Libellé'
+                ))
+            ->add('year', 'date', array(
+                    'label' => 'Date de création'
+                ))
         ;
     }
     
