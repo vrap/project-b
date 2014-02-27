@@ -35,6 +35,13 @@ class Archive
      */
     private $year;
 
+    /**
+     * Constructor to preset archive's year
+     */
+    public function __construct() {
+        $this->setYear(new \Datetime("now"));
+    }
+
 
     /**
      * Get id
