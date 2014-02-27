@@ -158,7 +158,6 @@ class Log {
         $this->_sMessage .= "A {$aData['module']} has been edited by the user {$aData['username']}.".PHP_EOL;
 
         if( count($aData['fields']) > 0) {
-            $this->_sMessage .= "The new values are :";
             foreach ($aData['fields'] as $_sKey => $_aValue) {
                 $this->_sMessage .= "Old value '{$_sKey}' is now '{$_aValue}'" .PHP_EOL;
             }
