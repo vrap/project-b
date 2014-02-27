@@ -1,6 +1,10 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
+    <div class="bloc-top">
+        <a class="btn btn-second" href="{{ path('archive_new') }}">Nouvelle archive</a>
+    </div>
+
     <div class="panel-group">
         {% if entities is empty %}
             <div class="panel-item">
@@ -38,7 +42,7 @@
                                 <br/>
                             {% endif %}
 
-                            <a class="btn btn-second" href="">Télécharger</a>
+                            <a class="btn btn-second btn-small" href="">Télécharger</a>
                         </div>
                     </div>
                 </div>
