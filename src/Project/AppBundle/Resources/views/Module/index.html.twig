@@ -26,7 +26,7 @@
                     </div>
                     <div class="panel-content">
                         {% if module.lessons|length <= 0 %}
-                            Aucun cours n'est actuellement prévue pour ce module.
+                            Aucun cours n'est actuellement prévu pour ce module.
                         {% else %}
                             {% if is_granted('ROLE_MANAGER') %}
                                 <a class="btn btn-small btn-default" href="{{ path('manager_export_absence', { 'id_module': module.id }) }}">Exporter les absences</a>
@@ -39,7 +39,7 @@
                             {% endif %}
 
                             Moyenne de classe : {{ class_average | number_format(2)}} / 20 <br/><br/>
-                            Cours prévues :<br /><br />
+                            Cours prévus :<br /><br />
                             <table>
                                 <thead>
                                     <tr>
