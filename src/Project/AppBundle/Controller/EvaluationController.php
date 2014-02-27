@@ -159,6 +159,16 @@ class EvaluationController extends Controller
             }
 
             $em->flush();
+            
+            // Save in log file
+            $log = $this->get('log');
+            $log->createLog( array( 'fields' => array( 'Description' => $entity->getDescription(),
+                                                       'Intervenant' => $entity->getSpeaker()->getUser()->getUsername(),
+                                                ),
+                                    'module' => 'Evaluation',
+                                    'username' => $this->getUser()->getUsername()),
+                                    'add'
+                           );
 
             $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
 
@@ -233,13 +243,18 @@ class EvaluationController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        // Find an evaluation
         $entity = $em->getRepository('ProjectAppBundle:Evaluation')->find($id);
-        $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findAllByEvaluation($entity);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Evaluation entity.');
         }
-
+        
+        // Find criterions for an evaluation
+        $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findAllByEvaluation($entity);
+        if (!$criterions) {
+            throw $this->createNotFoundException('Unable to find Criterion entity.');
+        }
+        
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
@@ -315,13 +330,27 @@ class EvaluationController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Evaluation entity.');
         }
-
+        // Store old value for log
+        $oldDescription = $entity->getDescription();
+        $oldNote = $entity->getMax();
+        
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
+            
+            // Save in log file
+            $log = $this->get('log');
+            $formData = $this->getRequest()->request->all();
+            $log->createLog( array( 'fields' => array( $oldDescription => $formData['project_app_evaluation_create']['description'],
+                                                       $oldNote => $formData['project_app_evaluation_create']['max'],
+                                                ),
+                                    'module' => 'Evaluation',
+                                    'username' => $this->getUser()->getUsername()),
+                                    'edit'
+                           );
             $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
 
             //return $this->redirect($this->generateUrl('evaluation_edit', array('id' => $id)));
@@ -363,6 +392,16 @@ class EvaluationController extends Controller
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Evaluation entity.');
             }
+            
+            // Save in log file
+            $log = $this->get('log');
+            $log->createLog( array( 'fields' => array( 'description' => $entity->getDescription(),
+                                                       'id' => $entity->getId()
+                                                ),
+                                    'module' => 'Evaluation',
+                                    'username' => $this->getUser()->getUsername()),
+                                    'delete'
+                           );
 
             $em->remove($entity);
             $em->flush();
