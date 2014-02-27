@@ -60,8 +60,4 @@
     <a class="btn btn-default" href="{{ path('user_edit', { 'id': entity.id }) }}">
         Modifier
     </a>
-    {% if 'ROLE_ADMIN' in entity.roles or 'ROLE_SUPER_ADMIN' in entity.roles %}
-        <br/><br/>
-        {{ form(delete_form) }}
-    {% endif %}
 {% endblock %}

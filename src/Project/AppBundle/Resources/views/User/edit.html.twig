@@ -64,8 +64,4 @@
         </div>
     </div>
     <a href="{{ path('user') }}" class="btn btn-default">Annuler</a>
-    {% if 'ROLE_ADMIN' in entity.roles or 'ROLE_SUPER_ADMIN' in entity.roles %}
-        <br/><br/>
-        {{ form(delete_form) }}
-    {% endif %}
 {% endblock %}
