@@ -4,7 +4,7 @@
     
     {% if is_granted('ROLE_STUDENT') %}
 	<div class="bloc-top">
-        <a class='btn btn-second' href="{{ path('feedback_new') }}">Faire une retour</a>
+        <a class='btn btn-second' href="{{ path('feedback_new') }}">Faire un retour</a>
     </div>
     {% endif %}
 
@@ -14,10 +14,13 @@
                 <div class="panel-item">
                     <div class="panel-header">
                         <div class="pull-left">
-                            {{ entity.module.getName }}
+                           {{ entity.module.getName }} - Le {{ entity.created|date('d/m/Y à H:i') }}
                         </div>
                         <div class="pull-right">
-                            {{ entity.created|date('Y-m-d H:i:s') }}
+                            <a class="btn btn-default btn-small" href="{{ path('feedback_show', {'id' : entity.id}) }}">Voir</a>
+                            {% if is_granted('ROLE_STUDENT') %}
+                                <a class="btn btn-default btn-small" href="{{ path('feedback_edit', {'id' : entity.id}) }}">Modifier</a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="panel-content">
@@ -28,7 +31,7 @@
         {% else %}
             <div class="panel-item">
                 <div class="panel-content">
-                    Aucun FeedBack
+                    Aucun retour
                 </div>
             </div>
         {% endif %}

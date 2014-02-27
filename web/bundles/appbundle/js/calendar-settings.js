@@ -12,6 +12,17 @@ $(function () {
         eventColor: '#3d4c67',
         eventTextColor: '#FFFFFF',
         weekends: true,
+        /***** Translations (Full translation at http://pastebin.com/G6wBDP8K) *****/
+        monthNames:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+        monthNamesShort:['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'],
+        dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+        dayNamesShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+        buttonText: {
+            today: 'aujourd\'hui',
+            day: 'jour',
+            week:'semaine',
+            month:'mois'
+        },
         /** You can change value here (as event color, calendar column...) **/
         header: {
             left: 'prev, next',
@@ -24,7 +35,12 @@ $(function () {
                     Ajouter: function() {
                         startDate = startDate.getUTCFullYear() + "-" + (1 + startDate.getUTCMonth()) + "-" +  (1 + startDate.getUTCDate()) + " " + $("#start_time").val();
                         endDate = endDate.getUTCFullYear() + "-" + (1 + endDate.getUTCMonth()) + "-" +  (1 + endDate.getUTCDate()) + " " + $("#end_time").val();
-                        var json = { name: $("#lesson_name").val(), startDate: startDate, endDate: endDate};
+                        var json = { name: $("#lesson_name").val(),
+                                     startDate: startDate,
+                                     endDate: endDate, 
+                                     speakerId : $("#project_appbundle_speaker_user").val(),
+                                     moduleId : $("#project_appbundle_module_name").val()
+                                   };
                         $.ajax({
                             url     : Routing.generate('agenda_add_lesson', { data: JSON.stringify(json) } ), 
                             type    : 'POST',
@@ -44,9 +60,9 @@ $(function () {
         },
         eventClick: function(calEvent, jsEvent, view) {
             var json = { name:calEvent.title, startDate:calEvent.start, endDate:calEvent.end };
-            $("<div>Voulez-vous vraiment supprimer cette entrée ?</div>").dialog({
+            $( "#dialog-drop-events" ).dialog({
                 buttons: {
-                  Delete: function() {
+                  Supprimer: function() {
                     $.ajax({
                           url     : Routing.generate('agenda_delete_lesson', { id:calEvent.id } ), 
                           type    : 'POST',
@@ -57,7 +73,7 @@ $(function () {
                           }
                       });
                     },
-                  Cancel: function() {
+                  Annuler: function() {
                     $( this ).dialog( "close" );
                   }
                 }

@@ -30,18 +30,58 @@ class ModuleController extends Controller
     {
         $em                  = $this->getDoctrine()->getManager();
         $repositoryModule    = $em->getRepository('ProjectAppBundle:Module');
+        $repositoryEvaluation = $em->getRepository('ProjectAppBundle:Evaluation');
+        $repositoryStudentEval = $em->getRepository('ProjectAppBundle:StudentEvaluation');
 
-        $modulesList         = $repositoryModule->findBy(array(
-            'promotion' => $this->get('session')->get('promotion')
-        ));
+        $user = $this->getUser();
+        $userRoles = $user->getRoles();
+
+        if(in_array('ROLE_MANAGER', $userRoles)) {
+            $modulesList         = $repositoryModule->findBy(array(
+                    'promotion' => $this->get('session')->get('promotion')
+            ));
+        }
+
+        if(in_array('ROLE_STUDENT', $userRoles)) {
+            $student = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneByUser($user);
+
+            $modulesList         = $repositoryModule->findBy(array(
+                    'promotion' => $student->getPromotion()
+            ));
+        }
 
         $deleteForms = array();
+        $sum_max_score = 0;
+        $class_score = 0;
+        $class_average = 0;
+        $student_score = 0;
+        $student_average = 0;
 
         foreach ($modulesList as $module) {
             $deleteForms[$module->getId()] = $this->createDeleteForm($module->getId())->createView();
+
+            $evaluations = $repositoryEvaluation->findByModule($module);
+            foreach ($evaluations as $evaluation) {
+                $sum_max_score += $evaluation->getMax();
+
+                $studentEvals = $repositoryStudentEval->findByEvaluation($evaluation);
+                foreach ($studentEvals as $studentEval) {
+                    $class_score += $studentEval->getScore();
+
+                    if($user == $studentEval->getStudent()->getUser()) {
+                        $student_score += $studentEval->getScore();
+                    }
+                }
+            }
         }
-        
+
+        $class_average = ($class_score * 20) / $sum_max_score;
+        $student_average = ($student_score * 20) / $sum_max_score;
+
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
+            'class_average' => $class_average,
+            'student_average' => $student_average,
             'modulesList' => $modulesList,
             'deleteForms' => $deleteForms
         ));

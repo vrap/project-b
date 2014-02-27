@@ -1,36 +1,36 @@
-{% extends '::base.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>Feedback</h1>
+{% block content %}
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Comment</th>
-                <td>{{ entity.comment }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ entity.created|date('Y-m-d H:i:s') }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Votre commentaire</h1>
+            </div>
+            <div class="panel-content">
+                <div class="panel-form">
+                    <div class="form-item">
+                        <label for="created">Fait le</label>
+                        <span id="created">{{ entity.created|date('d/m/Y à H:i') }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="module">Module</label>
+                        <span id="module">{{ entity.module.name }}</span>
+                    </div>
+                    <div class="form-item">
+                        <label for="comment">Commentaire</label>
+                        <span id="comment">{{ entity.comment }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if is_granted('ROLE_STUDENT') %}
+        <a class="btn btn-default btn-small" href="{{ path('feedback_edit', {'id' : entity.id}) }}">Modifier</a>
+        <br/>
+        {{ form(delete_form) }}
+        <br/>
+    {% endif %}
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('feedback') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('feedback_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <a href="{{ path('feedback') }}" class="btn btn-default">Annuler</a>
 {% endblock %}

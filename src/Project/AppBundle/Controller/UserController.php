@@ -2,6 +2,12 @@
 
 namespace Project\AppBundle\Controller;
 
+use Project\AppBundle\Entity\Formation;
+use Project\AppBundle\Entity\Promotion;
+use Project\AppBundle\Entity\Speaker;
+use Project\AppBundle\Form\ManagerType;
+use Project\AppBundle\Form\SpeakerType;
+use Project\AppBundle\Form\StudentType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,6 +42,57 @@ class UserController extends Controller
         return array(
             'users' => $users,
         );
+    }
+
+    /**
+     * Lists all User entities in function of his role.
+     *
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Route("/list/{type}", requirements={"type" = "student|speaker|manager"}, name="user_list")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:User:index.html.twig"))
+     */
+    public function listAction($type)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        if('student' == $type) {
+            $students = $em->getRepository('ProjectAppBundle:Student')->findAll();
+
+            foreach($students as $student) {
+                $users[] = $student->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        if ('speaker' == $type) {
+            $speakers = $em->getRepository('ProjectAppBundle:Speaker')->findAll();
+
+            foreach($speakers as $speaker) {
+                $users[] = $speaker->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        if ('manager' == $type) {
+            $managers = $em->getRepository('ProjectAppBundle:Manager')->findAll();
+
+            foreach($managers as $manager) {
+                $users[] = $manager->getUser();
+            }
+
+            return array(
+                    'users' => $users,
+            );
+        }
+
+        return $this->redirect($this->generateUrl('user'));
     }
     
     /**
@@ -110,8 +167,8 @@ class UserController extends Controller
     /**
      * Finds and displays a User entity.
      *
-     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
-     * @Route("/{id}", name="user_show")
+     * @Secure(roles={"ROLE_MANAGER"})
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_show")
      * @Method("GET")
      * @Template()
      */
@@ -125,10 +182,29 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
+        $promotion = null;
+        $formation = null;
+
+        $userRoles = $entity->getRoles();
+
+        if (in_array('ROLE_STUDENT', $userRoles)) {
+            $promotion = $em->getRepository('ProjectAppBundle:Student')
+                            ->findOneByUser($entity)
+                            ->getPromotion();
+        }
+
+        if (in_array('ROLE_MANAGER', $userRoles)) {
+            $formation = $em->getRepository('ProjectAppBundle:Manager')
+                            ->findOneByUser($entity)
+                            ->getFormation();
+        }
+
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
             'entity'      => $entity,
+            'promotion'   => $promotion,
+            'formation'   => $formation,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -137,7 +213,7 @@ class UserController extends Controller
      * Displays a form to edit an existing User entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/{id}/edit", requirements={"id" = "\d+"}, name="user_edit")
      * @Method("GET")
      * @Template()
      */
@@ -170,12 +246,45 @@ class UserController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $em = $this->getDoctrine()->getManager();
+        $userRoles = $entity->getRoles();
+
+        if (in_array('ROLE_STUDENT', $userRoles)) {
+
+            $type = new StudentType();
+            $class = $em->getRepository('ProjectAppBundle:Student')
+                    ->findOneByUser($entity);
+
+        } elseif (in_array('ROLE_MANAGER', $userRoles)) {
+
+            $type = new ManagerType();
+            $class = $em->getRepository('ProjectAppBundle:Manager')
+                    ->findOneByUser($entity);
+
+        } elseif (in_array('ROLE_SPEAKER', $userRoles)) {
+
+            $type = new SpeakerType();
+            $class = $em->getRepository('ProjectAppBundle:Speaker')
+                    ->findOneByUser($entity);
+
+        } else {
+
+            $type = new UserType();
+            $class = $entity;
+
+        }
+
+        $form = $this->createForm($type, $class, array(
             'action' => $this->generateUrl('user_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+                'label' => 'Modifier',
+                'attr' => array(
+                    'class' => 'btn btn-second'
+                )
+             ));
 
         return $form;
     }
@@ -183,7 +292,7 @@ class UserController extends Controller
      * Edits an existing User entity.
      *
      * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}", name="user_update")
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:User:edit.html.twig")
      */
@@ -216,8 +325,8 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
-     * @Secure(roles={"ROLE_MANAGER"})
-     * @Route("/{id}", name="user_delete")
+     * @Secure(roles={"ROLE_ADMIN"})
+     * @Route("/{id}", requirements={"id" = "\d+"}, name="user_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -252,8 +361,85 @@ class UserController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                        'label' => 'Suprimer',
+                        'attr' => array(
+                            'class' => 'btn btn-primary'
+                        )
+                ))
             ->getForm()
         ;
+    }
+
+    /**
+     * User profile
+     *
+     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
+     * @Route("/profile", name="user_profile")
+     * @Method("GET")
+     * @Template("ProjectAppBundle:User:profile.html.twig")
+     */
+    public function profileAction() {
+        $user = $this->getUser();
+
+        return array(
+            'user' => $user
+        );
+    }
+
+    /**
+     * Update user profile
+     *
+     * @Secure(roles={"ROLE_MANAGER", "ROLE_SPEAKER", "ROLE_STUDENT"})
+     * @Route("/profile", name="user_profile_update")
+     * @Method("POST")
+     * @Template()
+     */
+    public function updateProfileAction(Request $request) {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $new_pw = $request->request->get('new_pw');
+        $confirm_new_pw = $request->request->get('confirm_new_pw');
+
+        if('' == $confirm_new_pw && '' != $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Veuillez confirmer votre mot de passe.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if('' != $confirm_new_pw && '' == $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Veuillez renseigner votre mot de passe.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if($confirm_new_pw != $new_pw) {
+            $this->get('session')->getFlashBag()->add('error', 'Le mot de passe et sa confirmation sont différents.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if(strlen($confirm_new_pw) < 8 || strlen($new_pw) < 8) {
+            $this->get('session')->getFlashBag()->add('error', 'Votre mot de passe doit contenir 8 caractères au minimum.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        if('' != $confirm_new_pw && '' != $new_pw) {
+            // FOS User manipulator
+            $manipulator = $this->get('fos_user.util.user_manipulator');
+            // Change password and crypt it
+            $manipulator->changePassword($user->getUsername(), $new_pw);
+            // Saving in database
+            $em->persist($user);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Modifications enregistrées.');
+
+            return $this->redirect($this->generateUrl('user_profile'));
+        }
+
+        return $this->redirect($this->generateUrl('user_profile'));
     }
 }

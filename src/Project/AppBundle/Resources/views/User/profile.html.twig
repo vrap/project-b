@@ -1,0 +1,35 @@
+{% extends "ProjectAppBundle::layout.html.twig" %}
+{% block content %}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h2>{{ user.username | capitalize }} {{ user.surname | capitalize }}</h2>
+            </div>
+            <div class="panel-content">
+                <div class="panel-form">
+                    <form method="POST" action="{{ path('user_profile_update') }}">
+                        <div class="form-item">
+                            <label for="phone">Téléphone</label>
+                            <input type="text" id="phone" value="{{ user.phone }}" disabled/>
+                        </div>
+                        <div class="form-item">
+                            <label for="email">E-mail</label>
+                            <input type="text" id="email" value="{{ user.email }}" disabled/>
+                        </div>
+                        <div class="form-item">
+                            <label for="new_pw">Nouveau mot de passe</label>
+                            <input type="password" id="new_pw" name="new_pw"/> (8 caractères minimum.)
+                        </div>
+                        <div class="form-item">
+                            <label for="confirm_new_pw">Confirmez le mot de passe</label>
+                            <input type="password" id="confirm_new_pw" name="confirm_new_pw"/>
+                        </div>
+                        <div class="form-item last">
+                            <a class="btn btn-default" href="{{ path('project_app_index') }}">Retour</a> <button type="submit" class="btn btn-second">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
