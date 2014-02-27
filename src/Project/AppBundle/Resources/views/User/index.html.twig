@@ -24,9 +24,11 @@
         <a class="btn btn-second" href="{{ path('user_speaker_new') }}">
             Créer intervenant
         </a>
-        <a class="btn btn-second" href="{{ path('user_manager_new') }}">
-            Créer résponsable
-        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a class="btn btn-second" href="{{ path('user_manager_new') }}">
+                Créer résponsable
+            </a>
+        {% endif %}
     </div>
     
     {% if users %}
@@ -59,9 +61,15 @@
                                         <a class="btn btn-default btn-small" href="{{ path('user_show', { 'id': user.id }) }}">
                                             Détails
                                         </a>
-                                        <a class="btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
-                                            Modifier
-                                        </a>
+                                        {% if is_granted('ROLE_ADMIN') and 'ROLE_MANAGER' in user.roles %}
+                                            <a class="btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
+                                                Modifier
+                                            </a>
+                                        {% elseif 'ROLE_MANAGER' not in user.roles %}
+                                            <a class="btn btn-default btn-small" href="{{ path('user_edit', { 'id': user.id }) }}">
+                                                Modifier
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 {% endif %}
 
