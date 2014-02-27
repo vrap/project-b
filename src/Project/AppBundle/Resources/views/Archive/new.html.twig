@@ -1,11 +1,39 @@
-{% extends 'ProjectAppBundle::layout.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-<h1>Welcome to the Archive:new page</h1>
-    <form action="{{ path('archive_new') }}" method="POST" {{ form_enctype(form) }} >
-        {{ form_errors(form) }}
-        {{ form_widget(form) }}
 
-        <input type="submit" value="Ajouter" />
-    </form>
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Nouvelle archive</h1>
+            </div>
+            <div class="panel-content">
+
+                <div class="panel-form">
+
+                    {{ form_start(form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(form)}}
+                    </div>
+
+                    <div class="form-item">
+                        {{ form_row(form.name) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.year) }}
+                    </div>
+
+                    {# Buttons #}
+                    <div class="form-item last">
+                        {{ form_row(form.submit) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('archive') }}" class="btn btn-default">Annuler</a>
+
 {% endblock %}
