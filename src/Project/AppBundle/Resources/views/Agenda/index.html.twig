@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flash-error"></div>
     {% include 'ADesignsCalendarBundle::calendar.html.twig' %}
     {% if is_granted('ROLE_MANAGER') %}
         <div id="dialog-create-events" title="Créer une nouvelle entrée">

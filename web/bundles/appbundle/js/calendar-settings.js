@@ -46,11 +46,9 @@ $(function () {
                             type    : 'POST',
                             success : function(response){
                                 if(response === true) {
-                                    window.location.reload();
+                                    $('#calendar-holder').fullCalendar( 'refetchEvents' );
                                 } else {
-                                    $( "#dialog-create-events" ).dialog( "close" );
-                                    $('.content div.flash-error').append("Une erreur s'est produite lors de l'ajout.");
-                                    $('.content div.flash-error').fadeOut(6000);
+                                    window.location.reload();
                                 }
                             }
                          });

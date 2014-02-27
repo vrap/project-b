@@ -23,7 +23,7 @@ class AgendaController extends Controller
 {
     /**
      * @Secure({"ROLE_STUDENT", "ROLE_SPEAKER", "ROLE_MANAGER"})
-     * @Route("/", name="project_app_agenda_index")
+     * @Route("/", name="agenda_index")
      * @Method("GET")
      * @Template("ProjectAppBundle:Agenda:index.html.twig")
      */
@@ -76,16 +76,19 @@ class AgendaController extends Controller
         // Check if Speaker with given id exist
         $speakerEntity = $em->getRepository('ProjectAppBundle:Speaker')->find($data->speakerId);
         if(!$speakerEntity) {
+            $this->get('session')->getFlashbag()->add('error', "Le nom de l'intervenant n'a pas été trouvé.");
             return new Response(json_encode(false));
         }
         
         // Check if Module with given id exist
         $moduleEntity = $em->getRepository('ProjectAppBundle:Module')->find($data->moduleId);
         if(!$moduleEntity) {
+            $this->get('session')->getFlashbag()->add('error', "Le module n'a pas été trouvé.");
             return new Response(json_encode(false));
         }
         
         if($data->name == '') {
+            $this->get('session')->getFlashbag()->add('error', 'Le nom de la leçon ne peut-être vide.');
             return new Response(json_encode(false));
         }
         
