@@ -34,6 +34,9 @@ class DefaultController extends Controller
         } elseif(in_array('ROLE_STUDENT', $userRoles)) {
             // Redirect to the agenda
             return $this->redirect($this->generateUrl('agenda_index'));
+        } elseif(in_array('ROLE_ADMIN', $userRoles)) {
+            // Redirect to the agenda
+            return $this->redirect($this->generateUrl('agenda_index'));
         }
     }
 }
