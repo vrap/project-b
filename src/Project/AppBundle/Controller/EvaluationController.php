@@ -12,6 +12,7 @@ use Project\AppBundle\Entity\Evaluation;
 use Project\AppBundle\Entity\Criterion;
 use Symfony\Component\HttpFoundation\Request;
 use Project\AppBundle\Form\EvaluationType;
+use Project\AppBundle\Form\ValidateEvaluationType;
 use Project\AppBundle\Entity\Speaker;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 /**
@@ -388,14 +389,15 @@ class EvaluationController extends Controller
      *
      * @Secure(roles="ROLE_MANAGER")
      * @Route("/{id}/validate", name="evaluation_validate")
-     * @METHOD("GET")
+     * @METHOD({"GET", "PUT"})
      * @Template("ProjectAppBundle:Evaluation:validate.html.twig")
      */
-    public function validateForm($id)
+    public function validateForm(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $evaluation = $em->getRepository('ProjectAppBundle:Evaluation')->findOneBy(array(
-            'id' => $id
+                                                                                         'id' => $id,
+                                                                                         'validated' => 0
         ));
         $promotion = $evaluation->getModule()->getPromotion();
 
@@ -420,11 +422,37 @@ class EvaluationController extends Controller
                 }
             }
 
+            $form = $this->createForm(new ValidateEvaluationType(), $evaluation, array(
+                                                                                       'action' => $this->generateUrl('evaluation_validate', array('id' => $evaluation->getId())),
+                                                                                       'method' => 'PUT'
+                                                                                       ));
+
+            $form->add('save', 'submit', array(
+                                               'label' => 'Valider les notes',
+                                               'attr' => array('class' => 'save btn btn-second pull-right'),
+                                               ));
+
+            $form->handleRequest($request);
+            
+            if ($form->isValid() && $form->get('save')->isClicked()) {
+                $evaluation->setValidated(true);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('info', 'Évaluation enregistrée.');
+                
+                return $this->redirect($this->generateUrl('evaluation'));
+            }
+
             return array(
                          'criterions' => $criterions,
                          'evaluation' => $evaluation,
-                         'notes'      => $notes
+                         'notes'      => $notes,
+                         'form'       => $form->createView()
             );
         }
+        else {
+            $this->get('session')->getFlashBag()->add('error', 'Évaluation non existante.');
+        }
+
+        return $this->redirect($this->generateUrl('evaluation'));
     }
 }

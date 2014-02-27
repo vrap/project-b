@@ -41,7 +41,7 @@ class StudentEvaluation
     private $student;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Evaluation", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Evaluation", inversedBy="studentEvaluations")
      */
     private $evaluation;
 

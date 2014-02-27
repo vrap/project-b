@@ -60,6 +60,12 @@ class Evaluation
     private $speaker;
 
     /**
+     * @ORM\OneToMany(targetEntity="Project\AppBundle\Entity\StudentEvaluation", mappedBy="evaluation", cascade={"persist"})
+     */
+    private $studentEvaluations;
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -206,5 +212,21 @@ class Evaluation
     public function getSpeaker()
     {
         return $this->speaker;
+    }
+
+    /**
+     * Get student evaluations
+     */
+    public function getStudentEvaluations()
+    {
+        return $this->studentEvaluations;
+    }
+
+    /**
+     * Set student evaluations
+     */
+    public function setStudentEvaluations(ArrayCollection $studentEvaluations)
+    {
+        $this->studentEvaluations = $studentEvaluations;
     }
 }
