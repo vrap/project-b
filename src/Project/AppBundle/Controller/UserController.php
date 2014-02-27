@@ -316,7 +316,7 @@ class UserController extends Controller
             'edit_form'   => $editForm->createView(),
         );
     }
-    
+
     /**
      * User profile
      *
