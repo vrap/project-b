@@ -155,18 +155,6 @@ class PromotionController extends Controller
     }
 
     /**
-     * Finds and displays a Promotion entity.
-     *
-     * @Secure(roles="ROLE_MANAGER")
-     * @Route("/{id}", name="promotion_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-    }
-
-    /**
      * Displays a form to edit an existing Promotion entity.
      *
      * @Secure(roles="ROLE_MANAGER")
