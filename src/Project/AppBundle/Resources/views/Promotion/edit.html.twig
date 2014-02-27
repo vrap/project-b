@@ -1,11 +1,43 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block main %}
-    <h2>Promotion edit</h2>
+{% block content %}
 
-    {{ form(edit_form) }}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Modifier une promotion</h1>
+            </div>
+            <div class="panel-content">
 
-    <a href="{{ path('promotion') }}">Retour à la liste</a>
-    
-    {{ form(delete_form) }}
+                <div class="panel-form">
+
+                    {{ form_start(edit_form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(edit_form)}}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(edit_form.startDate) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(edit_form.endDate) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(edit_form.formation) }}
+                    </div>
+
+                    {# Buttons #}
+                    <div class="form-item last">
+                        {{ form_row(edit_form.submit) }}
+                        <br/>
+                        {{ form(delete_form) }}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('promotion') }}" class="btn btn-default">Annuler</a>
+
 {% endblock %}
