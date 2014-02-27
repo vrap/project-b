@@ -18,7 +18,7 @@ use Project\AppBundle\Form\ArchiveType;
 class ArchiveController extends Controller
 {
     /**
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_MANAGER"})
      * @Method("GET")
      * @Route("/archive", name="archive")
      * @Template("ProjectAppBundle:Archive:index.html.twig")
@@ -40,7 +40,7 @@ class ArchiveController extends Controller
     }
 
     /**
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles={"ROLE_ADMIN", "ROLE_MANAGER"})
      * @Method({"GET", "POST"})
      * @Route("/archive/new", name="archive_new")
      * @Template("ProjectAppBundle:Archive:new.html.twig")
