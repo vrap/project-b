@@ -190,7 +190,7 @@ class EvaluationController extends Controller
     private function createCreateForm(Evaluation $entity)
     {
         $form = $this->createForm(new EvaluationType(), $entity, array(
-                'action' => $this->generateUrl('project_app_evaluation_create'),
+                'action' => $this->generateUrl('evaluation_create'),
                 'method' => 'POST'
         ));
 
