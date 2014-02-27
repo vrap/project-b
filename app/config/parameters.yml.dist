@@ -13,3 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    log_dir_path:      /logs/
+    log_file_name:     lpdw-website.log
+    log_output:        text
+    log_file_max_size: 10485760
