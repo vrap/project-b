@@ -25,18 +25,32 @@ class ArchiveController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = array();
+        $archives = $em->getRepository('ProjectAppBundle:Archive')->findBy(array(), array('year' => 'DESC'));
+
+        foreach ($archives as $archive) {
+            $entities[] = array(
+                'archive' => $archive,
+                'promotions' => $em->getRepository('ProjectAppBundle:Promotion')->findByArchive($archive)
+            );
+        }
+
+        return array(
+            'entities' => $entities,
+        );
     }
 
     /**
      * @Secure(roles="ROLE_ADMIN")
      * @Method("DELETE")
      * @Route("/archive/delete", name="archive_delete")
-     * @Template("ProjectAppBundle:Archive:delete.html.twig")
+     * @Template()
      */
     public function deleteAction()
     {
-        return array();
+
     }
 
     /**

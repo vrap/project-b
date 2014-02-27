@@ -1,5 +1,48 @@
-{% extends 'ProjectAppBundle::layout.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h1>Welcome to the Archive:index page</h1>
+    <div class="panel-group">
+        {% if entities is empty %}
+            <div class="panel-item">
+                <div class="panel-content">
+                    Aucune archive n'est actuellement disponible.
+                </div>
+            </div>
+        {% else %}
+            {% for entity in entities %}
+                <div class="panel-item">
+                    <div class="panel-content">
+                        <div class="panel-header">
+                            <h3 class="pull-left">{{ entity.archive.year | date('Y') }} - {{ entity.archive.name }}</h3>
+                        </div>
+                        <div class="panel-content">
+                            {% if entity.promotions is not empty %}
+                                Promotion(s) inclue(s) :
+                                <br/><br/>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Dates</th>
+                                            <th>Formation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for promotion in entity.promotions %}
+                                            <tr>
+                                                <td>{{ promotion.startDate | date('Y') }} - {{ promotion.endDate | date('Y') }}</td>
+                                                <td>{{ promotion.formation.name }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <br/>
+                            {% endif %}
+
+                            <a class="btn btn-second" href="">Télécharger</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}
