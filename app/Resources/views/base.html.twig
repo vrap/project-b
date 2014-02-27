@@ -29,20 +29,13 @@
                             {% else %}
                                 <a href="{{ path('fos_user_security_login') }}">{{ 'Déconnection'|trans({}, 'FOSUserBundle') }}</a>
                             {% endif %}
-                            </li>
-                    </ul>
-                    </div>
-                   
-                    {% block body %}
-                    {% endblock %}
-            
-                <div class="dev" style="padding:10px;">
-                    <ul>
-                        <li>Route :  <span style="color:#E87274">{{ app.request.attributes.get('_route') }}</span></li>
-                        <li>Controller : <span style="color:#E87274">{{ app.request.attributes.get('_controller') }}</span></li>
-                        <li>Template :  <span style="color:#E87274">{{ app.request.attributes.get('_template') }}</span></li>
+                        </li>
                     </ul>
                 </div>
+                   
+                {% block body %}
+                {% endblock %}
+
 		  	</div>
 		</div>
         {% endblock %}
