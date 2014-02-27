@@ -76,9 +76,11 @@ class ModuleController extends Controller
             }
         }
 
-        $class_average = ($class_score * 20) / $sum_max_score;
-        $student_average = ($student_score * 20) / $sum_max_score;
-
+        if($sum_max_score > 0) {
+            $class_average = ($class_score * 20) / $sum_max_score;
+            $student_average = ($student_score * 20) / $sum_max_score;
+        }
+        
         return $this->render('ProjectAppBundle:Module:index.html.twig', array(
             'class_average' => $class_average,
             'student_average' => $student_average,
