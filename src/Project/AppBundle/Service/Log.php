@@ -266,14 +266,20 @@ class Log {
                 $oCurrentDate = new \DateTime();
 
                 // Create the zip archive log_date
-                if ($oZipArchive->open($this->_sDirectoryPath."log_{$oCurrentDate->format('Y-m-d')}.zip",
-                                       ZipArchive::CREATE) === TRUE)
+                $_sZipPathName = $this->_sDirectoryPath."log_{$oCurrentDate->format('Y-m-d')}.zip";
+                if ($oZipArchive->open($_sZipPathName,
+                                       \ZipArchive::CREATE) === TRUE)
                 {
                     // Add the current file to the archive
                     $oZipArchive->addFile($_sFileFullPath, $this->_sFileName);
                     // Save and close archive
+                   
+                            
                     $oZipArchive->close();
                 }
+                // Change permission on the zip archive
+                chmod($_sZipPathName, 0777);
+                
                 // Delete the old file
                 unlink($_sFileFullPath);
             }
