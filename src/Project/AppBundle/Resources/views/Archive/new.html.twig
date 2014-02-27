@@ -1,6 +1,6 @@
 {% extends 'ProjectAppBundle::layout.html.twig' %}
 
-{% block main -%}
+{% block content %}
 <h1>Welcome to the Archive:new page</h1>
     <form action="{{ path('archive_new') }}" method="POST" {{ form_enctype(form) }} >
         {{ form_errors(form) }}
