@@ -96,6 +96,8 @@ class PromotionController extends Controller
             $em->persist($entity);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('info', 'Promotion enregistrée.');
+
             return $this->redirect($this->generateUrl('promotion', array(
                 'id' => $entity->getId())
             ));
@@ -124,7 +126,10 @@ class PromotionController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Create'
+            'label' => 'Enregistrer',
+            'attr'  => array(
+                'class' => 'btn btn-second'
+            )
         ));
 
         return $form;
@@ -207,7 +212,10 @@ class PromotionController extends Controller
         ));
 
         $form->add('submit', 'submit', array(
-            'label' => 'Update'
+            'label' => 'Modifier',
+            'attr'  => array(
+                'class' => 'btn btn-second'
+            )
         ));
 
         return $form;
@@ -237,6 +245,8 @@ class PromotionController extends Controller
 
         if ($editForm->isValid()) {
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Modifications enregistrées.');
 
             return $this->redirect($this->generateUrl('promotion_edit', array(
                 'id' => $id
@@ -273,6 +283,8 @@ class PromotionController extends Controller
 
             $em->remove($entity);
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Promotion supprimée.');
         }
 
         return $this->redirect($this->generateUrl('promotion'));
@@ -292,7 +304,12 @@ class PromotionController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('promotion_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                    'label' => 'Supprimer',
+                    'attr'  => array(
+                        'class' => 'btn btn-primary btn-small'
+                    )
+                ))
             ->getForm()
         ;
     }
