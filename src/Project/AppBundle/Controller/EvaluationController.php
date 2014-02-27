@@ -251,9 +251,6 @@ class EvaluationController extends Controller
         
         // Find criterions for an evaluation
         $criterions = $em->getRepository('ProjectAppBundle:Criterion')->findAllByEvaluation($entity);
-        if (!$criterions) {
-            throw $this->createNotFoundException('Unable to find Criterion entity.');
-        }
         
         $deleteForm = $this->createDeleteForm($id);
 
