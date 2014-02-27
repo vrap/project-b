@@ -104,7 +104,7 @@ class Log {
 
         // Start to write at the beginning of the message
         // by adding the current time
-        $this->_sMessage = date('Y-m-d H:i:s').' :';
+        $this->_sMessage = '['.date('Y-m-d H:i:s').'] : ';
 
         // "Route" owing to the action name
         $this->{$sAction}($aData);
@@ -121,7 +121,12 @@ class Log {
      */
     private function delete($aData)
     {
-        $this->_sMessage .= "The {$aData['module']} has been deleted by the user {$aData['username']}.";
+        $this->_sMessage .= "A {$aData['module']} has been deleted by the user {$aData['username']}.".PHP_EOL;
+        if( count($aData['fields']) > 0) {
+            foreach ($aData['fields'] as $_sKey => $_aValue) {
+                $this->_sMessage .= "'{$_sKey}' was identified by '{$_aValue}'" .PHP_EOL;
+            }
+        }
     }
 
 
@@ -134,9 +139,8 @@ class Log {
     {
         $this->_sMessage .= "A new {$aData['module']} has been added by the user {$aData['username']}.".PHP_EOL;
         if( count($aData['fields']) > 0) {
-            $this->_sMessage .= "The new values are :";
-            foreach ($aData['fields'] as $_aValue) {
-                $this->_sMessage .= $_aValue.';';
+            foreach ($aData['fields'] as $_sKey => $_aValue) {
+                $this->_sMessage .= "Value '{$_sKey}' has value '{$_aValue}'" .PHP_EOL;
             }
         }
         // Remove last semi-colon
@@ -151,12 +155,12 @@ class Log {
      */
     private function edit($aData)
     {
-        $this->_sMessage .= "The {$aData['module']} has been edited by the user {$aData['username']}.".PHP_EOL;
+        $this->_sMessage .= "A {$aData['module']} has been edited by the user {$aData['username']}.".PHP_EOL;
 
         if( count($aData['fields']) > 0) {
             $this->_sMessage .= "The new values are :";
-            foreach ($aData['fields'] as $_aValue) {
-                $this->_sMessage .= $_aValue.';';
+            foreach ($aData['fields'] as $_sKey => $_aValue) {
+                $this->_sMessage .= "Old value '{$_sKey}' is now '{$_aValue}'" .PHP_EOL;
             }
         }
         // Remove last semi-colon
@@ -233,7 +237,7 @@ class Log {
         }
 
         // Insert newline at the end of current message.
-        $this->_sMessage = $this->_sMessage . PHP_EOL;
+        $this->_sMessage = $this->_sMessage . PHP_EOL.PHP_EOL;
 
         // file_put_contents return bytes on success and false if any error.
         $mResult = file_put_contents($sFullPath, $this->_sMessage, FILE_APPEND);
@@ -262,14 +266,20 @@ class Log {
                 $oCurrentDate = new \DateTime();
 
                 // Create the zip archive log_date
-                if ($oZipArchive->open($this->_sDirectoryPath."log_{$oCurrentDate->format('Y-m-d')}.zip",
-                                       ZipArchive::CREATE) === TRUE)
+                $_sZipPathName = $this->_sDirectoryPath."log_{$oCurrentDate->format('Y-m-d')}.zip";
+                if ($oZipArchive->open($_sZipPathName,
+                                       \ZipArchive::CREATE) === TRUE)
                 {
                     // Add the current file to the archive
                     $oZipArchive->addFile($_sFileFullPath, $this->_sFileName);
                     // Save and close archive
+                   
+                            
                     $oZipArchive->close();
                 }
+                // Change permission on the zip archive
+                chmod($_sZipPathName, 0777);
+                
                 // Delete the old file
                 unlink($_sFileFullPath);
             }
