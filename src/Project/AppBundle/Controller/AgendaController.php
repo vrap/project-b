@@ -70,22 +70,42 @@ class AgendaController extends Controller
         $startDate = new \DateTime($data->startDate);
         $endDate = new \DateTime($data->endDate);
 
-        // Fill the entity and save it
         $entity = new Lesson();
         
         $em = $this->getDoctrine()->getManager();
+        // Check if Speaker with given id exist
         $speakerEntity = $em->getRepository('ProjectAppBundle:Speaker')->find($data->speakerId);
+        if(!$speakerEntity) {
+            return new Response(json_encode(false));
+        }
+        
+        // Check if Module with given id exist
         $moduleEntity = $em->getRepository('ProjectAppBundle:Module')->find($data->moduleId);
-
+        if(!$moduleEntity) {
+            return new Response(json_encode(false));
+        }
+        
+        if($data->name == '') {
+            return new Response(json_encode(false));
+        }
+        
         $entity->setName($data->name);
         $entity->setStartDate($startDate);
         $entity->setEndDate($endDate);
         $entity->setTimecard(1);
         $entity->setSpeaker($speakerEntity);
         $entity->setModule($moduleEntity);
-
+        
         $em->persist($entity);
         $em->flush();
+        
+        // Save in log file
+        $log = $this->get('log');
+        $log->createLog( array( 'fields' => array('Name' => $data->name),
+                                'module' => 'lesson',
+                                'username' => $this->getUser()->getUsername()),
+                                'add'
+                       );
 
         return $response;
     }
@@ -109,10 +129,18 @@ class AgendaController extends Controller
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('ProjectAppBundle:Lesson')->find($id);
 
-        // Return false if the Lesson doesn't exists else remove it
+        // Check if lesson id has been found
         if (!$entity) {
             $response = new Response(json_encode(false));
         } else {
+            // Save in log file
+            $log = $this->get('log');
+            $log->createLog( array( 'fields' => array('Name' => $entity->getName(), 'id' => $entity->getId()),
+                                    'module' => 'lesson',
+                                    'username' => $this->getUser()->getUsername()),
+                                    'delete'
+                       );
+            // Remove from database
             $em->remove($entity);
             $em->flush();
         }
