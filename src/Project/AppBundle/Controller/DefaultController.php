@@ -33,7 +33,7 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('missing'));
         } elseif(in_array('ROLE_STUDENT', $userRoles)) {
             // Redirect to the agenda
-            return $this->redirect($this->generateUrl('project_app_agenda_index'));
+            return $this->redirect($this->generateUrl('agenda_index'));
         }
     }
 }
