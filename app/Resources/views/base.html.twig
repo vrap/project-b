@@ -14,7 +14,7 @@
     <body>
         {% block wrapper %}
         <div class="wrapper">
-            {% include '::nav_dev.html.twig'%}
+            {% include 'nav.html.twig'%}
             <div class="main">
                 <div class="sidebar">
                     <ul class="list-inline">
@@ -48,7 +48,7 @@
         {% endblock %}
         {% block javascripts %}
 		  <script src="{{ asset('bundles/appbundle/js/jquery-2.1.0.min.js') }}" type="text/javascript" ></script>
-		  <script src="{{ asset('bundles/appbundle/js/script.js') }}" type="text/javascript" /></script>
+		  <script src="{{ asset('bundles/appbundle/js/script.js') }}" type="text/javascript" ></script>
 
           <script type="text/javascript">
             // Script for opening and close of menu
