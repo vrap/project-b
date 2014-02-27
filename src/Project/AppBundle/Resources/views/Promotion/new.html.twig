@@ -1,9 +1,41 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <h2>Créer</h2>
 
-    {{ form(form) }}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Nouvelle promotion</h1>
+            </div>
+            <div class="panel-content">
 
-    <a href="{{ path('promotion') }}">Retour à la liste</a>
+                <div class="panel-form">
+
+                    {{ form_start(form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(form)}}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.startDate) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.endDate) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(form.formation) }}
+                    </div>
+
+                    {# Buttons #}
+                    <div class="form-item last">
+                        {{ form_row(form.submit) }}
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('promotion') }}" class="btn btn-default">Annuler</a>
+
 {% endblock %}
