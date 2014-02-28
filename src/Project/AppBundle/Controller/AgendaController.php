@@ -2,17 +2,19 @@
 
 namespace Project\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use JMS\SecurityExtraBundle\Annotation\Secure;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Project\AppBundle\Entity\Lesson;
-use Symfony\Component\HttpFoundation\Response;
-use Project\AppBundle\Form\SpeakerType;
-use Project\AppBundle\Form\ModuleType;
-use Project\AppBundle\Entity\Speaker;
-use Project\AppBundle\Entity\Module;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    JMS\SecurityExtraBundle\Annotation\Secure,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Template,
+    Project\AppBundle\Entity\Lesson,
+    Symfony\Component\HttpFoundation\Response,
+    Project\AppBundle\Form\SpeakerType,
+    Project\AppBundle\Form\ModuleType,
+    Project\AppBundle\Entity\Speaker,
+    Project\AppBundle\Entity\Module,
+    Project\AppBundle\Entity\LessonStudent,
+    Project\AppBundle\Entity\SpeakerLesson;
 
 /**
  * Archive controller.
@@ -70,7 +72,7 @@ class AgendaController extends Controller
         $startDate = new \DateTime($data->startDate);
         $endDate = new \DateTime($data->endDate);
 
-        $entity = new Lesson();
+        $entityLesson = new Lesson();
         
         $em = $this->getDoctrine()->getManager();
         // Check if Speaker with given id exist
@@ -92,16 +94,43 @@ class AgendaController extends Controller
             return new Response(json_encode(false));
         }
         
-        $entity->setName($data->name);
-        $entity->setStartDate($startDate);
-        $entity->setEndDate($endDate);
-        $entity->setTimecard(1);
-        $entity->setSpeaker($speakerEntity);
-        $entity->setModule($moduleEntity);
+        // Set variables for lesson
+        $entityLesson->setName($data->name);
+        $entityLesson->setStartDate($startDate);
+        $entityLesson->setEndDate($endDate);
+        $entityLesson->setTimecard(1);
+        $entityLesson->setSpeaker($speakerEntity);
+        $entityLesson->setModule($moduleEntity);
         
-        $em->persist($entity);
+        // Insert into Lesson table
+        $em->persist($entityLesson);
         $em->flush();
         
+        // Retrieve module informations which help to retrieve promotion
+        $module = $em->getRepository('ProjectAppBundle:Module')->find($data->moduleId);
+        $promotion = $module->getPromotion();
+        
+        // Retrieve all student for current promotion
+        $students = $em->getRepository('ProjectAppBundle:Student')
+                       ->findByPromotion($promotion);
+        
+        /*$speakerLesson = new SpeakerLesson();
+        $speakerLesson->set$entityLesson->getId();
+        $speakerEntity->getId();*/
+
+        // Insert in table LessonStudent
+        foreach($students as $student) {
+            $studentLesson = new LessonStudent();
+            $studentLesson->setLessonId($entityLesson->getId());
+            $studentLesson->setStudentUserId($student->getUser()->getId());
+            $studentLesson->setAbsent(false);
+            $studentLesson->setJustified(false);
+
+            $em->persist($studentLesson);
+        }
+        // Insert all student
+        $em->flush();
+
         // Save in log file
         $log = $this->get('log');
         $log->createLog( array( 'fields' => array('Name' => $data->name),
