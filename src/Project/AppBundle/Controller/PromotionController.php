@@ -3,8 +3,6 @@
 namespace Project\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -13,7 +11,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Promotion;
 use Project\AppBundle\Form\PromotionType;
-use ZipArchive;
+use Project\AppBundle\Entity\Archive;
+use Project\AppBundle\Entity\ArchiveBilan;
+
 
 /**
  * Promotion controller.
@@ -39,7 +39,8 @@ class PromotionController extends Controller
         ));
 
         $promotions = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
-            'formation' => $manager->getFormation()->getId()
+            'formation' => $manager->getFormation()->getId(),
+            'archive' => null
         ));
 
         $this->get('session')->remove('promotion');
@@ -323,48 +324,66 @@ class PromotionController extends Controller
      * @Secure(roles="ROLE_MANAGER")
      * @Route("/{id}/archive", name="promotion_archive")
      * @Method("GET")
-     * @return Symfony\Component\HttpFoundation\Response
+     *
+     * @param Int $id Id of promotion to archive.
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function archiveAction($id)
     {
-        // Retrieve the promotion to json format and convert it to an array
-        $em            = $this->getDoctrine()->getManager();
-        $jsonPromotion = $em->getRepository('ProjectAppBundle:Promotion')->toJson($id);
-        $promotion     = json_decode($jsonPromotion);
+        $em        = $this->getDoctrine()->getManager();
+        $promotion = $em->getRepository('ProjectAppBundle:Promotion')->findOneBy(array('id' => $id));
 
-        // Define the temporary path and the archive name
-        $zipName     = 'archive-'.$promotion->promotion.'.zip';
-        $tempPath    = $this->get('kernel')->getCacheDir().'/'.$zipName;
+        if ($promotion) {
+            // Create an array of bilans
+            $archiveBilans   = array();
 
-        // Create the archive
-        $zip = new \ZipArchive();
-        $zip->open($tempPath, ZIPARCHIVE::CREATE);
+            // Create an archive
+            $archive         = new Archive();
+            $archive->setName($promotion->__toString());
 
-        // Add promotion csv to the archive
-        $zip->addFromString('promotion.csv', $jsonPromotion);
+            // Define which entity need to be archived
+            $entityArchive = array(
+                                   'promotion'
+                                   );
 
-        // Create a response
-        $response = new Response();
+            // For each entity needed to be archived, try to get a json and create a bilan.
+            foreach ($entityArchive as $entity) {
+                $entityName       = ucfirst(strtolower($entity));
+                $entityRepository = 'ProjectAppBundle:'.$entityName;
 
-        // Generate a content disposition according to filename
-        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $zipName);
+                try {
+                    $jsonEntity = $em->getRepository($entityRepository)->toJson($id);
 
-        // Set headers
-        $response->headers->set('Cache-Control', 'private');
-        $response->headers->set('Content-type', 'application/octet-stream');
-        $response->headers->set('Content-Disposition', $disposition);
-        $response->headers->set('Content-length', filesize($tempPath));
+                    $archiveBilan = new ArchiveBilan();
+                    $archiveBilan->setArchive($archive);
+                    $archiveBilan->setPromotion($promotion);
+                    $archiveBilan->setType($entityName);
+                    $archiveBilan->setContent($jsonEntity);
 
-        // Send headers before outputting anything
-        $response->sendHeaders();
+                    $archiveBilans[] = $archiveBilan;
+                }
+                catch (Exception $e) {
+                }
+            }
 
-        // Set the zip file as content
-        $response->setContent(file_get_contents($tempPath));
+            // Save the archive object
+            $em->persist($archive);
 
-        // Remove the temporary zip
-        unlink($tempPath);
+            // Save the archive bilans
+            foreach ($archiveBilans as $bilan) {
+                $em->persist($bilan);
+            }
 
-        // Return the response
-        return $response;
+            // Add archive id to the promotion
+            $promotion->setArchive($archive);
+
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Promotion archivée.');
+        }
+        else {
+            $this->get('session')->getFlashBag()->add('error', 'Impossible d\'archiver la promotion');
+        }
+        return $this->redirect($this->generateUrl('promotion'));
     }
 }
