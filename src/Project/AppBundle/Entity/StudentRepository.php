@@ -12,4 +12,36 @@ use Doctrine\ORM\EntityRepository;
  */
 class StudentRepository extends EntityRepository
 {
+    /**
+     * Create a json of students of a promotion
+     *
+     * @param int $promotion id of the promotion to convert to a json.
+     * @return string JSON that contain the element of a promotion.
+     */
+    public function toJson($promotion)
+    {
+        $jsonData = array();
+        $qb = $this->createQueryBuilder('s');
+
+        $qb->where('s.promotion = :promotion')
+            ->setParameter('promotion', $promotion);
+
+        $students = $qb->getQuery()
+            ->getResult();
+
+        foreach ($students as $student) {
+            $user = $student->getUser();
+
+            $jsonData[] = array(
+                                'name' => $user->getUsername(),
+                                'surname' => $user->getSurname(),
+                                'email' => $user->getEmail(),
+                                'last_login' => $user->getLastLogin(),
+                                'phone' => $user->getPhone(),
+                                'corporation' => $user->getCorporation()
+                                );
+        }
+
+        return json_encode($jsonData);
+    }
 }

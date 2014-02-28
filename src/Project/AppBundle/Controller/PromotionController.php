@@ -344,7 +344,8 @@ class PromotionController extends Controller
             // Define which entity need to be archived
             $entityArchive = array(
                                    'promotion',
-                                   'module'
+                                   'module',
+                                   'student'
                                    );
 
             // For each entity needed to be archived, try to get a json and create a bilan.
