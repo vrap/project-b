@@ -47,9 +47,20 @@
                     {% endif %}
 
                     {% if 'ROLE_STUDENT' in entity.roles and promotion is defined %}
+                        {% if promotion is defined %}
+                            <div class="form-item">
+                                <label for="promotion">Promotion</label>
+                                <span id="promotion">{{ promotion.id }}</span>
+                            </div>
+                        {% endif %}
+
                         <div class="form-item">
-                            <label for="promotion">Promotion</label>
-                            <span id="promotion">{{ promotion.id }}</span>
+                            <label for="corporation">Entreprise</label>
+                        {% if corporation is defined and corporation is not null%}
+                            <span id="corporation">{{ corporation.name }}</span>
+                        {% else %}
+                            <span id="corporation">Non attribuée.</span>
+                        {% endif %}
                         </div>
                     {% endif %}
                 </div>

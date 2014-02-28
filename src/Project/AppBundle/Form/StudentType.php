@@ -18,13 +18,19 @@ class StudentType extends AbstractType
     {
         $builder
             ->add('user', new UserType())
+
+            ->add('corporation', 'entity', array(
+                'class'    => 'ProjectAppBundle:Corporation',
+                'property' => 'name',
+                'label'    => 'Entreprise :'
+            ))
             ->add('promotion', 'entity', array(
-                'class'    => 'ProjectAppBundle:Promotion',
-                'property' => 'id',
-                'multiple' => false,
-                'expanded' => false,
-                'label'    => 'Promotion :'
-            ));
+                    'class'    => 'ProjectAppBundle:Promotion',
+                    'property' => 'id',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'label'    => 'Promotion :'
+            ))
         ;
     }
     

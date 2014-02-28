@@ -27,8 +27,7 @@ class Student
     private $user;
 
     /**
-     * @ORM\Column(nullable=true)
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Corporation", cascade={"persist"} )
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Corporation", cascade={"persist"})
      */
     private $corporation;
 
@@ -79,7 +78,7 @@ class Student
      * @param \Project\AppBundle\Entity\Corporation $corporation
      * @return Student
      */
-    public function setCorporation(\Project\AppBundle\Entity\Corporation $corporation = null)
+    public function setCorporation(Corporation $corporation = null)
     {
         $this->corporation = $corporation;
 

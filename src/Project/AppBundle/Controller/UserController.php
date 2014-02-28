@@ -191,6 +191,10 @@ class UserController extends Controller
             $promotion = $em->getRepository('ProjectAppBundle:Student')
                             ->findOneByUser($entity)
                             ->getPromotion();
+
+            $corporation = $em->getRepository('ProjectAppBundle:Student')
+                            ->findOneByUser($entity)
+                            ->getCorporation();
         }
 
         if (in_array('ROLE_MANAGER', $userRoles)) {
@@ -203,6 +207,7 @@ class UserController extends Controller
         return array(
             'entity'      => $entity,
             'promotion'   => $promotion,
+            'corporation' => $corporation,
             'formation'   => $formation,
         );
     }

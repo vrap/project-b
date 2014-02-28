@@ -43,6 +43,10 @@
                             {{ form_row(edit_form.promotion) }}
                         </div>
 
+                        <div class="form-item">
+                            {{ form_row(edit_form.corporation) }}
+                        </div>
+
                     {% endif %}
 
                     {% if 'ROLE_MANAGER' in entity.roles %}

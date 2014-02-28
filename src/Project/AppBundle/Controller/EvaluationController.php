@@ -65,12 +65,13 @@ class EvaluationController extends Controller
 
             $student = $repoStudent->findOneByUser($user);
             $studentEvals = $repoStudentEval->findByStudent($student);
-            $studentCritScores = array();
+
 
             if(!empty($studentEvals)) {
                 foreach($studentEvals as $studentEval) {
                     $criterions = $repoCrit->findByEvaluation($studentEval->getEvaluation());
 
+                    $studentCritScores = array();
                     foreach ( $criterions as $criterion ) {
                         $critEval = $repoStudentEvalCrit->findOneByCritEval($criterion, $studentEval);
 

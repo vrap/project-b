@@ -15,9 +15,15 @@ class CorporationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('email')
-            ->add('phone')
+            ->add('name', 'text', array(
+                        'label' => 'Nom : '
+                ))
+            ->add('email', 'email', array(
+                        'label' => 'Adresse email : '
+                ))
+            ->add('phone', 'text', array(
+                        'label' => 'Téléphone : '
+                ))
         ;
     }
     
