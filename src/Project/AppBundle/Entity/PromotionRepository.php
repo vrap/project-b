@@ -20,6 +20,8 @@ class PromotionRepository extends EntityRepository
      */
     public function toJson($promotion)
     {
+        $jsonDate = array();
+
         $qb = $this->createQueryBuilder('p');
 
         $qb->where('p.id = :id')
@@ -30,12 +32,12 @@ class PromotionRepository extends EntityRepository
         $promotion = $qb->getQuery()
             ->getSingleResult();
 
-        $jsonData = array(
-                          'promotion' => $promotion->__toString(),
-                          'formation' => $promotion->getFormation()->__toString(),
-                          'start'     => $promotion->getStartDate()->format('Y-m-d H:i:s'),
-                          'end'       => $promotion->getEndDate()->format('Y-m-d H:i:s')
-                          );
+        $jsonData[] = array(
+                            'promotion' => $promotion->__toString(),
+                            'formation' => $promotion->getFormation()->__toString(),
+                            'start'     => $promotion->getStartDate()->format('Y-m-d H:i:s'),
+                            'end'       => $promotion->getEndDate()->format('Y-m-d H:i:s')
+                            );
 
         return json_encode($jsonData);
     }
