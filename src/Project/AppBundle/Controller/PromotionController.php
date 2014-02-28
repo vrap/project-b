@@ -371,6 +371,7 @@ class PromotionController extends Controller
 
             // Save the archive bilans
             foreach ($archiveBilans as $bilan) {
+                $bilan->setArchive($archive);
                 $em->persist($bilan);
             }
 
