@@ -47,6 +47,7 @@ $(function () {
                             success : function(response){
                                 if(response === true) {
                                     $('#calendar-holder').fullCalendar( 'refetchEvents' );
+                                    $( "#dialog-create-events" ).dialog( "close" );
                                 } else {
                                     window.location.reload();
                                 }
