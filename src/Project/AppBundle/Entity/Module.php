@@ -105,6 +105,7 @@ class Module
      * Retrieve associated lessons.
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function getLessons()
     {
         return $this->lessons;
