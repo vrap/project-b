@@ -12,4 +12,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class PromotionRepository extends EntityRepository
 {
+    /**
+     * Create a json of a promotion.
+     *
+     * @param int $promotion id of the promotion to convert to a json.
+     * @return string JSON that contain the element of a promotion.
+     */
+    public function toJson($promotion)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->where('p.id = :id')
+            ->setParameter('id', $promotion)
+            ->andWhere('p.archive IS NULL')
+            ->setMaxResults(1);
+
+        $promotion = $qb->getQuery()
+            ->getSingleResult();
+
+        $jsonData = array(
+                          'promotion' => $promotion->__toString(),
+                          'formation' => $promotion->getFormation()->__toString(),
+                          'start'     => $promotion->getStartDate()->format('Y-m-d H:i:s'),
+                          'end'       => $promotion->getEndDate()->format('Y-m-d H:i:s')
+                          );
+
+        return json_encode($jsonData);
+    }
 }

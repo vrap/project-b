@@ -157,4 +157,14 @@ class Promotion
     {
         return $this->archive;
     }
+
+    /**
+     * Convert a promotion entity to a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFormation()->getName().' ('.$this->getStartDate()->format('Y').' - '.$this->getEndDate()->format('Y').')';
+    }
 }

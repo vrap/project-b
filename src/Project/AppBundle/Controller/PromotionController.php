@@ -11,6 +11,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Promotion;
 use Project\AppBundle\Form\PromotionType;
+use Project\AppBundle\Entity\Archive;
+use Project\AppBundle\Entity\ArchiveBilan;
+
 
 /**
  * Promotion controller.
@@ -36,7 +39,8 @@ class PromotionController extends Controller
         ));
 
         $promotions = $em->getRepository('ProjectAppBundle:Promotion')->findBy(array(
-            'formation' => $manager->getFormation()->getId()
+            'formation' => $manager->getFormation()->getId(),
+            'archive' => null
         ));
 
         $this->get('session')->remove('promotion');
@@ -312,5 +316,74 @@ class PromotionController extends Controller
                 ))
             ->getForm()
         ;
+    }
+
+    /**
+     * Create an archine of a promotion.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/archive", name="promotion_archive")
+     * @Method("GET")
+     *
+     * @param Int $id Id of promotion to archive.
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function archiveAction($id)
+    {
+        $em        = $this->getDoctrine()->getManager();
+        $promotion = $em->getRepository('ProjectAppBundle:Promotion')->findOneBy(array('id' => $id));
+
+        if ($promotion) {
+            // Create an array of bilans
+            $archiveBilans   = array();
+
+            // Create an archive
+            $archive         = new Archive();
+            $archive->setName($promotion->__toString());
+
+            // Define which entity need to be archived
+            $entityArchive = array(
+                                   'promotion'
+                                   );
+
+            // For each entity needed to be archived, try to get a json and create a bilan.
+            foreach ($entityArchive as $entity) {
+                $entityName       = ucfirst(strtolower($entity));
+                $entityRepository = 'ProjectAppBundle:'.$entityName;
+
+                try {
+                    $jsonEntity = $em->getRepository($entityRepository)->toJson($id);
+
+                    $archiveBilan = new ArchiveBilan();
+                    $archiveBilan->setArchive($archive);
+                    $archiveBilan->setPromotion($promotion);
+                    $archiveBilan->setType($entityName);
+                    $archiveBilan->setContent($jsonEntity);
+
+                    $archiveBilans[] = $archiveBilan;
+                }
+                catch (Exception $e) {
+                }
+            }
+
+            // Save the archive object
+            $em->persist($archive);
+
+            // Save the archive bilans
+            foreach ($archiveBilans as $bilan) {
+                $em->persist($bilan);
+            }
+
+            // Add archive id to the promotion
+            $promotion->setArchive($archive);
+
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Promotion archivée.');
+        }
+        else {
+            $this->get('session')->getFlashBag()->add('error', 'Impossible d\'archiver la promotion');
+        }
+        return $this->redirect($this->generateUrl('promotion'));
     }
 }

@@ -40,6 +40,11 @@ class ArchiveBilan
      */
     private $promotion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", inversedBy="archiveBilans")
+     */
+    private $archive;
+
 
     /**
      * Get id
@@ -118,5 +123,28 @@ class ArchiveBilan
     public function getPromotion()
     {
         return $this->promotion;
+    }
+
+    /**
+     * Set archive
+     *
+     * @param \Project\AppBundle\Entity\Archive $archive
+     * @return Promotion
+     */
+    public function setArchive(\Project\AppBundle\Entity\Archive $archive = null)
+    {
+        $this->archive = $archive;
+
+        return $this;
+    }
+
+    /**
+     * Get archive
+     *
+     * @return \Project\AppBundle\Entity\Archive
+     */
+    public function getArchive()
+    {
+        return $this->archive;
     }
 }
