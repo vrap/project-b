@@ -113,7 +113,7 @@ class ArchiveController extends Controller
 
         if ($archive) {
             // Define the temporary path and the archive name
-            $zipName     = 'archive-'.$archive->getName().'.zip';
+            $zipName     = 'archive-'.$archive->getName().'.'.uniqid().'.zip';
             $tempPath    = $this->get('kernel')->getCacheDir().'/'.$zipName;
 
             // Create the archive
@@ -127,6 +127,8 @@ class ArchiveController extends Controller
 
                 $zip->addFromString($bilan->getType(), $content);
             }
+
+            $zip->close();
 
             // Create a response
             $response = new Response();
@@ -153,7 +155,7 @@ class ArchiveController extends Controller
             return $response;
         }
 
-        // // If error occured, show a message
+        // If error occured, show a message
         $this->get('session')->getFlashBag()->add('error', 'Impossible de télécharger cette archive.');
 
         return $this->redirect($this->generateUrl('archive'));
