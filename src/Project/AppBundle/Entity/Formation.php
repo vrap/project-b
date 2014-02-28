@@ -69,4 +69,15 @@ class Formation
     {
         return $this->name;
     }
+
+
+    /**
+     * Convert a formation entity to a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
