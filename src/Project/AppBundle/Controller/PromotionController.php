@@ -3,6 +3,8 @@
 namespace Project\AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Promotion;
 use Project\AppBundle\Form\PromotionType;
+use ZipArchive;
 
 /**
  * Promotion controller.
@@ -312,5 +315,56 @@ class PromotionController extends Controller
                 ))
             ->getForm()
         ;
+    }
+
+    /**
+     * Create an archine of a promotion.
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/archive", name="promotion_archive")
+     * @Method("GET")
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function archiveAction($id)
+    {
+        // Retrieve the promotion to json format and convert it to an array
+        $em            = $this->getDoctrine()->getManager();
+        $jsonPromotion = $em->getRepository('ProjectAppBundle:Promotion')->toJson($id);
+        $promotion     = json_decode($jsonPromotion);
+
+        // Define the temporary path and the archive name
+        $zipName     = 'archive-'.$promotion->promotion.'.zip';
+        $tempPath    = $this->get('kernel')->getCacheDir().'/'.$zipName;
+
+        // Create the archive
+        $zip = new \ZipArchive();
+        $zip->open($tempPath, ZIPARCHIVE::CREATE);
+
+        // Add promotion csv to the archive
+        $zip->addFromString('promotion.csv', $jsonPromotion);
+
+        // Create a response
+        $response = new Response();
+
+        // Generate a content disposition according to filename
+        $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $zipName);
+
+        // Set headers
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', 'application/octet-stream');
+        $response->headers->set('Content-Disposition', $disposition);
+        $response->headers->set('Content-length', filesize($tempPath));
+
+        // Send headers before outputting anything
+        $response->sendHeaders();
+
+        // Set the zip file as content
+        $response->setContent(file_get_contents($tempPath));
+
+        // Remove the temporary zip
+        unlink($tempPath);
+
+        // Return the response
+        return $response;
     }
 }
