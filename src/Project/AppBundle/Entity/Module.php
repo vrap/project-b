@@ -101,8 +101,22 @@ class Module
         return $this->promotion;
     }
 
+    /**
+     * Retrieve associated lessons.
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
     public function getLessons()
     {
         return $this->lessons;
+    }
+
+    /**
+     * Convert a module entity to a string.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
     }
 }
