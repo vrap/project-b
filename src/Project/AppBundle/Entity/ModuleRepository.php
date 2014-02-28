@@ -12,4 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class ModuleRepository extends EntityRepository
 {
+    /**
+     * Create a json of modules of a promotion
+     *
+     * @param int $promotion id of the promotion to convert to a json.
+     * @return string JSON that contain the element of a promotion.
+     */
+    public function toJson($promotion)
+    {
+        $jsonData = array();
+        $qb = $this->createQueryBuilder('m');
+
+        $qb->where('m.promotion = :promotion')
+            ->setParameter('promotion', $promotion);
+
+        $modules = $qb->getQuery()
+            ->getResult();
+
+        foreach ($modules as $module) {
+            $jsonData[] = array(
+                                'name' => $module->__toString()
+                                );
+        }
+
+        return json_encode($jsonData);
+    }
 }
