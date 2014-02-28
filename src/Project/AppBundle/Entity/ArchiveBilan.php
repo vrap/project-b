@@ -36,11 +36,6 @@ class ArchiveBilan
     private $content;
 
     /**
-     * @ORM\OneToOne(targetEntity="Project\AppBundle\Entity\Promotion", cascade={"persist"})
-     */
-    private $promotion;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", inversedBy="archiveBilans")
      */
     private $archive;
