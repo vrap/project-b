@@ -42,7 +42,7 @@
                                 <br/>
                             {% endif %}
 
-                            <a class="btn btn-second btn-small" href="">Télécharger</a>
+                            <a class="btn btn-second btn-small" href="{{ path('archive_download', { 'id': entity.archive.id }) }}">Télécharger</a>
                         </div>
                     </div>
                 </div>

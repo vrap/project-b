@@ -2,13 +2,17 @@
 
 namespace Project\AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Project\AppBundle\Entity\Archive;
+use Project\AppBundle\Entity\ArchiveBilan;
 use Project\AppBundle\Form\ArchiveType;
+use ZipArchive;
 
 /**
  * Archive controller.
@@ -94,4 +98,64 @@ class ArchiveController extends Controller
         ));
     }
 
+    /**
+     * Download an archive
+     *
+     * @Secure(roles="ROLE_MANAGER")
+     * @Route("/{id}/archive", name="archive_download")
+     * @Method("GET")
+     * @return Symfony\Component\HttpFoundation\Response
+     */
+    public function downloadAction($id)
+    {
+        $em      = $this->getDoctrine()->getManager();
+        $archive = $em->getRepository('ProjectAppBundle:Archive')->findOneBy(array('id' => $id));
+
+        if ($archive) {
+            // Define the temporary path and the archive name
+            $zipName     = 'archive-'.$archive->getName().'.zip';
+            $tempPath    = $this->get('kernel')->getCacheDir().'/'.$zipName;
+
+            // Create the archive
+            $zip = new \ZipArchive();
+            $zip->open($tempPath, ZIPARCHIVE::CREATE);
+
+            $bilans = $archive->getArchiveBilans();
+
+            foreach ($bilans as $bilan) {
+                $content = stream_get_contents($bilan->getContent());
+
+                $zip->addFromString($bilan->getType(), $content);
+            }
+
+            // Create a response
+            $response = new Response();
+
+            // Generate a content disposition according to filename
+            $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $zipName);
+
+            // Set headers
+            $response->headers->set('Cache-Control', 'private');
+            $response->headers->set('Content-type', 'application/octet-stream');
+            $response->headers->set('Content-Disposition', $disposition);
+            $response->headers->set('Content-length', filesize($tempPath));
+
+            // Send headers before outputting anything
+            $response->sendHeaders();
+
+            // Set the zip file as content
+            $response->setContent(file_get_contents($tempPath));
+
+            // Remove the temporary zip
+            unlink($tempPath);
+
+            // Return the response
+            return $response;
+        }
+
+        // // If error occured, show a message
+        $this->get('session')->getFlashBag()->add('error', 'Impossible de télécharger cette archive.');
+
+        return $this->redirect($this->generateUrl('archive'));
+    }
 }
