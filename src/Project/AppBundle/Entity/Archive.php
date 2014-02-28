@@ -38,7 +38,7 @@ class Archive
     /**
      * @ORM\OneToMany(targetEntity="Project\AppBundle\Entity\ArchiveBilan", mappedBy="archive")
      */
-    private $archives;
+    private $archiveBilans;
 
     /**
      * Constructor to preset archive's year
@@ -102,5 +102,21 @@ class Archive
     public function getYear()
     {
         return $this->year;
+    }
+
+    /**
+     * Get bilans
+     */
+    public function getArchiveBilans()
+    {
+        return $this->archiveBilans;
+    }
+
+    /**
+     * Set bilans
+     */
+    public function setStudentEvaluations(ArrayCollection $archiveBilans)
+    {
+        $this->archiveBilans = $archiveBilans;
     }
 }

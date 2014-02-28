@@ -41,7 +41,7 @@ class ArchiveBilan
     private $promotion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", inversedBy="archives")
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", inversedBy="archiveBilans")
      */
     private $archive;
 
