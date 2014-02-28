@@ -40,6 +40,11 @@ class ArchiveBilan
      */
     private $promotion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Project\AppBundle\Entity\Archive", inversedBy="archives")
+     */
+    private $archive;
+
 
     /**
      * Get id
