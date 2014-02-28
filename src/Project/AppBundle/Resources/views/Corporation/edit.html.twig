@@ -1,16 +1,40 @@
-{% extends '::base.html.twig' %}
+{% extends "ProjectAppBundle::layout.html.twig" %}
 
-{% block body -%}
-    <h1>Corporation edit</h1>
+{% block content %}
+    <div class="panel-group">
+        <div class="panel-item">
+            <div class="panel-header">
+                <h1>Modifier l'entreprise</h1>
+            </div>
+            <div class="panel-content">
 
-    {{ form(edit_form) }}
+                <div class="panel-form">
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('corporation') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+                    {{ form_start(edit_form) }}
+                    {# Errors #}
+                    <div class="form-item">
+                        {{ form_errors(edit_form)}}
+                    </div>
+
+                    <div class="form-item">
+                        {{ form_row(edit_form.name) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(edit_form.phone) }}
+                    </div>
+                    <div class="form-item">
+                        {{ form_row(edit_form.email) }}
+                    </div>
+
+                    {# Buttons #}
+                    <div class="form-item last">
+                        {{ form_row(edit_form.submit) }}
+                    </div>
+                    {{ form_end(edit_form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('corporation') }}" class="btn btn-default">Annuler</a>
 {% endblock %}

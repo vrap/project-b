@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Project\AppBundle\Entity\Corporation;
 use Project\AppBundle\Form\CorporationType;
 
@@ -21,6 +22,7 @@ class CorporationController extends Controller
     /**
      * Lists all Corporation entities.
      *
+     * @Secure(roles={"ROLE_STUDENT", "ROLE_SPEAKER", "ROLE_MANAGER"})
      * @Route("/", name="corporation")
      * @Method("GET")
      * @Template()
@@ -37,7 +39,7 @@ class CorporationController extends Controller
     }
     /**
      * Creates a new Corporation entity.
-     *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/", name="corporation_create")
      * @Method("POST")
      * @Template("ProjectAppBundle:Corporation:new.html.twig")
@@ -52,6 +54,8 @@ class CorporationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Entreprise crééé.');
 
             return $this->redirect($this->generateUrl('corporation_show', array('id' => $entity->getId())));
         }
@@ -76,7 +80,12 @@ class CorporationController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+                'label' => 'Enregistrer',
+                'attr'  => array(
+                    'class' => 'btn btn-second'
+                )
+        ));
 
         return $form;
     }
@@ -84,6 +93,7 @@ class CorporationController extends Controller
     /**
      * Displays a form to create a new Corporation entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/new", name="corporation_new")
      * @Method("GET")
      * @Template()
@@ -102,6 +112,7 @@ class CorporationController extends Controller
     /**
      * Finds and displays a Corporation entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="corporation_show")
      * @Method("GET")
      * @Template()
@@ -127,6 +138,7 @@ class CorporationController extends Controller
     /**
      * Displays a form to edit an existing Corporation entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}/edit", name="corporation_edit")
      * @Method("GET")
      * @Template()
@@ -165,13 +177,19 @@ class CorporationController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+                'label' => 'Enregistrer',
+                'attr'  => array(
+                        'class' => 'btn btn-second'
+                )
+        ));
 
         return $form;
     }
     /**
      * Edits an existing Corporation entity.
      *
+     * @Secure(roles={"ROLE_MANAGER"})
      * @Route("/{id}", name="corporation_update")
      * @Method("PUT")
      * @Template("ProjectAppBundle:Corporation:edit.html.twig")
@@ -193,6 +211,8 @@ class CorporationController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('info', 'Modifications enregistrées.');
+
             return $this->redirect($this->generateUrl('corporation_edit', array('id' => $id)));
         }
 
@@ -205,6 +225,7 @@ class CorporationController extends Controller
     /**
      * Deletes a Corporation entity.
      *
+     * @Secure(roles={"ROLE_ADMIN"})
      * @Route("/{id}", name="corporation_delete")
      * @Method("DELETE")
      */
@@ -223,6 +244,8 @@ class CorporationController extends Controller
 
             $em->remove($entity);
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add('info', 'Entreprise supprimée.');
         }
 
         return $this->redirect($this->generateUrl('corporation'));
@@ -240,7 +263,12 @@ class CorporationController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('corporation_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array(
+                        'label' => 'Supprimer',
+                        'attr'  => array(
+                            'class' => 'btn btn-primary btn-small'
+                        )
+                ))
             ->getForm()
         ;
     }
