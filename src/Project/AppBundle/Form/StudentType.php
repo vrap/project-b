@@ -24,8 +24,14 @@ class StudentType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'label'    => 'Promotion :'
+            ))
+            ->add('corporation', 'entity', array(
+                'class'    => 'ProjectAppBundle:Corporation',
+                'property' => 'name',
+                'multiple' => false,
+                'expanded' => false,
+                'label'    => 'Entreprise :'
             ));
-        ;
     }
     
     /**
