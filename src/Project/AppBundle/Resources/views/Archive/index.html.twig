@@ -1,10 +1,6 @@
 {% extends "ProjectAppBundle::layout.html.twig" %}
 
 {% block content %}
-    <div class="bloc-top">
-        <a class="btn btn-second" href="{{ path('archive_new') }}">Nouvelle archive</a>
-    </div>
-
     <div class="panel-group">
         {% if entities is empty %}
             <div class="panel-item">
@@ -17,7 +13,7 @@
                 <div class="panel-item">
                     <div class="panel-content">
                         <div class="panel-header">
-                            <h3 class="pull-left">{{ entity.archive.year | date('Y') }} - {{ entity.archive.name }}</h3>
+                            <h3 class="pull-left">{{ entity.archive.name }}</h3>
                         </div>
                         <div class="panel-content">
                             {% if entity.promotions is not empty %}
