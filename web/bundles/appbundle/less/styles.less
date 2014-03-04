@@ -160,14 +160,16 @@ ul.list-no-style > li{
 		box-sizing:border-box;
 		-moz-box-sizing:border-box;
 		vertical-align: top;
-
-		 @media only screen
-		  and (max-width : 1000px) {
-		    width: 100%;
-		    &:first-child{
+		
+		@media only screen
+		and (max-device-width : 1024px),
+		only screen
+		and (max-width : 1000px) {
+		  width: 100%;
+		  &:first-child{
 				margin-right: 0%;
 			}
-		  }
+		}
 
 	}
 }
@@ -230,8 +232,10 @@ ul.list-no-style > li{
 	&:hover{
 		background-color: darken(@color-second, 3%);
 	}
-
-  @media only screen
+	
+	@media only screen
+	and (max-device-width : 1024px),
+  only screen
   and (max-width : 800px) {
     margin-top: 4px;
   }
@@ -405,8 +409,10 @@ input{
 			&.list{
 				li{list-style: none;}
 			}
-
-		  @media only screen
+			
+			@media only screen
+			and (max-device-width : 1024px),
+		  only screen
 		  and (max-width : 800px) {
 		    /* Force table to not be like tables anymore */
 		    table, thead, tbody, th, td, tr {
@@ -424,7 +430,7 @@ input{
 					font-weight: bold;
 				}
 		  }
-			
+
 			.content-hidden-header + .checkbox-hidden {
 				&:checked {
 					& + .content-hidden {
@@ -481,7 +487,9 @@ body{
 			&:first-child{
 				&.extand-item{
 					
-					@media only screen 
+					@media only screen
+					and (max-device-width : 1024px),
+					only screen 
 					and (max-width : 800px) {
 						a {
 							background-color: darken(@color-dark, 2%);
@@ -494,11 +502,15 @@ body{
 
 					}
 
+
+
 					display: none;
 				}
 				
 				+ li > a{
-					@media only screen 
+					@media only screen
+					and (max-device-width : 1024px),
+					only screen 
 					and (min-width : 800px) {
 						background-color: @color-primary;
 						&:hover{
@@ -523,8 +535,10 @@ body{
 				color: @color-dark;
 			}
 		}
-
-		@media only screen 
+		
+		@media only screen
+		and (max-device-width : 1024px),
+		only screen 
 		and (max-width : 800px) {
 			.optional {
 				display: none;
@@ -546,8 +560,10 @@ body{
 	.main{
 
 		margin-left: 200px;
-
-		@media only screen 
+		
+		@media only screen
+		and (max-device-width : 1024px),
+		only screen 
 		and (max-width : 800px) {
 			// Smartphones & tablets
 			margin-left: 0;

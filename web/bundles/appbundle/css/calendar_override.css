@@ -152,7 +152,7 @@ ul.list-no-style > li {
 .row .col-2:first-child {
   margin-right: 2%;
 }
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 1000px) {
   .row .col-2 {
     width: 100%;
   }
@@ -219,7 +219,7 @@ ul.list-no-style > li {
 .btn-second:hover {
   background-color: #00cff0;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 800px) {
   .checkbox-hidden:checked + .label-justify,
   .btn-second {
     margin-top: 4px;
@@ -358,7 +358,7 @@ input {
 .panel-group .panel-item .panel-content.list li {
   list-style: none;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 800px) {
   .panel-group .panel-item .panel-content {
     /* Force table to not be like tables anymore */
     /* Hide table headers (but not display: none;, for accessibility) */
@@ -422,7 +422,7 @@ body {
 .wrapper nav ul > li:first-child.extand-item {
   display: none;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 800px) {
   .wrapper nav ul > li:first-child.extand-item {
     width: 265px;
     display: block;
@@ -433,7 +433,7 @@ body {
     text-align: right;
   }
 }
-@media only screen and (min-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (min-width: 800px) {
   .wrapper nav ul > li:first-child + li > a {
     background-color: #e97b7d;
   }
@@ -454,7 +454,7 @@ body {
   background-color: #f2f2f2;
   color: #3d4c67;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 800px) {
   .wrapper nav .optional {
     display: none;
   }
@@ -469,7 +469,7 @@ body {
   margin-left: 200px;
   transition: all 0.3s ease-out;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-device-width: 1024px), only screen and (max-width: 800px) {
   .wrapper .main {
     margin-left: 0;
   }
